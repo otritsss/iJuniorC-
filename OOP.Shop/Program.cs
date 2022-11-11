@@ -61,20 +61,24 @@ namespace OOP.Shop
             Console.Write("Введите номер товара: ");
             string inputProduct = Console.ReadLine();
 
+
             if (!int.TryParse(inputProduct, out int indexProduct))
             {
                 Console.WriteLine("Вы ввели некорретное значение..");
             }
             else
             {
-                if (_buyer.Money >= _seller.GetProduct(indexProduct - 1).Price != null)
+                if (_seller.GetProduct(indexProduct, out Product product))
                 {
-                    _buyer.BuyProduct(_seller.GetProduct(indexProduct - 1));
-                    _seller.SellProduct(indexProduct - 1);
-                }
-                else
-                {
-                    Console.WriteLine($"Вам не хватает {_seller.GetProduct(indexProduct - 1).Price - _buyer.Money} денег");
+                    if (_buyer.Money >= product.Price)
+                    {
+                        _buyer.BuyProduct(product);
+                        _seller.SellProduct(indexProduct - 1);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Вам не хватает {product.Price - _buyer.Money} денег");
+                    }
                 }
             }
         }
@@ -109,32 +113,19 @@ namespace OOP.Shop
             Products.Add(new Product("Алмазный шлем", 250));
         }
 
-        public Product GetProduct(int indexProduct)
+        public bool GetProduct(int indexProduct, out Product product)
         {
-            //for (int i = 0; i < Products.Count; i++)
-            //{
-            //    if(Products[i] == Pro)
-            //}
-
-            if (indexProduct + 1 > 0 || Products.Count < indexProduct + 1)
+            if (indexProduct < 1 || indexProduct > Products.Count)
             {
                 Console.WriteLine("Вы дебил? Выберите одно число из тех, которые написаны!");
-                return null;
+                product = null;
+                return false;
             }
             else
             {
-                return Products[indexProduct];
+                product = Products[indexProduct - 1];
+                return true;
             }
-
-            //if (Products.Contains(Products[indexProduct]) == false)
-            //{
-            //    Console.WriteLine("Вы дебил? Выберите одно число из тех, которые написаны!");
-            //    return null;
-            //}
-            //else
-            //{
-            //    return Products[indexProduct];
-            //}
         }
 
         public void SellProduct(int indexProduct)
