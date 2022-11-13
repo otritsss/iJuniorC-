@@ -10,8 +10,8 @@ namespace OOP.Train
     {
         static void Main()
         {
-            Dispatcher trainRide = new Dispatcher();
-            trainRide.Work();
+            Dispatcher dispatcher = new Dispatcher();
+            dispatcher.Work();
         }
     }
 
@@ -19,21 +19,44 @@ namespace OOP.Train
     {
         private List<Wagon> _wagons = new List<Wagon>();
         private List<Train> _trains = new List<Train>();
-
         private int _ticketsCount;
         private int _wagonsCount;
+
         public void Work()
         {
             bool isOpenProgramm = true;
 
             while (isOpenProgramm)
             {
-                Console.WriteLine($"Здравствуйте, Вы попали в составлние плана поезда.");
-
-                CreateTrain();
+                if (_trains.Count == 0)
+                {
+                    Console.WriteLine("В очереди нет поездов\n");
+                    Console.WriteLine($"Составление поезда.");
+                    CreateTrain();
+                }
+                else
+                {
+                    for (int i = 0; i < _trains.Count; i++)
+                    {
+                        _trains[i].ShowInfo();
+                        SendTrain();
+                    }
+                }
 
                 Console.ReadKey();
                 Console.Clear();
+            }
+        }
+
+        private void SendTrain()
+        {
+            Console.WriteLine("Нажмите на любую клавишу для отправки поезда..");
+            Console.ReadKey();
+
+            for (int i = 0; i < _trains.Count; i++)
+            {
+                Console.WriteLine($"Поезд {_trains[i].Route} отправлен");
+                _trains.RemoveAt(i);
             }
         }
 
@@ -45,25 +68,19 @@ namespace OOP.Train
             string inputDropOffPoint = Console.ReadLine();
 
             SellTickets();
-
             CreateWagons();
 
             _trains.Add(new Train(inputBoardingPoint, inputDropOffPoint, _ticketsCount, _wagonsCount));
-
-            for (int i = 0; i < _trains.Count; i++)
-            {
-                _trains[i].ShowInfo();
-            }
         }
 
         private void SellTickets()
         {
             Random random = new Random();
             int minPassengerCount = 20;
-            int maxPassengerCount = 101;
+            int maxPassengerCount = 151;
             _ticketsCount = random.Next(minPassengerCount, maxPassengerCount);
 
-            Console.WriteLine($"Продано {_ticketsCount} билетов");
+            Console.WriteLine($"Продано {_ticketsCount} билета");
         }
 
         private void CreateWagons()
@@ -74,9 +91,10 @@ namespace OOP.Train
             {
                 _wagons.Add(new Wagon());
 
-                for (int i = 0; i < _wagons.Count; i++)
+                for (int i = _wagons.Count - 1; i < _wagons.Count; i++)
                 {
                     countFreePlaceTrain += _wagons[i].CountFreePlace;
+                    Console.WriteLine($"Вместимость {i + 1}-го вагона - {_wagons[i].CountFreePlace}");
                     _wagonsCount = _wagons.Count;
                 }
             }
@@ -87,7 +105,6 @@ namespace OOP.Train
     {
         public int WagonsCount { get; private set; }
         public int PassengersCount { get; private set; }
-
         public string Route { get; private set; }
 
         public Train(string BoardingPoint, string DropOffPoint, int passengerCount, int wagonsCount)
@@ -99,7 +116,7 @@ namespace OOP.Train
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Рейс: {Route} | {PassengersCount} пассажиров | Выделено {WagonsCount} вагонов\n");
+            Console.WriteLine($"Рейс: {Route} | {PassengersCount} пассажира | Выделено {WagonsCount} вагона\n");
         }
     }
 
