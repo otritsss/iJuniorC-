@@ -10,154 +10,102 @@ namespace OOP.Train
     {
         static void Main()
         {
-            TrainRide trainRide = new TrainRide();
+            Dispatcher trainRide = new Dispatcher();
             trainRide.Work();
         }
     }
 
-    class TrainRide
+    class Dispatcher
     {
-        private Train _train = new Train();
+        private List<Wagon> _wagons = new List<Wagon>();
+        private List<Train> _trains = new List<Train>();
 
+        private int _ticketsCount;
+        private int _wagonsCount;
         public void Work()
         {
-            const string CreateRouteCommand = "1";
-            const string SellTicketsCommand = "2";
-            const string CreateTrainCommand = "3";
-            const string SendTrainCommand = "4";
-
             bool isOpenProgramm = true;
 
             while (isOpenProgramm)
             {
-                if (_train.IsCreateRoute)
-                    _train.ShowInfo();
+                Console.WriteLine($"Здравствуйте, Вы попали в составлние плана поезда.");
 
-                Console.Write($"Здравствуйте, Вы попали в составлние плана поезда.\n{CreateRouteCommand} - Создать маршрут\n{SellTicketsCommand} - Продать билеты\n{CreateTrainCommand} - Сформировать поезд\n{SendTrainCommand} - Отправить поезд\nВведите команду: ");
-                string inputCommand = Console.ReadLine();
-
-                switch (inputCommand)
-                {
-                    case CreateRouteCommand:
-                        _train.CreateRoute();
-                        break;
-                    case SellTicketsCommand:
-                        _train.GeneratePassenger();
-                        break;
-                    case CreateTrainCommand:
-                        _train.CreateTrain();
-                        break;
-                    case SendTrainCommand:
-                        _train.SendTrain();
-                        break;
-                    default:
-                        Console.WriteLine("Введите корректное значение..");
-                        break;
-                }
+                CreateTrain();
 
                 Console.ReadKey();
                 Console.Clear();
+            }
+        }
+
+        private void CreateTrain()
+        {
+            Console.Write("Введите точку отправления поезда: ");
+            string inputBoardingPoint = Console.ReadLine();
+            Console.Write("Введите точку прибытия поезда: ");
+            string inputDropOffPoint = Console.ReadLine();
+
+            SellTickets();
+
+            CreateWagons();
+
+            _trains.Add(new Train(inputBoardingPoint, inputDropOffPoint, _ticketsCount, _wagonsCount));
+
+            for (int i = 0; i < _trains.Count; i++)
+            {
+                _trains[i].ShowInfo();
+            }
+        }
+
+        private void SellTickets()
+        {
+            Random random = new Random();
+            int minPassengerCount = 20;
+            int maxPassengerCount = 101;
+            _ticketsCount = random.Next(minPassengerCount, maxPassengerCount);
+
+            Console.WriteLine($"Продано {_ticketsCount} билетов");
+        }
+
+        private void CreateWagons()
+        {
+            int countFreePlaceTrain = 0;
+
+            while (countFreePlaceTrain < _ticketsCount)
+            {
+                _wagons.Add(new Wagon());
+
+                for (int i = 0; i < _wagons.Count; i++)
+                {
+                    countFreePlaceTrain += _wagons[i].CountFreePlace;
+                    _wagonsCount = _wagons.Count;
+                }
             }
         }
     }
 
     class Train
     {
-        private Passenger _passengers = new Passenger(0);
-        private Wagon _wagon = new Wagon();
+        public int WagonsCount { get; private set; }
+        public int PassengersCount { get; private set; }
 
-        public string BoardingPoint { get; private set; }
-        public string DropOffPoint { get; private set; }
-        public bool IsCreateRoute { get; private set; }
-        private bool _isCreateTrain;
-        private bool _isGeneratePassenger;
+        public string Route { get; private set; }
 
-        private int _wagonsCount;
-
-        public void GeneratePassenger()
+        public Train(string BoardingPoint, string DropOffPoint, int passengerCount, int wagonsCount)
         {
-            if (!IsCreateRoute)
-            {
-                Console.WriteLine("Маршрут еще не выбран");
-            }
-            else if (!_isGeneratePassenger)
-            {
-                _passengers = new Passenger();
-                _isGeneratePassenger = true;
-                Console.WriteLine($"На рейс купили {_passengers.Count} билета");
-            }
-            else
-            {
-                Console.WriteLine("Сначала отправьте текущий поезд...");
-            }
-        }
-
-        public void CreateTrain()
-        {
-            if (_passengers.Count == 0)
-            {
-                Console.WriteLine($"Автовокзал еще не продал билеты пассажирам");
-            }
-            else if (_isCreateTrain)
-            {
-                Console.WriteLine("Куда тыкаешь, вагоны уже выделены!");
-            }
-            else
-            {
-                _wagonsCount = (int)Math.Ceiling(_passengers.Count / _wagon.CountFreePlace);
-                Console.WriteLine($"На этот рейс выделено {_wagonsCount} вагона, вместимостью по {_wagon.CountFreePlace} мест");
-                _isCreateTrain = true;
-            }
-        }
-
-        public void CreateRoute()
-        {
-            if (!IsCreateRoute)
-            {
-                Console.Write("Введите точку отправления: ");
-                string inputBoardingPoint = Console.ReadLine();
-                Console.Write("Введите точку прибытия: ");
-                string inputDropOffPoint = Console.ReadLine();
-
-                BoardingPoint = inputBoardingPoint;
-                DropOffPoint = inputDropOffPoint;
-
-                IsCreateRoute = true;
-            }
-            else
-            {
-                Console.WriteLine("Сначала отправьте текущий поезд...");
-            }
-        }
-
-        public void SendTrain()
-        {
-            if (!_isCreateTrain)
-            {
-                Console.WriteLine($"Сначала составьте поезд");
-            }
-            else if (_isCreateTrain)
-            {
-                Console.WriteLine($"Поезд отправлен..");
-
-                IsCreateRoute = false;
-                _isCreateTrain = false;
-                _isGeneratePassenger = false;
-            }
+            PassengersCount = passengerCount;
+            Route = BoardingPoint + " - " + DropOffPoint;
+            WagonsCount = wagonsCount;
         }
 
         public void ShowInfo()
         {
-            if (!_isCreateTrain)
-                Console.WriteLine($"Рейс: {BoardingPoint} - {DropOffPoint} | {_passengers.Count} пассажиров | Выделено {0} вагонов\n");
-            else
-                Console.WriteLine($"Рейс: {BoardingPoint} - {DropOffPoint} | {_passengers.Count} пассажиров | Выделено {_wagonsCount}\n");
+            Console.WriteLine($"Рейс: {Route} | {PassengersCount} пассажиров | Выделено {WagonsCount} вагонов\n");
         }
     }
 
     class Wagon
     {
-        public double CountFreePlace { get; private set; }
+        public int CountFreePlace { get; private set; }
 
         public Wagon()
         {
@@ -165,24 +113,6 @@ namespace OOP.Train
             int minCountFreePlace = 10;
             int maxCountFreePlace = 20;
             CountFreePlace = random.Next(minCountFreePlace, maxCountFreePlace);
-        }
-    }
-
-    class Passenger
-    {
-        public int Count { get; private set; }
-
-        public Passenger()
-        {
-            Random random = new Random();
-            int minCountPassenger = 20;
-            int maxCountPassenger = 101;
-            Count = random.Next(minCountPassenger, maxCountPassenger);
-        }
-
-        public Passenger(int count)
-        {
-            Count = count;
         }
     }
 }
