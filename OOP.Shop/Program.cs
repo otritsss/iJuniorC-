@@ -17,7 +17,7 @@ namespace OOP.Shop
 
     class Shop
     {
-        const string SeeYourInventoryCommand = "1";
+        const string SeePlayerInventoryCommand = "1";
         const string SeeProductsCommand = "2";
         const string BuyProduct = "3";
 
@@ -30,12 +30,12 @@ namespace OOP.Shop
 
             while (isOpenProgram)
             {
-                Console.WriteLine($"Ваш баланс - {_buyer.Money}\nБаланс продавца - {_seller.Money}\n\n{SeeYourInventoryCommand} - Посмотреть свой инвентарь\n{SeeProductsCommand} - Посмотреть список товаров продовца\n{BuyProduct} - Купить вещь у продавца");
+                Console.WriteLine($"Ваш баланс - {_buyer.Money}\nБаланс продавца - {_seller.Money}\n\n{SeePlayerInventoryCommand} - Посмотреть свой инвентарь\n{SeeProductsCommand} - Посмотреть список товаров продовца\n{BuyProduct} - Купить вещь у продавца");
                 string userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
-                    case SeeYourInventoryCommand:
+                    case SeePlayerInventoryCommand:
                         _buyer.ShowProducts();
                         break;
                     case SeeProductsCommand:
@@ -60,7 +60,6 @@ namespace OOP.Shop
 
             Console.Write("Введите номер товара: ");
             string inputProduct = Console.ReadLine();
-
 
             if (!int.TryParse(inputProduct, out int indexProduct))
             {
