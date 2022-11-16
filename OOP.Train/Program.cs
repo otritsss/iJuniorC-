@@ -19,8 +19,7 @@ namespace OOP.Train
     {
         private List<Wagon> _wagons = new List<Wagon>();
         private List<Train> _trains = new List<Train>();
-        private int _ticketsCount;
-        private int _wagonsCount;
+        public int TicketsCount { get; private set; }
 
         public void Work()
         {
@@ -68,9 +67,12 @@ namespace OOP.Train
             string inputDropOffPoint = Console.ReadLine();
 
             SellTickets();
-            CreateWagons();
 
-            _trains.Add(new Train(inputBoardingPoint, inputDropOffPoint, _ticketsCount, _wagonsCount));
+            _trains.Add(new Train(inputBoardingPoint, inputDropOffPoint, TicketsCount));
+            int countFreePlaceTrain = 0;
+
+            while (countFreePlaceTrain < TicketsCount)
+                _trains[0].CreateWagons(ref countFreePlaceTrain);
         }
 
         private void SellTickets()
@@ -78,40 +80,36 @@ namespace OOP.Train
             Random random = new Random();
             int minPassengerCount = 20;
             int maxPassengerCount = 151;
-            _ticketsCount = random.Next(minPassengerCount, maxPassengerCount);
+            TicketsCount = random.Next(minPassengerCount, maxPassengerCount);
 
-            Console.WriteLine($"Продано {_ticketsCount} билета");
-        }
-
-        private void CreateWagons()
-        {
-            int countFreePlaceTrain = 0;
-
-            while (countFreePlaceTrain < _ticketsCount)
-            {
-                _wagons.Add(new Wagon());
-
-                for (int i = _wagons.Count - 1; i < _wagons.Count; i++)
-                {
-                    countFreePlaceTrain += _wagons[i].CountFreePlace;
-                    Console.WriteLine($"Вместимость {i + 1}-го вагона - {_wagons[i].CountFreePlace}");
-                    _wagonsCount = _wagons.Count;
-                }
-            }
+            Console.WriteLine($"Продано {TicketsCount} билета");
         }
     }
 
     class Train
     {
+        private List<Wagon> _wagons = new List<Wagon>();
         public int WagonsCount { get; private set; }
         public int PassengersCount { get; private set; }
         public string Route { get; private set; }
 
-        public Train(string BoardingPoint, string DropOffPoint, int passengerCount, int wagonsCount)
+        public Train(string boardingPoint, string dropOffPoint, int passengerCount)
         {
             PassengersCount = passengerCount;
-            Route = BoardingPoint + " - " + DropOffPoint;
-            WagonsCount = wagonsCount;
+            Route = boardingPoint + " - " + dropOffPoint;
+            WagonsCount = _wagons.Count;
+        }
+
+        public void CreateWagons(ref int countFreePlaceTrain)
+        {
+            _wagons.Add(new Wagon());
+
+            for (int i = _wagons.Count - 1; i < _wagons.Count; i++)
+            {
+                countFreePlaceTrain += _wagons[i].CountFreePlace;
+                Console.WriteLine($"Вместимость {i + 1}-го вагона - {_wagons[i].CountFreePlace}");
+                WagonsCount = _wagons.Count;
+            }
         }
 
         public void ShowInfo()
