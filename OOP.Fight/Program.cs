@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OOP.Fight
+﻿namespace OOP.Fight
 {
     class Program
     {
@@ -51,11 +45,13 @@ namespace OOP.Fight
 
     class Fighter
     {
+        protected int TrueHitChance = 7;
+        protected bool _isHit;
+        private bool _isAbility = false;
+        protected string Name;
+
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
-        protected int TrueHitChance = 7;
-        protected bool IsHit;
-        protected string Name;
         public Fighter(string name, int health, int damage)
         {
             Name = name;
@@ -63,8 +59,30 @@ namespace OOP.Fight
             Damage = damage;
         }
 
+        public virtual int AdditionalDamage(string descriptionAbility, int trueAbilityChance, int ability) // desc - нанесем дополнительный урон "Танец огня"
+        {
+            Random random = new Random();
+            int maxChance = 10;
+            int abilityChance = random.Next(maxChance);
+
+            if (abilityChance < trueAbilityChance)
+            {
+                Damage += ability;
+                _isAbility = true;
+                Console.WriteLine(descriptionAbility);
+                return Damage;
+            }
+            else
+            {
+                _isAbility = false;
+                return Damage;
+            }
+        }
+
         public void TakeDamage(int damage, Fighter fighter)
         {
+            AdditionalDamage();
+
             Random random = new Random();
             int maxHitChance = 10;
             int hitChance = random.Next(maxHitChance);
@@ -72,11 +90,16 @@ namespace OOP.Fight
             if (hitChance > TrueHitChance)
             {
                 Console.WriteLine($"{fighter.Name} промахнулся");
-                IsHit = false;
+                _isHit = false;
+            }
+            else if (_isAbility)
+            {
+                _isHit = true;
+                Health -= AdditionalDamage();
             }
             else
             {
-                IsHit = true;
+                _isHit = true;
                 Health -= damage;
             }
         }
@@ -90,24 +113,17 @@ namespace OOP.Fight
     class Tanjiro : Fighter
     {
 
-        private int _trueDanceOfFireChance = 10;
-        public Tanjiro(int health, int damage) : base("Танзиро", health, damage)
-        {
-            Random random = new Random();
-            int maxChance = 10;
-            int danceOfFireChance = random.Next(maxChance);
+        private int _trueDanceOfFireChance = 3;
+        public Tanjiro(int health, int damage) : base("Танзиро", health, damage) { }
 
-            if (danceOfFireChance < _trueDanceOfFireChance)
-            {
-                DanceOfFire(ref damage);
-            }
+        public override int AdditionalDamage()
+        {
+            int trueAbilityChance = 3;
+            string titleAbility = "Танец огна";
+            int ability = 5;
+            return Damage;
         }
 
-        private void DanceOfFire(ref int damage)
-        {
-            int danceOfFire = 5;
-            damage += danceOfFire;
-        }
     }
 
     class Zenitsu : Fighter
@@ -117,7 +133,7 @@ namespace OOP.Fight
         {
             int anger = 0;
 
-            if (IsHit)
+            if (_isHit)
             {
                 anger++;
             }
