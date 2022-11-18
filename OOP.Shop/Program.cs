@@ -17,9 +17,9 @@ namespace OOP.Shop
 
     class Shop
     {
-        const string SeePlayerInventoryCommand = "1";
-        const string SeeProductsCommand = "2";
-        const string BuyProduct = "3";
+        private const string SeePlayerInventoryCommand = "1";
+        private const string SeeProductsCommand = "2";
+        private const string BuyProduct = "3";
 
         private Seller _seller = new Seller(100);
         private Buyer _buyer = new Buyer(600);
@@ -61,23 +61,20 @@ namespace OOP.Shop
             Console.Write("Введите номер товара: ");
             string inputProduct = Console.ReadLine();
 
-            if (!int.TryParse(inputProduct, out int indexProduct))
+            if (int.TryParse(inputProduct, out int indexProduct) == false)
             {
                 Console.WriteLine("Вы ввели некорретное значение..");
             }
-            else
+            else if (_seller.GetProduct(indexProduct, out Product product))
             {
-                if (_seller.GetProduct(indexProduct, out Product product))
+                if (_buyer.Money >= product.Price)
                 {
-                    if (_buyer.Money >= product.Price)
-                    {
-                        _buyer.BuyProduct(product);
-                        _seller.SellProduct(indexProduct - 1);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Вам не хватает {product.Price - _buyer.Money} денег");
-                    }
+                    _buyer.BuyProduct(product);
+                    _seller.SellProduct(indexProduct - 1);
+                }
+                else
+                {
+                    Console.WriteLine($"Вам не хватает {product.Price - _buyer.Money} денег");
                 }
             }
         }
