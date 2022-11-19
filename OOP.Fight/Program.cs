@@ -31,8 +31,8 @@
             {
                 Console.WriteLine($"{round++}-е столкновение");
 
-                leftFighter.TakeDamage(rightFighter.Damage, rightFighter);
-                rightFighter.TakeDamage(leftFighter.Damage, leftFighter);
+                leftFighter.TakeDamage(rightFighter.Damage, rightFighter.AbilityDamage, rightFighter, rightFighter.IsAbility);
+                rightFighter.TakeDamage(leftFighter.Damage, leftFighter.AbilityDamage, leftFighter, leftFighter.IsAbility);
 
                 leftFighter.ShowInfo();
                 rightFighter.ShowInfo();
@@ -47,11 +47,16 @@
     {
         protected int TrueHitChance = 7;
         protected bool _isHit;
-        private bool _isAbility = false;
         protected string Name;
+        protected string Description;
+        protected int TrueAbilityChance;
+        protected int Ability;
+        public bool IsAbility { get; private set; }
 
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
+        public int AbilityDamage { get; private set; }
+
         public Fighter(string name, int health, int damage)
         {
             Name = name;
@@ -59,29 +64,35 @@
             Damage = damage;
         }
 
-        public virtual int AdditionalDamage(string descriptionAbility, int trueAbilityChance, int ability) // desc - нанесем дополнительный урон "Танец огня"
+        public virtual int AdditionalDamage(string descriptionAbility, int trueAbilityChance, int ability)
         {
             Random random = new Random();
             int maxChance = 10;
             int abilityChance = random.Next(maxChance);
+            IsAbility = false;
 
             if (abilityChance < trueAbilityChance)
             {
-                Damage += ability;
-                _isAbility = true;
-                Console.WriteLine(descriptionAbility);
-                return Damage;
+                AbilityDamage = Damage;
+                AbilityDamage += ability;
+                IsAbility = true;
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"{Name} использовал {descriptionAbility}");
+                Console.ForegroundColor = ConsoleColor.White;
+
+                return AbilityDamage;
             }
             else
             {
-                _isAbility = false;
+                IsAbility = false;
                 return Damage;
             }
         }
 
-        public void TakeDamage(int damage, Fighter fighter)
+        public void TakeDamage(int damage, int abilityDamage, Fighter fighter, bool isAbility)
         {
-            AdditionalDamage();
+            AdditionalDamage(Description, TrueAbilityChance, Ability);
 
             Random random = new Random();
             int maxHitChance = 10;
@@ -89,13 +100,16 @@
 
             if (hitChance > TrueHitChance)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"{fighter.Name} промахнулся");
+                Console.ForegroundColor = ConsoleColor.White;
+
                 _isHit = false;
             }
-            else if (_isAbility)
+            else if (isAbility)
             {
                 _isHit = true;
-                Health -= AdditionalDamage();
+                Health -= abilityDamage;
             }
             else
             {
@@ -112,16 +126,15 @@
 
     class Tanjiro : Fighter
     {
-
-        private int _trueDanceOfFireChance = 3;
         public Tanjiro(int health, int damage) : base("Танзиро", health, damage) { }
 
-        public override int AdditionalDamage()
+        public override int AdditionalDamage(string description, int trueAbilityChance, int ability)
         {
-            int trueAbilityChance = 3;
-            string titleAbility = "Танец огна";
-            int ability = 5;
-            return Damage;
+            Description = "Танец огня";
+            TrueAbilityChance = 10;
+            Ability = 5;
+            return base.AdditionalDamage(Description, TrueAbilityChance, Ability);
+
         }
 
     }
@@ -129,27 +142,38 @@
     class Zenitsu : Fighter
     {
         private int _trueSleep = 3;
-        public Zenitsu(int health, int damage) : base("Зетицу", health, damage)
+
+        public Zenitsu(int health, int damage) : base("Зеницу", health, damage) { }
+
+        public override int AdditionalDamage(string description, int trueAbilityChance, int ability)
         {
-            int anger = 0;
-
-            if (_isHit)
-            {
-                anger++;
-            }
-
-            if (anger == _trueSleep)
-            {
-                Sleep(damage);
-                anger = 0;
-            }
+            Description = "Сон";
+            TrueAbilityChance = 10;
+            Ability = 7;
+            return base.AdditionalDamage(Description, TrueAbilityChance, Ability);
         }
 
-        private void Sleep(int damage)
-        {
-            double sleep = 2;
-            damage *= (int)sleep;
-        }
+        //public Zenitsu(int health, int damage) : base("Зетицу", health, damage)
+        //{
+        //    int anger = 0;
+
+        //    if (_isHit)
+        //    {
+        //        anger++;
+        //    }
+
+        //    if (anger == _trueSleep)
+        //    {
+        //        Sleep(damage);
+        //        anger = 0;
+        //    }
+        //}
+
+        //private void Sleep(int damage)
+        //{
+        //    double sleep = 2;
+        //    damage *= (int)sleep;
+        //}
     }
 
     class Kanao
