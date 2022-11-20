@@ -33,8 +33,8 @@
 
                 leftFighter.AdditionalDamage();
                 rightFighter.AdditionalDamage();
-                leftFighter.TakeDamage(rightFighter.Damage, rightFighter.AbilityDamage, leftFighter, rightFighter.IsAbility, rightFighter.IsHit);
-                rightFighter.TakeDamage(leftFighter.Damage, leftFighter.AbilityDamage, rightFighter, leftFighter.IsAbility, leftFighter.IsHit);
+                leftFighter.TakeDamage(rightFighter.Damage, rightFighter.AbilityDamage, rightFighter, rightFighter.IsAbility);
+                rightFighter.TakeDamage(leftFighter.Damage, leftFighter.AbilityDamage, leftFighter, leftFighter.IsAbility);
 
                 leftFighter.ShowInfo();
                 rightFighter.ShowInfo();
@@ -54,7 +54,7 @@
 
     class Fighter
     {
-        protected int TrueHitChance = 7;
+        protected int TrueHitChance = 5;
         public bool IsHit { get; protected set; } = true;
         public string Name { get; protected set; }
         public string Description { get; protected set; }
@@ -84,7 +84,7 @@
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void TakeDamage(int damage, int abilityDamage, Fighter fighter, bool isAbility, bool isHit)
+        public void TakeDamage(int damage, int abilityDamage, Fighter fighter, bool isAbility)
         {
             Random random = new Random();
             int maxHitChance = 10;
@@ -96,14 +96,15 @@
                 Console.WriteLine($"{fighter.Name} промахнулся");
                 Console.ForegroundColor = ConsoleColor.White;
 
-                isHit = false;
+                fighter.IsHit = false;
             }
-            else if (isAbility)
+
+            if (isAbility && hitChance < TrueHitChance)
             {
                 IsHit = true;
                 Health -= abilityDamage;
             }
-            else
+            else if (hitChance < TrueHitChance)
             {
                 IsHit = true;
                 Health -= damage;
@@ -126,7 +127,6 @@
             Random random = new Random();
             int maxChance = 10;
             int abilityChance = random.Next(maxChance);
-            IsAbility = false;
 
             if (abilityChance < _trueDanceOfFire)
             {
