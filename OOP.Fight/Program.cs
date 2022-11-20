@@ -31,6 +31,8 @@
             {
                 Console.WriteLine($"{round++}-е столкновение");
 
+                leftFighter.AdditionalDamage(leftFighter.Description, leftFighter.TrueAbilityChance, leftFighter.Ability);
+                rightFighter.AdditionalDamage(rightFighter.Description, rightFighter.TrueAbilityChance, rightFighter.Ability);
                 leftFighter.TakeDamage(rightFighter.Damage, rightFighter.AbilityDamage, rightFighter, rightFighter.IsAbility);
                 rightFighter.TakeDamage(leftFighter.Damage, leftFighter.AbilityDamage, leftFighter, leftFighter.IsAbility);
 
@@ -48,9 +50,9 @@
         protected int TrueHitChance = 7;
         protected bool _isHit;
         protected string Name;
-        protected string Description;
-        protected int TrueAbilityChance;
-        protected int Ability;
+        public string Description { get; protected set; }
+        public int TrueAbilityChance { get; protected set; }
+        public int Ability { get; protected set; }
         public bool IsAbility { get; private set; }
 
         public int Health { get; protected set; }
@@ -92,7 +94,7 @@
 
         public void TakeDamage(int damage, int abilityDamage, Fighter fighter, bool isAbility)
         {
-            AdditionalDamage(Description, TrueAbilityChance, Ability);
+
 
             Random random = new Random();
             int maxHitChance = 10;
@@ -131,7 +133,7 @@
         public override int AdditionalDamage(string description, int trueAbilityChance, int ability)
         {
             Description = "Танец огня";
-            TrueAbilityChance = 10;
+            TrueAbilityChance = 3;
             Ability = 5;
             return base.AdditionalDamage(Description, TrueAbilityChance, Ability);
 
@@ -148,7 +150,7 @@
         public override int AdditionalDamage(string description, int trueAbilityChance, int ability)
         {
             Description = "Сон";
-            TrueAbilityChance = 10;
+            TrueAbilityChance = 3;
             Ability = 7;
             return base.AdditionalDamage(Description, TrueAbilityChance, Ability);
         }
