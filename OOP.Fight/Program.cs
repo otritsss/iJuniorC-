@@ -11,7 +11,7 @@
 
     class Fight
     {
-        Fighter[] fighters = { new Tanjiro(100, 20), new Zenitsu(100, 20) };
+        Fighter[] fighters = { new Tanjiro(100, 20), new Zenitsu(100, 20), new Kanao(100, 20), new Nezuko(100, 20), new Inosuke(100, 20) };
         public void Battle()
         {
             for (int i = 0; i < fighters.Length; i++)
@@ -31,10 +31,10 @@
             {
                 Console.WriteLine($"{round++}-е столкновение");
 
-                leftFighter.AdditionalDamage();
-                rightFighter.AdditionalDamage();
-                leftFighter.TakeDamage(rightFighter.Damage, rightFighter.AbilityDamage, rightFighter, rightFighter.IsAbility);
-                rightFighter.TakeDamage(leftFighter.Damage, leftFighter.AbilityDamage, leftFighter, leftFighter.IsAbility);
+                leftFighter.AdditionalDamage(rightFighter);
+                rightFighter.AdditionalDamage(leftFighter);
+                leftFighter.TakeDamage(rightFighter);
+                rightFighter.TakeDamage(leftFighter);
 
                 leftFighter.ShowInfo();
                 rightFighter.ShowInfo();
@@ -57,8 +57,6 @@
         public bool IsHit { get; protected set; } = true;
         public string Name { get; protected set; }
         public string Description { get; protected set; }
-        public int TrueAbilityChance { get; protected set; }
-        public int Ability { get; protected set; }
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
         public bool IsAbility { get; protected set; }
@@ -71,10 +69,7 @@
             Damage = damage;
         }
 
-        public virtual int AdditionalDamage()
-        {
-            return 0;
-        }
+        public virtual void AdditionalDamage(Fighter fighter) { }
 
         public void ShowInfoAbility(string descriptionAbility)
         {
@@ -83,7 +78,7 @@
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void TakeDamage(int damage, int abilityDamage, Fighter fighter, bool isAbility)
+        public virtual void TakeDamage(Fighter fighter)
         {
             Random random = new Random();
             int maxHitChance = 10;
@@ -99,15 +94,15 @@
                 fighter.IsHit = false;
             }
 
-            if (isAbility && hitChance < trueHitChance)
+            if (fighter.IsAbility && hitChance < trueHitChance)
             {
                 fighter.IsHit = true;
-                Health -= abilityDamage;
+                Health -= fighter.AbilityDamage;
             }
             else if (hitChance < trueHitChance)
             {
                 fighter.IsHit = true;
-                Health -= damage;
+                Health -= fighter.Damage;
             }
         }
 
@@ -122,7 +117,7 @@
         private int _trueDanceOfFire = 3;
         public Tanjiro(int health, int damage) : base("Танзиро", health, damage) { }
 
-        public override int AdditionalDamage()
+        public override void AdditionalDamage(Fighter fighter)
         {
             Random random = new Random();
             int maxChance = 10;
@@ -134,13 +129,10 @@
                 AbilityDamage = Damage + danceOfFire;
                 IsAbility = true;
                 ShowInfoAbility("Танец огня");
-
-                return AbilityDamage;
             }
             else
             {
                 IsAbility = false;
-                return Damage;
             }
         }
 
@@ -150,7 +142,7 @@
     {
         public Zenitsu(int health, int damage) : base("Зеницу", health, damage) { }
 
-        public override int AdditionalDamage()
+        public override void AdditionalDamage(Fighter fighter)
         {
             IsAbility = false;
 
@@ -160,35 +152,59 @@
                 IsAbility = true;
                 AbilityDamage = Damage + sleep;
                 ShowInfoAbility("Сон");
-                return AbilityDamage;
             }
-
-            return Damage;
         }
     }
 
     class Kanao : Fighter
     {
+        private bool _isBodyControl;
         public Kanao(int health, int damage) : base("Канао", health, damage) { }
 
-        public override int AdditionalDamage()
+        public override void AdditionalDamage(Fighter fighter) // если она в прошлый раз промахнулась, то в следующий раз точно попадает и с каждым ударом прибавляется по 1 ед. урона
         {
-            return 0;
+            if (IsHit == false)
+            {
+                _isBodyControl = true;
+                ShowInfoAbility("Идеальный контроль над телом");
+            }
+
+            if (_isBodyControl)
+                Damage++;
+
         }
     }
 
     class Nezuko : Fighter
     {
-        private int _trueControlTheBody = 3;
-        public Nezuko(int health, int damage) : base("Зеницу", health, damage) { }
+        private int _regeneration = 3;
+        public Nezuko(int health, int damage) : base("Незуко", health, damage) { }
 
-
-
+        public override void AdditionalDamage(Fighter fighter)
+        {
+            Health += _regeneration;
+            ShowInfoAbility("Регенерацию");
+        }
     }
 
     class Inosuke : Fighter
     {
-        public Inosuke(int health, int damage) : base("Зеницу", health, damage) { }
+        private int _boarAttack = 2;
+        private int _angry = 0;
+        private int _trueBoarAttack = 2;
+        public Inosuke(int health, int damage) : base("Иноске", health, damage) { }
 
+        public override void AdditionalDamage(Fighter fighter)
+        {
+            if (IsHit == false)
+                _angry++;
+
+            if (_angry >= _trueBoarAttack)
+            {
+                _angry = 0;
+                AbilityDamage = Damage * _boarAttack;
+                IsAbility = true;
+            }
+        }
     }
 }
