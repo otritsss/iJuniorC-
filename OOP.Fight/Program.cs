@@ -11,7 +11,45 @@
 
     class Fight
     {
-        Fighter[] fighters = { new Tanjiro(100, 20), new Zenitsu(100, 20), new Kanao(100, 20), new Nezuko(100, 20), new Inosuke(100, 20) };
+        Fighter[] fighters = { new Tanjiro(), new Zenitsu(), new Kanao(), new Nezuko(), new Inosuke() };
+
+        public Fighter ChoiceFighter(string text)
+        {
+            Fighter fighter = new Fighter("No name", 0, 0);
+            Console.Write($"Введите номер бойнца {text} ринга: ");
+
+            if (int.TryParse(Console.ReadLine(), out int numberFighter))
+            {
+                Console.WriteLine("Вы ввели некорретное значение");
+            }
+            else
+            {
+                switch (numberFighter)
+                {
+                    case 1:
+                        return fighter = new Tanjiro();
+                        break;
+                    case 2:
+                        return fighter = new Zenitsu();
+                        break;
+                    case 3:
+                        return fighter = new Kanao();
+                        break;
+                    case 4:
+                        return fighter = new Tanjiro();
+                        break;
+                    case 5:
+                        return fighter = new Inosuke();
+                        break;
+                    default:
+                        Console.WriteLine("Вы ввели некорректное значение");
+                        break;
+                }
+            }
+
+            return fighter;
+
+        }
         public void Battle()
         {
             for (int i = 0; i < fighters.Length; i++)
@@ -20,10 +58,8 @@
                 fighters[i].ShowInfo();
             }
 
-            Console.Write("Введите номер бойца левого ринга: ");
-            Fighter leftFighter = fighters[Convert.ToInt32(Console.ReadLine()) - 1];
-            Console.Write("Введите номер бойца правого ринга: ");
-            Fighter rightFighter = fighters[Convert.ToInt32(Console.ReadLine()) - 1];
+            Fighter leftFighter = ChoiceFighter("левого");
+            Fighter rightFighter = ChoiceFighter("правого");
 
             int round = 1;
 
@@ -69,7 +105,7 @@
             Damage = damage;
         }
 
-        public virtual void AdditionalDamage(Fighter fighter) { }
+        public virtual int AdditionalDamage(Fighter fighter) => 0;
 
         public void ShowInfoAbility(string descriptionAbility)
         {
@@ -104,6 +140,9 @@
                 fighter.IsHit = true;
                 Health -= fighter.Damage;
             }
+
+            if (Health < 0)
+                Health = 0;
         }
 
         public void ShowInfo()
@@ -115,9 +154,9 @@
     class Tanjiro : Fighter
     {
         private int _trueDanceOfFire = 3;
-        public Tanjiro(int health, int damage) : base("Танзиро", health, damage) { }
+        public Tanjiro() : base("Танзиро", 100, 20) { }
 
-        public override void AdditionalDamage(Fighter fighter)
+        public override int AdditionalDamage(Fighter fighter)
         {
             Random random = new Random();
             int maxChance = 10;
@@ -129,20 +168,22 @@
                 AbilityDamage = Damage + danceOfFire;
                 IsAbility = true;
                 ShowInfoAbility("Танец огня");
+                return AbilityDamage;
             }
             else
             {
                 IsAbility = false;
             }
-        }
 
+            return Damage;
+        }
     }
 
     class Zenitsu : Fighter
     {
-        public Zenitsu(int health, int damage) : base("Зеницу", health, damage) { }
+        public Zenitsu() : base("Зеницу", 100, 20) { }
 
-        public override void AdditionalDamage(Fighter fighter)
+        public override int AdditionalDamage(Fighter fighter)
         {
             IsAbility = false;
 
@@ -152,16 +193,19 @@
                 IsAbility = true;
                 AbilityDamage = Damage + sleep;
                 ShowInfoAbility("Сон");
+                return AbilityDamage;
             }
+
+            return Damage;
         }
     }
 
     class Kanao : Fighter
     {
         private bool _isBodyControl;
-        public Kanao(int health, int damage) : base("Канао", health, damage) { }
+        public Kanao() : base("Канао", 100, 200) { }
 
-        public override void AdditionalDamage(Fighter fighter) // если она в прошлый раз промахнулась, то в следующий раз точно попадает и с каждым ударом прибавляется по 1 ед. урона
+        public override int AdditionalDamage(Fighter fighter) // если она в прошлый раз промахнулась, то в следующий раз точно попадает и с каждым ударом прибавляется по 1 ед. урона
         {
             if (IsHit == false)
             {
@@ -172,18 +216,20 @@
             if (_isBodyControl)
                 Damage++;
 
+            return Damage;
         }
     }
 
     class Nezuko : Fighter
     {
         private int _regeneration = 3;
-        public Nezuko(int health, int damage) : base("Незуко", health, damage) { }
+        public Nezuko() : base("Незуко", 100, 20) { }
 
-        public override void AdditionalDamage(Fighter fighter)
+        public override int AdditionalDamage(Fighter fighter)
         {
             Health += _regeneration;
             ShowInfoAbility("Регенерацию");
+            return Damage;
         }
     }
 
@@ -192,9 +238,9 @@
         private int _boarAttack = 2;
         private int _angry = 0;
         private int _trueBoarAttack = 2;
-        public Inosuke(int health, int damage) : base("Иноске", health, damage) { }
+        public Inosuke() : base("Иноске", 100, 20) { }
 
-        public override void AdditionalDamage(Fighter fighter)
+        public override int AdditionalDamage(Fighter fighter)
         {
             if (IsHit == false)
                 _angry++;
@@ -204,7 +250,10 @@
                 _angry = 0;
                 AbilityDamage = Damage * _boarAttack;
                 IsAbility = true;
+                return AbilityDamage;
             }
+
+            return Damage;
         }
     }
 }
