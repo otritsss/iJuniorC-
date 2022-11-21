@@ -5,7 +5,12 @@
       "ProjectGuid": "e765dcc3-0f5b-4511-a441-844d3482d76b",
       "DisplayName": "OOP.Fight",
       "ColorIndex": 0
+    },
+    "b27fe3d5-ef77-429a-9615-fbd8eda2df6e": {
+      "ProjectGuid": "b27fe3d5-ef77-429a-9615-fbd8eda2df6e",
+      "DisplayName": "Obaldui",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }

@@ -54,7 +54,6 @@
 
     class Fighter
     {
-        protected int TrueHitChance = 5;
         public bool IsHit { get; protected set; } = true;
         public string Name { get; protected set; }
         public string Description { get; protected set; }
@@ -89,8 +88,9 @@
             Random random = new Random();
             int maxHitChance = 10;
             int hitChance = random.Next(maxHitChance);
+            int trueHitChance = 7;
 
-            if (hitChance > TrueHitChance)
+            if (hitChance > trueHitChance)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"{fighter.Name} промахнулся");
@@ -99,14 +99,14 @@
                 fighter.IsHit = false;
             }
 
-            if (isAbility && hitChance < TrueHitChance)
+            if (isAbility && hitChance < trueHitChance)
             {
-                IsHit = true;
+                fighter.IsHit = true;
                 Health -= abilityDamage;
             }
-            else if (hitChance < TrueHitChance)
+            else if (hitChance < trueHitChance)
             {
-                IsHit = true;
+                fighter.IsHit = true;
                 Health -= damage;
             }
         }
@@ -148,14 +148,13 @@
 
     class Zenitsu : Fighter
     {
-        private int _trueSleep = 1;
         public Zenitsu(int health, int damage) : base("Зеницу", health, damage) { }
 
         public override int AdditionalDamage()
         {
             IsAbility = false;
 
-            if (IsHit == false) // если он промахивается, то cледующий удар + 10 урона
+            if (IsHit == false) // если он промахивается, то cледующий удар + 11 урона
             {
                 int sleep = 11;
                 IsAbility = true;
@@ -168,18 +167,28 @@
         }
     }
 
-    class Kanao
+    class Kanao : Fighter
     {
+        public Kanao(int health, int damage) : base("Канао", health, damage) { }
+
+        public override int AdditionalDamage()
+        {
+            return 0;
+        }
+    }
+
+    class Nezuko : Fighter
+    {
+        private int _trueControlTheBody = 3;
+        public Nezuko(int health, int damage) : base("Зеницу", health, damage) { }
+
+
 
     }
 
-    class Nezuko
+    class Inosuke : Fighter
     {
-
-    }
-
-    class Inosuke
-    {
+        public Inosuke(int health, int damage) : base("Зеницу", health, damage) { }
 
     }
 }
