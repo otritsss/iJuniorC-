@@ -11,14 +11,14 @@
 
     class Fight
     {
-        Fighter[] fighters = { new Tanjiro(), new Zenitsu(), new Kanao(), new Nezuko(), new Inosuke() };
+
 
         public Fighter ChoiceFighter(string text)
         {
-            Fighter fighter = new Fighter("No name", 0, 0);
-            Console.Write($"Введите номер бойнца {text} ринга: ");
+            Fighter fighter;
+            Console.Write($"Введите номер бойца {text} ринга: ");
 
-            if (int.TryParse(Console.ReadLine(), out int numberFighter))
+            if (int.TryParse(Console.ReadLine(), out int numberFighter) == false)
             {
                 Console.WriteLine("Вы ввели некорретное значение");
             }
@@ -36,7 +36,7 @@
                         return fighter = new Kanao();
                         break;
                     case 4:
-                        return fighter = new Tanjiro();
+                        return fighter = new Nezuko();
                         break;
                     case 5:
                         return fighter = new Inosuke();
@@ -47,19 +47,30 @@
                 }
             }
 
-            return fighter;
-
+            return null;
         }
         public void Battle()
         {
-            for (int i = 0; i < fighters.Length; i++)
-            {
-                Console.Write($"{i + 1}. ");
-                fighters[i].ShowInfo();
-            }
+            Fighter[] fighters = { new Tanjiro(), new Zenitsu(), new Kanao(), new Nezuko(), new Inosuke() };
+            Fighter leftFighter;
+            Fighter rightFighter;
 
-            Fighter leftFighter = ChoiceFighter("левого");
-            Fighter rightFighter = ChoiceFighter("правого");
+            do
+            {
+                for (int i = 0; i < fighters.Length; i++)
+                {
+                    Console.Write($"{i + 1}. ");
+                    fighters[i].ShowInfo();
+                }
+
+                leftFighter = ChoiceFighter("левого");
+                rightFighter = ChoiceFighter("правого");
+
+                Console.WriteLine("Нажмите на любую клавишу для продолжения...");
+                Console.ReadKey();
+                Console.Clear();
+
+            } while (leftFighter == null || rightFighter == null);
 
             int round = 1;
 
@@ -92,7 +103,6 @@
     {
         public bool IsHit { get; protected set; } = true;
         public string Name { get; protected set; }
-        public string Description { get; protected set; }
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
         public bool IsAbility { get; protected set; }
@@ -107,13 +117,6 @@
 
         public virtual int AdditionalDamage(Fighter fighter) => 0;
 
-        public void ShowInfoAbility(string descriptionAbility)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"{Name} использовал {descriptionAbility}");
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-
         public virtual void TakeDamage(Fighter fighter)
         {
             Random random = new Random();
@@ -121,7 +124,7 @@
             int hitChance = random.Next(maxHitChance);
             int trueHitChance = 7;
 
-            if (hitChance > trueHitChance)
+            if (hitChance >= trueHitChance)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"{fighter.Name} промахнулся");
@@ -148,6 +151,13 @@
         public void ShowInfo()
         {
             Console.WriteLine($"{Name} | Здоровье - {Health} | Урон - {Damage}");
+        }
+
+        protected void ShowInfoAbility(string descriptionAbility)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"{Name} использовал {descriptionAbility}");
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 
@@ -203,7 +213,7 @@
     class Kanao : Fighter
     {
         private bool _isBodyControl;
-        public Kanao() : base("Канао", 100, 200) { }
+        public Kanao() : base("Канао", 100, 20) { }
 
         public override int AdditionalDamage(Fighter fighter) // если она в прошлый раз промахнулась, то в следующий раз точно попадает и с каждым ударом прибавляется по 1 ед. урона
         {
@@ -242,6 +252,8 @@
 
         public override int AdditionalDamage(Fighter fighter)
         {
+            IsAbility = false;
+
             if (IsHit == false)
                 _angry++;
 
@@ -250,6 +262,7 @@
                 _angry = 0;
                 AbilityDamage = Damage * _boarAttack;
                 IsAbility = true;
+                ShowInfoAbility("Атаку кабана");
                 return AbilityDamage;
             }
 
