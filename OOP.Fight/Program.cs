@@ -11,32 +11,6 @@
 
     class Fight
     {
-        private Fighter ChoiceFighter(string text)
-        {
-            Console.Clear();
-
-            Fighter[] fighters = { new Tanjiro(), new Zenitsu(), new Kanao(), new Nezuko(), new Inosuke() };
-
-            for (int i = 0; i < fighters.Length; i++)
-            {
-                Console.Write($"{i + 1}. ");
-                fighters[i].ShowInfo();
-            }
-
-            Console.Write($"Введите номер бойца {text} ринга: ");
-
-            if (int.TryParse(Console.ReadLine(), out int numberFighter) == false)
-            {
-                Console.WriteLine("Вы ввели некорретное значение");
-            }
-            else
-            {
-                Fighter fighter = fighters[numberFighter - 1];
-                return fighter;
-            }
-
-            return null;
-        }
         public void Battle()
         {
             Fighter leftFighter;
@@ -47,8 +21,6 @@
                 leftFighter = ChoiceFighter("левого");
                 rightFighter = ChoiceFighter("правого");
 
-                Console.WriteLine("Нажмите на любую клавишу для продолжения...");
-                Console.ReadKey();
                 Console.Clear();
 
             } while (leftFighter == null || rightFighter == null);
@@ -77,6 +49,36 @@
 
             Console.ReadKey();
             Console.Clear();
+        }
+
+        private Fighter ChoiceFighter(string text)
+        {
+            Console.WriteLine("Нажмите на любую клавишу для продолжения...");
+            Console.ReadKey();
+            Console.Clear();
+
+            Fighter[] fighters = { new Tanjiro(), new Zenitsu(), new Kanao(), new Nezuko(), new Inosuke() };
+
+            for (int i = 0; i < fighters.Length; i++)
+            {
+                Console.Write($"{i + 1}. ");
+                fighters[i].ShowInfo();
+            }
+
+            Console.Write($"Введите номер бойца {text} ринга: ");
+
+            try
+            {
+                int numberFighter = Convert.ToInt32(Console.ReadLine());
+                Fighter fighter = fighters[numberFighter - 1];
+                return fighter;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Вы ввели некорретное значение");
+            }
+
+            return null;
         }
     }
 
