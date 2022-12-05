@@ -31,8 +31,6 @@
             {
                 Console.WriteLine($"{round++}-е столкновение");
 
-                leftFighter.UseSuperpower(rightFighter);
-                rightFighter.UseSuperpower(leftFighter);
                 leftFighter.Attack(rightFighter);
                 rightFighter.Attack(leftFighter);
 
@@ -84,12 +82,10 @@
 
     class Fighter
     {
-        public bool IsHit { get; protected set; } = true;
+        protected int HitCount = 0;
         public string Name { get; protected set; }
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
-        public bool IsAbility { get; protected set; }
-        public int AbilityDamage { get; protected set; }
 
         public Fighter(string name, int health, int damage)
         {
@@ -98,8 +94,6 @@
             Damage = damage;
         }
 
-        public virtual int UseSuperpower(Fighter fighter) => 0;
-
         public void TakeDamage(int damage)
         {
             Health -= damage;
@@ -107,33 +101,7 @@
 
         public virtual void Attack(Fighter fighter)
         {
-            Random random = new Random();
-            int maxHitChance = 10;
-            int hitChance = random.Next(maxHitChance);
-            int activeHitChance = 7;
-
-            if (hitChance >= activeHitChance)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"{Name} промахнулся");
-                Console.ForegroundColor = ConsoleColor.White;
-
-                IsHit = false;
-            }
-
-            if (IsAbility && hitChance < activeHitChance)
-            {
-                IsHit = true;
-                fighter.TakeDamage(AbilityDamage);
-            }
-            else if (hitChance < activeHitChance)
-            {
-                IsHit = true;
-                fighter.TakeDamage(Damage);
-            }
-
-            if (Health < 0)
-                Health = 0;
+            TakeDamage(Damage);
         }
 
         public void ShowInfo()
@@ -154,7 +122,7 @@
         private int _activeDanceOfFire = 3;
         public Tanjiro() : base("Танзиро", 100, 20) { }
 
-        public override int UseSuperpower(Fighter fighter)
+        public override void Attack(Fighter fighter)
         {
             Random random = new Random();
             int maxChance = 10;
@@ -163,38 +131,37 @@
             if (abilityChance < _activeDanceOfFire)
             {
                 int danceOfFire = 5;
-                AbilityDamage = Damage + danceOfFire;
-                IsAbility = true;
+                fighter.TakeDamage(Damage + danceOfFire);
                 ShowInfoAbility("Танец огня");
-                return AbilityDamage;
+
             }
             else
             {
-                IsAbility = false;
+                fighter.TakeDamage(Damage);
             }
-
-            return Damage;
         }
     }
 
     class Zenitsu : Fighter
     {
+        private int _activeSleep = 2;
+        private int _hitCount = 0;
         public Zenitsu() : base("Зеницу", 100, 20) { }
 
-        public override int UseSuperpower(Fighter fighter)
+        public override void Attack(Fighter fighter)
         {
-            IsAbility = false;
-
-            if (IsHit == false) // если он промахивается, то cледующий удар + 11 урона
+            if (_hitCount == _activeSleep)
             {
-                int sleep = 11;
-                IsAbility = true;
-                AbilityDamage = Damage + sleep;
+                int sleep = 2;
+                fighter.TakeDamage(Damage * 2);
                 ShowInfoAbility("Сон");
-                return AbilityDamage;
+                _hitCount = 0;
             }
-
-            return Damage;
+            else
+            {
+                fighter.TakeDamage(Damage);
+                _hitCount++;
+            }
         }
     }
 
@@ -203,18 +170,9 @@
         private bool _isBodyControl;
         public Kanao() : base("Канао", 100, 20) { }
 
-        public override int UseSuperpower(Fighter fighter) // если она в прошлый раз промахнулась, то в следующий раз точно попадает и с каждым ударом прибавляется по 1 ед. урона
+        public override void Attack(Fighter fighter) // если она в прошлый раз промахнулась, то в следующий раз точно попадает и с каждым ударом прибавляется по 1 ед. урона
         {
-            if (IsHit == false)
-            {
-                _isBodyControl = true;
-                ShowInfoAbility("Идеальный контроль над телом");
-            }
 
-            if (_isBodyControl)
-                Damage++;
-
-            return Damage;
         }
     }
 
@@ -223,11 +181,9 @@
         private int _regeneration = 3;
         public Nezuko() : base("Незуко", 100, 20) { }
 
-        public override int UseSuperpower(Fighter fighter)
+        public override void Attack(Fighter fighter)
         {
-            Health += _regeneration;
-            ShowInfoAbility("Регенерацию");
-            return Damage;
+
         }
     }
 
@@ -238,23 +194,9 @@
         private int _activeBoarAttack = 2;
         public Inosuke() : base("Иноске", 100, 20) { }
 
-        public override int UseSuperpower(Fighter fighter)
+        public override void Attack(Fighter fighter)
         {
-            IsAbility = false;
 
-            if (IsHit == false)
-                _angry++;
-
-            if (_angry >= _activeBoarAttack)
-            {
-                _angry = 0;
-                AbilityDamage = Damage * _boarAttack;
-                IsAbility = true;
-                ShowInfoAbility("Атаку кабана");
-                return AbilityDamage;
-            }
-
-            return Damage;
         }
     }
 }
