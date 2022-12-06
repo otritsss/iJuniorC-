@@ -83,6 +83,8 @@
     class Fighter
     {
         protected int HitCount = 0;
+
+        public bool IsHit { get; protected set; }
         public string Name { get; protected set; }
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
@@ -92,6 +94,12 @@
             Name = name;
             Health = health;
             Damage = damage;
+        }
+
+        public virtual bool TakeDamage()
+        {
+            IsHit = true;
+            return true;
         }
 
         public void TakeDamage(int damage)
@@ -119,23 +127,23 @@
 
     class Tanjiro : Fighter
     {
-        private int _activeDanceOfFire = 3;
         public Tanjiro() : base("Танзиро", 100, 20) { }
 
-        public override void Attack(Fighter fighter)
+        public override void Attack(Fighter fighter) // Радномный шанс прибывить к урону 5 ед.
         {
             Random random = new Random();
             int maxChance = 10;
+            int activeDanceOfFire = 3;
             int abilityChance = random.Next(maxChance);
 
-            if (abilityChance < _activeDanceOfFire)
+            if (fighter.TakeDamage() && abilityChance < activeDanceOfFire)
             {
                 int danceOfFire = 5;
                 fighter.TakeDamage(Damage + danceOfFire);
                 ShowInfoAbility("Танец огня");
 
             }
-            else
+            else if (fighter.IsHit)
             {
                 fighter.TakeDamage(Damage);
             }
@@ -144,20 +152,22 @@
 
     class Zenitsu : Fighter
     {
-        private int _activeSleep = 2;
         private int _hitCount = 0;
+
         public Zenitsu() : base("Зеницу", 100, 20) { }
 
-        public override void Attack(Fighter fighter)
+        public override void Attack(Fighter fighter) // Каждый третий удар удвоенный урон
         {
-            if (_hitCount == _activeSleep)
+            int activeSleep = 2;
+
+            if (fighter.TakeDamage() && _hitCount == activeSleep)
             {
                 int sleep = 2;
-                fighter.TakeDamage(Damage * 2);
+                fighter.TakeDamage(Damage * sleep);
                 ShowInfoAbility("Сон");
                 _hitCount = 0;
             }
-            else
+            else if (fighter.IsHit)
             {
                 fighter.TakeDamage(Damage);
                 _hitCount++;
@@ -167,36 +177,72 @@
 
     class Kanao : Fighter
     {
-        private bool _isBodyControl;
         public Kanao() : base("Канао", 100, 20) { }
 
-        public override void Attack(Fighter fighter) // если она в прошлый раз промахнулась, то в следующий раз точно попадает и с каждым ударом прибавляется по 1 ед. урона
+        public override bool TakeDamage()
         {
+            Random random = new Random();
+            int maxHitChance = 10;
+            int activeHitChance = 5;
+            int hitChance = random.Next(maxHitChance);
 
+            if (hitChance >= activeHitChance)
+            {
+                ShowInfoAbility("Уклонение от удара");
+                IsHit = false;
+                return false;
+            }
+            else
+            {
+                IsHit = true;
+                return true;
+            }
+        }
+
+        public override void Attack(Fighter fighter) // Может уклониться
+        {
+            if (fighter.TakeDamage())
+                fighter.TakeDamage(Damage);
         }
     }
 
     class Nezuko : Fighter
     {
         private int _regeneration = 3;
-        public Nezuko() : base("Незуко", 100, 20) { }
+
+        public Nezuko() : base("Незуко", 100, 20) { } // Каждый удар происходит регенерация здоровья
 
         public override void Attack(Fighter fighter)
         {
+            Health += _regeneration;
+            ShowInfoAbility("Регенирацию");
 
+            if (fighter.TakeDamage())
+                fighter.TakeDamage(Damage);
         }
     }
 
     class Inosuke : Fighter
     {
-        private int _boarAttack = 2;
-        private int _angry = 0;
-        private int _activeBoarAttack = 2;
+        private int _boarAttack = 1;
+        private int _mana = 0;
+
         public Inosuke() : base("Иноске", 100, 20) { }
 
-        public override void Attack(Fighter fighter)
+        public override void Attack(Fighter fighter) // Каждый второй удар прописывает двоечку вместо одного удара
         {
+            _mana++;
 
+            if (_mana == _boarAttack)
+            {
+                TakeDamage(Damage);
+                TakeDamage(Damage);
+                _mana = 0;
+            }
+            else
+            {
+                TakeDamage(Damage);
+            }
         }
     }
 }
