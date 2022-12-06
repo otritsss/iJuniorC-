@@ -17,29 +17,32 @@ namespace OOP.Supermarket
 
     class Shop
     {
-        private Queue<Buyer> _allBuyers;
+        private Queue<Buyer> _allBuyers = new Queue<Buyer>();
 
         public List<Product> AllProductsShop = new List<Product>() { new Product("Молоко", 60), new Product("Хлеб", 25), new Product("Творог", 90), new Product("Куриное филе", 150), new Product("Шоколад", 55), new Product("Сыр", 100), new Product("Жвачка", 25), new Product("Колбаса", 110), new Product("Салат", 39), new Product("Сок", 80) };
 
         public void WorkShop()
         {
-            CreateBuyers(_allBuyers, AllProductsShop);
-        }
+            CreateBuyers();
 
-        private void CreateBuyers(Queue<Buyer> _allBuyers, List<Product> AllProductsShop)
-        {
-            int buyerInQueue = 7;
-            int maxCountMoneyBuyer = 750;
+            int number = 0;
 
-            for (int i = 0; i < buyerInQueue; i++)
+            foreach (var buyer in _allBuyers)
             {
-                Random rand = new Random();
-                int countMoney = rand.Next(maxCountMoneyBuyer);
-
-                _allBuyers.Enqueue(new Buyer(countMoney, AllProductsShop));
+                buyer.ShowInfo(number++);
+                Console.WriteLine();
             }
         }
 
+        private void CreateBuyers()
+        {
+            int buyerInQueue = 7;
+
+            for (int i = 0; i < buyerInQueue; i++)
+            {
+                _allBuyers.Enqueue(new Buyer(AllProductsShop));
+            }
+        }
     }
 
     class Buyer
@@ -47,35 +50,35 @@ namespace OOP.Supermarket
         public int Money;
         public Cart cart = new Cart();
 
-        public Buyer(int money, List<Product> products)
+        static private Random _random = new Random();
+        public Buyer(List<Product> products)
         {
-            Money = money;
+            int maxCountMoneyBuyer = 750;
+            Money = _random.Next(maxCountMoneyBuyer);
 
-            Random random = new Random();
-            int countProducts = random.Next(products.Count);
+            int countProductsInCart = _random.Next(products.Count);
 
-            for (int i = 0; i < countProducts; i++)
+            for (int i = 0; i < countProductsInCart; i++)
             {
-                int indexProduct = random.Next(products.Count);
+                int indexProduct = _random.Next(products.Count);
                 cart.Products.Add(products[indexProduct]);
             }
-
         }
 
-        public void FillCart()
+        public void ShowInfo(int number)
         {
+            Console.Write($"{number + 1}. Денег: {Money}\n Корзина: ");
 
+            for (int i = 0; i < cart.Products.Count; i++)
+            {
+                Console.Write($"{cart.Products[i].Title}, ");
+            }
         }
     }
 
     class Cart
     {
         public List<Product> Products = new List<Product>();
-
-        public Cart()
-        {
-
-        }
     }
 
     class Product
@@ -88,6 +91,5 @@ namespace OOP.Supermarket
             Title = title;
             Price = price;
         }
-
     }
 }
