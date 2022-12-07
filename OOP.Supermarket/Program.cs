@@ -17,20 +17,31 @@ namespace OOP.Supermarket
 
     class Shop
     {
+        static private Random _random = new Random();
         private Queue<Buyer> _allBuyers = new Queue<Buyer>();
-
-        public List<Product> AllProductsShop = new List<Product>() { new Product("Молоко", 60), new Product("Хлеб", 25), new Product("Творог", 90), new Product("Куриное филе", 150), new Product("Шоколад", 55), new Product("Сыр", 100), new Product("Жвачка", 25), new Product("Колбаса", 110), new Product("Салат", 39), new Product("Сок", 80) };
+        private List<Product> _allProductsShop = new List<Product>() { new Product("Молоко", 60), new Product("Хлеб", 25), new Product("Творог", 90), new Product("Куриное филе", 150), new Product("Шоколад", 55), new Product("Сыр", 100), new Product("Жвачка", 25), new Product("Колбаса", 110), new Product("Салат", 39), new Product("Сок", 80) };
 
         public void WorkShop()
         {
+            int numberBuyer = 0;
             CreateBuyers();
-
-            int number = 0;
 
             foreach (var buyer in _allBuyers)
             {
-                buyer.ShowInfo(number++);
-                Console.WriteLine();
+                Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
+
+                Console.WriteLine($"{++numberBuyer}-й клиент. Здравствуйте, сумма Вашей покупки составляет - {buyer.SumBuy}. У вас {buyer.Money} денег");
+
+                if (buyer.SumBuy <= buyer.Money)
+                {
+                    Console.WriteLine("Вам хватает средств, поэтому Ваша покупка прошла успешно. До свидания!");
+                }
+                else
+                {
+                    Console.WriteLine($"Вам не хватает {buyer.SumBuy - buyer.Money} денег, поэтому мы уберем один или несколько товаров из корзины");
+                    buyer.RemoveProduct();
+                    Console.WriteLine($"Теперь сумма Вашей покупки состовляет {buyer.SumBuy}. Ваша покупка прошла успешно. До свидания!");
+                }
             }
         }
 
@@ -39,16 +50,16 @@ namespace OOP.Supermarket
             int buyerInQueue = 7;
 
             for (int i = 0; i < buyerInQueue; i++)
-            {
-                _allBuyers.Enqueue(new Buyer(AllProductsShop));
-            }
+                _allBuyers.Enqueue(new Buyer(_allProductsShop));
         }
     }
 
     class Buyer
     {
-        public int Money;
-        public Cart cart = new Cart();
+        public int SumBuy { get; private set; }
+        public int Money { get; private set; }
+
+        private Cart _cart = new Cart();
 
         static private Random _random = new Random();
         public Buyer(List<Product> products)
@@ -61,7 +72,17 @@ namespace OOP.Supermarket
             for (int i = 0; i < countProductsInCart; i++)
             {
                 int indexProduct = _random.Next(products.Count);
-                cart.Products.Add(products[indexProduct]);
+                _cart.Products.Add(products[indexProduct]);
+                SumBuy += products[indexProduct].Price;
+            }
+        }
+        public void RemoveProduct()
+        {
+            while (SumBuy > Money)
+            {
+                int indexRemoveProduct = _random.Next(_cart.Products.Count);
+                _cart.Products.RemoveAt(indexRemoveProduct);
+                SumBuy -= _cart.Products[indexRemoveProduct].Price;
             }
         }
 
@@ -69,10 +90,8 @@ namespace OOP.Supermarket
         {
             Console.Write($"{number + 1}. Денег: {Money}\n Корзина: ");
 
-            for (int i = 0; i < cart.Products.Count; i++)
-            {
-                Console.Write($"{cart.Products[i].Title}, ");
-            }
+            for (int i = 0; i < _cart.Products.Count; i++)
+                Console.Write($"{_cart.Products[i].Title}, ");
         }
     }
 
@@ -83,8 +102,8 @@ namespace OOP.Supermarket
 
     class Product
     {
-        public string Title;
-        public int Price;
+        public string Title { get; private set; }
+        public int Price { get; private set; }
 
         public Product(string title, int price)
         {
