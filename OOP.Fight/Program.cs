@@ -65,16 +65,10 @@
 
             Console.Write($"Введите номер бойца {text} ринга: ");
 
-            try
-            {
-                int numberFighter = Convert.ToInt32(Console.ReadLine());
-                Fighter fighter = fighters[numberFighter - 1];
-                return fighter;
-            }
-            catch (Exception)
-            {
+            if (int.TryParse(Console.ReadLine(), out int numberFighter) && numberFighter < fighters.Length && numberFighter >= 0)
+                return fighters[numberFighter - 1];
+            else
                 Console.WriteLine("Вы ввели некорретное значение");
-            }
 
             return null;
         }
@@ -96,15 +90,15 @@
             Damage = damage;
         }
 
-        public virtual bool TakeDamage()
+        public virtual bool CanTakeDamage()
         {
-            IsHit = true;
             return true;
         }
 
         public void TakeDamage(int damage)
         {
             Health -= damage;
+            IsHit = true;
         }
 
         public virtual void Attack(Fighter fighter)
@@ -136,7 +130,7 @@
             int activeDanceOfFire = 3;
             int abilityChance = random.Next(maxChance);
 
-            if (fighter.TakeDamage() && abilityChance < activeDanceOfFire)
+            if (fighter.CanTakeDamage() && abilityChance < activeDanceOfFire)
             {
                 int danceOfFire = 5;
                 fighter.TakeDamage(Damage + danceOfFire);
@@ -160,7 +154,7 @@
         {
             int activeSleep = 2;
 
-            if (fighter.TakeDamage() && _hitCount == activeSleep)
+            if (fighter.CanTakeDamage() && _hitCount == activeSleep)
             {
                 int sleep = 2;
                 fighter.TakeDamage(Damage * sleep);
@@ -179,7 +173,7 @@
     {
         public Kanao() : base("Канао", 100, 20) { }
 
-        public override bool TakeDamage()
+        public override bool CanTakeDamage()
         {
             Random random = new Random();
             int maxHitChance = 10;
@@ -201,7 +195,7 @@
 
         public override void Attack(Fighter fighter) // Может уклониться
         {
-            if (fighter.TakeDamage())
+            if (fighter.CanTakeDamage())
                 fighter.TakeDamage(Damage);
         }
     }
@@ -217,7 +211,7 @@
             Health += _regeneration;
             ShowInfoAbility("Регенирацию");
 
-            if (fighter.TakeDamage())
+            if (fighter.CanTakeDamage())
                 fighter.TakeDamage(Damage);
         }
     }
