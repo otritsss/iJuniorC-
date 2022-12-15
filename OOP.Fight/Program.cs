@@ -65,7 +65,7 @@
 
             Console.Write($"Введите номер бойца {text} ринга: ");
 
-            if (int.TryParse(Console.ReadLine(), out int numberFighter) && numberFighter < fighters.Length && numberFighter >= 0)
+            if (int.TryParse(Console.ReadLine(), out int numberFighter) && numberFighter <= fighters.Length && numberFighter >= 0)
                 return fighters[numberFighter - 1];
             else
                 Console.WriteLine("Вы ввели некорретное значение");
@@ -78,7 +78,6 @@
     {
         protected int HitCount = 0;
 
-        public bool IsHit { get; protected set; }
         public string Name { get; protected set; }
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
@@ -90,15 +89,9 @@
             Damage = damage;
         }
 
-        public virtual bool CanTakeDamage()
-        {
-            return true;
-        }
-
-        public void TakeDamage(int damage)
+        public virtual void TakeDamage(int damage)
         {
             Health -= damage;
-            IsHit = true;
         }
 
         public virtual void Attack(Fighter fighter)
@@ -130,14 +123,14 @@
             int activeDanceOfFire = 3;
             int abilityChance = random.Next(maxChance);
 
-            if (fighter.CanTakeDamage() && abilityChance < activeDanceOfFire)
+            if (abilityChance < activeDanceOfFire)
             {
                 int danceOfFire = 5;
                 fighter.TakeDamage(Damage + danceOfFire);
                 ShowInfoAbility("Танец огня");
 
             }
-            else if (fighter.IsHit)
+            else
             {
                 fighter.TakeDamage(Damage);
             }
@@ -154,14 +147,14 @@
         {
             int activeSleep = 2;
 
-            if (fighter.CanTakeDamage() && _hitCount == activeSleep)
+            if (_hitCount == activeSleep)
             {
                 int sleep = 2;
                 fighter.TakeDamage(Damage * sleep);
                 ShowInfoAbility("Сон");
                 _hitCount = 0;
             }
-            else if (fighter.IsHit)
+            else
             {
                 fighter.TakeDamage(Damage);
                 _hitCount++;
@@ -173,7 +166,15 @@
     {
         public Kanao() : base("Канао", 100, 20) { }
 
-        public override bool CanTakeDamage()
+        public override void TakeDamage(int damage)
+        {
+            if (CanTakeDamage())
+                Health -= damage;
+            else
+                ShowInfoAbility("Уклонение от удара");
+        }
+
+        private bool CanTakeDamage()
         {
             Random random = new Random();
             int maxHitChance = 10;
@@ -181,22 +182,15 @@
             int hitChance = random.Next(maxHitChance);
 
             if (hitChance >= activeHitChance)
-            {
-                ShowInfoAbility("Уклонение от удара");
-                IsHit = false;
                 return false;
-            }
             else
-            {
-                IsHit = true;
                 return true;
-            }
+
         }
 
         public override void Attack(Fighter fighter) // Может уклониться
         {
-            if (fighter.CanTakeDamage())
-                fighter.TakeDamage(Damage);
+            fighter.TakeDamage(Damage);
         }
     }
 
@@ -210,15 +204,13 @@
         {
             Health += _regeneration;
             ShowInfoAbility("Регенирацию");
-
-            if (fighter.CanTakeDamage())
-                fighter.TakeDamage(Damage);
+            fighter.TakeDamage(Damage);
         }
     }
 
     class Inosuke : Fighter
     {
-        private int _boarAttack = 1;
+        private int _boarAttack = 2;
         private int _mana = 0;
 
         public Inosuke() : base("Иноске", 100, 20) { }
@@ -229,13 +221,14 @@
 
             if (_mana == _boarAttack)
             {
-                TakeDamage(Damage);
-                TakeDamage(Damage);
+                fighter.TakeDamage(Damage);
+                fighter.TakeDamage(Damage);
+                ShowInfoAbility("Атаку кабана");
                 _mana = 0;
             }
             else
             {
-                TakeDamage(Damage);
+                fighter.TakeDamage(Damage);
             }
         }
     }
