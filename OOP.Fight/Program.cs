@@ -65,7 +65,7 @@
 
             Console.Write($"Введите номер бойца {text} ринга: ");
 
-            if (int.TryParse(Console.ReadLine(), out int numberFighter) && numberFighter <= fighters.Length && numberFighter >= 0)
+            if (int.TryParse(Console.ReadLine(), out int numberFighter) && numberFighter <= fighters.Length && numberFighter > 0)
                 return fighters[numberFighter - 1];
             else
                 Console.WriteLine("Вы ввели некорретное значение");
@@ -76,8 +76,6 @@
 
     class Fighter
     {
-        protected int HitCount = 0;
-
         public string Name { get; protected set; }
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
@@ -96,7 +94,7 @@
 
         public virtual void Attack(Fighter fighter)
         {
-            TakeDamage(Damage);
+            fighter.TakeDamage(Damage);
         }
 
         public void ShowInfo()
@@ -181,16 +179,7 @@
             int activeHitChance = 5;
             int hitChance = random.Next(maxHitChance);
 
-            if (hitChance >= activeHitChance)
-                return false;
-            else
-                return true;
-
-        }
-
-        public override void Attack(Fighter fighter) // Может уклониться
-        {
-            fighter.TakeDamage(Damage);
+            return (hitChance >= activeHitChance);
         }
     }
 
