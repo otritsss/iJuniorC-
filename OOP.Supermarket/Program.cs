@@ -24,24 +24,34 @@ namespace OOP.Supermarket
         public void WorkShop()
         {
             int numberBuyer = 0;
+            int queueNumberBuyer = 0;
             CreateBuyers();
 
-            foreach (var buyer in _allBuyers)
+            while (_allBuyers.Count > 0)
             {
+                Buyer buyer = _allBuyers.Peek();
+
                 Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
+                buyer.ShowInfo(++numberBuyer);
 
-                Console.WriteLine($"{++numberBuyer}-й клиент. Здравствуйте, сумма Вашей покупки составляет - {buyer.SumBuy}. У вас {buyer.Money} денег");
 
-                if (buyer.SumBuy <= buyer.Money)
+                if (buyer.SumBuy > buyer.Money)
                 {
-                    Console.WriteLine("Вам хватает средств, поэтому Ваша покупка прошла успешно. До свидания!");
+                    Console.WriteLine("Вам не хватает денег, поэтому мы уберем некоторые товары из корзины");
+                    buyer.RemoveProducts();
+
+                    Console.Clear();
+                    Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
+                    buyer.ShowInfo(numberBuyer);
                 }
                 else
                 {
-                    Console.WriteLine($"Вам не хватает {buyer.SumBuy - buyer.Money} денег, поэтому мы уберем один или несколько товаров из корзины");
-                    buyer.RemoveProduct();
-                    Console.WriteLine($"Теперь сумма Вашей покупки состовляет {buyer.SumBuy}. Ваша покупка прошла успешно. До свидания!");
+                    Console.WriteLine("Вам хватает денег. До свидания");
+                    _allBuyers.Dequeue();
                 }
+
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
@@ -76,22 +86,23 @@ namespace OOP.Supermarket
                 SumBuy += products[indexProduct].Price;
             }
         }
-        public void RemoveProduct()
+        public void RemoveProducts()
         {
-            while (SumBuy > Money)
-            {
-                int indexRemoveProduct = _random.Next(_cart.Products.Count);
-                _cart.Products.RemoveAt(indexRemoveProduct);
-                SumBuy -= _cart.Products[indexRemoveProduct].Price;
-            }
+            int indexRemoveProduct = _random.Next(1, _cart.Products.Count);
+            _cart.Products.RemoveAt(indexRemoveProduct);
+            SumBuy -= _cart.Products[indexRemoveProduct].Price;
+
+            Console.WriteLine($"Убрали {_cart.Products[indexRemoveProduct].Title}");
         }
 
         public void ShowInfo(int number)
         {
-            Console.Write($"{number + 1}. Денег: {Money}\n Корзина: ");
+            Console.Write($"{number}-й клиент. Денег: {Money}\nКорзина: ");
 
             for (int i = 0; i < _cart.Products.Count; i++)
                 Console.Write($"{_cart.Products[i].Title}, ");
+
+            Console.WriteLine();
         }
     }
 
