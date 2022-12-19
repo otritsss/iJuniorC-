@@ -32,22 +32,19 @@ namespace OOP.Supermarket
                 Buyer buyer = _allBuyers.Peek();
 
                 Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
-                buyer.ShowInfo(++numberBuyer);
+                buyer.ShowInfo(numberBuyer);
 
 
                 if (buyer.SumBuy > buyer.Money)
                 {
                     Console.WriteLine("Вам не хватает денег, поэтому мы уберем некоторые товары из корзины");
-                    buyer.RemoveProducts();
-
-                    Console.Clear();
-                    Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
-                    buyer.ShowInfo(numberBuyer);
+                    buyer.RemoveProduct();
                 }
                 else
                 {
                     Console.WriteLine("Вам хватает денег. До свидания");
                     _allBuyers.Dequeue();
+                    numberBuyer++;
                 }
 
                 Console.ReadKey();
@@ -86,13 +83,13 @@ namespace OOP.Supermarket
                 SumBuy += products[indexProduct].Price;
             }
         }
-        public void RemoveProducts()
+        public void RemoveProduct()
         {
             int indexRemoveProduct = _random.Next(1, _cart.Products.Count);
+            Console.WriteLine($"Убрали {_cart.Products[indexRemoveProduct].Title}");
             _cart.Products.RemoveAt(indexRemoveProduct);
             SumBuy -= _cart.Products[indexRemoveProduct].Price;
 
-            Console.WriteLine($"Убрали {_cart.Products[indexRemoveProduct].Title}");
         }
 
         public void ShowInfo(int number)
