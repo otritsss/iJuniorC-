@@ -27,12 +27,13 @@ namespace OOP.Supermarket
 
             while (_allBuyers.Count > 0)
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Buyer buyer = _allBuyers.Peek();
 
                 Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
                 buyer.ShowInfo(numberBuyer);
 
-                if (buyer.Cart.Products.Count == 0)
+                if (buyer.GetPoructsCount() == 0)
                 {
                     Console.WriteLine("У Вас не осталось товаров в корзине, потому что вы бедный чел. До свидания");
                     _allBuyers.Dequeue();
@@ -45,6 +46,7 @@ namespace OOP.Supermarket
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Вам хватает денег. До свидания");
                     _allBuyers.Dequeue();
                     numberBuyer++;
@@ -66,9 +68,9 @@ namespace OOP.Supermarket
 
     class Buyer
     {
-        static private Random _random = new Random();
+        private static Random _random = new Random();
+        private List<Product> _products = new List<Product>();
 
-        public Cart Cart { get; private set; } = new Cart();
         public int SumBuy { get; private set; }
         public int Money { get; private set; }
 
@@ -82,33 +84,35 @@ namespace OOP.Supermarket
             for (int i = 0; i < countProductsInCart; i++)
             {
                 int indexProduct = _random.Next(products.Count);
-                Cart.Products.Add(products[indexProduct]);
+                _products.Add(products[indexProduct]);
                 SumBuy += products[indexProduct].Price;
             }
         }
+
+        public int GetPoructsCount()
+        {
+            return _products.Count;
+        }
+
         public void RemoveProduct()
         {
-            int indexRemoveProduct = _random.Next(Cart.Products.Count);
-            Console.WriteLine($"Убрали {Cart.Products[indexRemoveProduct].Title}");
-            SumBuy -= Cart.Products[indexRemoveProduct].Price;
-            Cart.Products.RemoveAt(indexRemoveProduct);
+            Console.ForegroundColor = ConsoleColor.Red;
 
+            int indexRemoveProduct = _random.Next(_products.Count);
+            Console.WriteLine($"Убрали {_products[indexRemoveProduct].Title}");
+            SumBuy -= _products[indexRemoveProduct].Price;
+            _products.RemoveAt(indexRemoveProduct);
         }
 
         public void ShowInfo(int number)
         {
             Console.Write($"{number}-й клиент. Денег: {Money}\nКорзина: ");
 
-            for (int i = 0; i < Cart.Products.Count; i++)
-                Console.Write($"{Cart.Products[i].Title}, ");
+            for (int i = 0; i < _products.Count; i++)
+                Console.WriteLine($"{_products[i].Title} - {_products[i].Price} руб");
 
             Console.WriteLine();
         }
-    }
-
-    class Cart
-    {
-        public List<Product> Products = new List<Product>();
     }
 
     class Product

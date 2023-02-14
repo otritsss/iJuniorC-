@@ -6,3 +6,11 @@ D:\Microsoft Visual Studio 2022\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.
 D:\Microsoft Visual Studio 2022\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.csproj.CoreCompileInputs.cache
 D:\Microsoft Visual Studio 2022\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.exe
 D:\Microsoft Visual Studio 2022\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.pdb
+D:\Microsoft Visual Studio\repos\OOP.Supermarket\bin\Debug\OOP.Supermarket.exe.config
+D:\Microsoft Visual Studio\repos\OOP.Supermarket\bin\Debug\OOP.Supermarket.exe
+D:\Microsoft Visual Studio\repos\OOP.Supermarket\bin\Debug\OOP.Supermarket.pdb
+D:\Microsoft Visual Studio\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.csproj.AssemblyReference.cache
+D:\Microsoft Visual Studio\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.csproj.SuggestedBindingRedirects.cache
+D:\Microsoft Visual Studio\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.csproj.CoreCompileInputs.cache
+D:\Microsoft Visual Studio\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.exe
+D:\Microsoft Visual Studio\repos\OOP.Supermarket\obj\Debug\OOP.Supermarket.pdb
