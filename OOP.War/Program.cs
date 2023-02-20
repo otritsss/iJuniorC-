@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 ///     14.02.2023
 ///     
 /// 
+/// Вопросы:
+///     1. Как сделать так, чтобы метод в наследуемых класаах принимал разные аргументы. В одном одного бойца, а в другом уже массив бойцов? Я сделал через перегрузку.
+///     2. Как сделать создание разных типов(классов) бойцов? Я сделал 
 /// </summary>
 
 namespace OOP.War
@@ -33,13 +36,20 @@ namespace OOP.War
         Platoon platoon = new Platoon();
         public void Work()
         {
-            platoon.CreateCombatants();
+
         }
     }
 
     class Country
     {
+        private Platoon _platoon = new Platoon();
 
+        public void CreatePlatoon()
+        {
+            Combatant sniper = new Sniper();
+
+            _platoon.CreateCombatants(sniper);
+        }
     }
 
     class Platoon
@@ -57,7 +67,7 @@ namespace OOP.War
         }
     }
 
-    class Combatant
+    abstract class Combatant
     {
         static protected Random Random = new Random();
 
@@ -78,6 +88,8 @@ namespace OOP.War
             Count = Random.Next(minCountCombatant, maxCountCombatant);
 
         }
+
+        public virtual void Attack(Combatant[] combatants) { }
 
         public virtual void Attack(Combatant combatant)
         {
@@ -114,9 +126,11 @@ namespace OOP.War
         }
     }
 
+
+    // принимает массив бойцов нахолящиеся рядом и сносит им урон
     class GrenadeLauncher : Combatant
     {
-        public override void Attack(Combatant combatant)
+        public override void Attack(Combatant[] combatants)
         {
 
         }
