@@ -18,7 +18,15 @@ namespace OOP.Supermarket
     class Shop
     {
         private Queue<Buyer> _allBuyers = new Queue<Buyer>();
-        private List<Product> _allProductsShop = new List<Product>() { new Product("Молоко", 60), new Product("Хлеб", 25), new Product("Творог", 90), new Product("Куриное филе", 150), new Product("Шоколад", 55), new Product("Сыр", 100), new Product("Жвачка", 25), new Product("Колбаса", 110), new Product("Салат", 39), new Product("Сок", 80) };
+        private List<Product> _allProductsShop;
+
+        public Shop()
+        {
+            _allProductsShop = new List<Product>() { new Product("Молоко", 60), new Product("Хлеб", 25),
+                new Product("Творог", 90), new Product("Куриное филе", 150), new Product("Шоколад", 55),
+                new Product("Сыр", 100), new Product("Жвачка", 25), new Product("Колбаса", 110),
+                new Product("Салат", 39), new Product("Сок", 80) };
+        }
 
         public void WorkShop()
         {
@@ -71,13 +79,10 @@ namespace OOP.Supermarket
         private static Random _random = new Random();
         private List<Product> _products = new List<Product>();
 
-        public int SumBuy { get; private set; }
-        public int Money { get; private set; }
-
         public Buyer(List<Product> products)
         {
-            int maxCountMoneyBuyer = 750;
-            Money = _random.Next(maxCountMoneyBuyer);
+            int maxCountMoney = 750;
+            Money = _random.Next(maxCountMoney);
 
             int countProductsInCart = _random.Next(1, products.Count);
 
@@ -89,10 +94,10 @@ namespace OOP.Supermarket
             }
         }
 
-        public int GetPoructsCount()
-        {
-            return _products.Count;
-        }
+        public int SumBuy { get; private set; }
+        public int Money { get; private set; }
+
+        public int GetPoructsCount() => _products.Count;
 
         public void RemoveProduct()
         {
@@ -117,13 +122,13 @@ namespace OOP.Supermarket
 
     class Product
     {
-        public string Title { get; private set; }
-        public int Price { get; private set; }
-
         public Product(string title, int price)
         {
             Title = title;
             Price = price;
         }
+
+        public string Title { get; private set; }
+        public int Price { get; private set; }
     }
 }
