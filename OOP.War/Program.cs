@@ -19,8 +19,16 @@ using System.Threading.Tasks;
 ///     
 /// 
 /// Вопросы:
-///     1. Как сделать так, чтобы метод в наследуемых класаах принимал разные аргументы. В одном одного бойца, а в другом уже массив бойцов? Я сделал через перегрузку.
-///     2. Как сделать создание разных типов(классов) бойцов? Я сделал 
+///     1. Создание бойцов правильно сделано? Или нужно думать его создание в конструкторе
+///     2. Где сделать 'IsLive = false'?
+///     
+///     1) Сделать в конструкторе Platoon - YES
+///     2) IsLive можно убрать. Сделать метод 'Удаление мертвых' и вызывать его в конце каждой итерации
+///     3) Удалить класс 'Country' - YES
+///     4) Сделать метод вывода характеристики в методе Platoon - YES
+///     5) Нужно ли мне свойство CountComb.. Могу сделать проверку выживших в классе Platoon
+///     5) Нужно как-то передать список врагов (Возможно через метод)
+/// 
 /// </summary>
 
 namespace OOP.War
@@ -36,91 +44,128 @@ namespace OOP.War
 
     class Battle
     {
-        private Platoon _platoon = new Platoon();
+        private Platoon _platoonRussia = new Platoon("Россия");
+        private Platoon _platoonUsa = new Platoon("Америка");
 
-        private Country _country = new Country();
         public void Work()
         {
-            _country.CreatePlatoon();
-        }
-    }
+            while (_platoonRussia.CombatantsCount > 0 || _platoonUsa.CombatantsCount > 0)
+            {
+                Console.WriteLine($"{new string(' ', 25)} 1-й день битвы");
+                _platoonRussia.ShowInfo();
+                _platoonUsa.ShowInfo();
 
-    class Country
-    {
-        private Platoon _platoon = new Platoon();
 
-        public void CreatePlatoon()
-        {
-            _platoon.CreateCombatants();
+
+                _platoonRussia.RemoveDead();
+                _platoonUsa.RemoveDead();
+
+                Console.ReadLine();
+                Console.Clear();
+            }
         }
     }
 
     class Platoon
     {
         static private Random _random = new Random();
-        private List<Combatant> _combatants = new List<Combatant> { new Sniper(), new MachineGunner(), new GrenadeLauncher() };
-        private int _combatantsCount;
+        private List<Combatant> _combatants = new List<Combatant>();
 
-        public void CreateCombatants()
+
+        public Platoon(string nameCountry)
         {
-            int minCountCombatants = 50;
-            int maxCountCombatants = 101;
+            NameCountry = nameCountry;
 
-            _combatantsCount = _random.Next(minCountCombatants, maxCountCombatants);
+            int minCountCombatants = 5;
+            int maxCountCombatants = 25;
 
-            for (int i = 0; i < _combatantsCount; i++)
+            CombatantsCount = _random.Next(minCountCombatants, maxCountCombatants);
+
+            for (int i = 0; i < CombatantsCount; i++)
             {
                 Combatant[] tempCombatants = { new Sniper(), new MachineGunner(), new GrenadeLauncher() };
                 int numberAddCombatant = _random.Next(tempCombatants.Length);
 
                 _combatants.Add(tempCombatants[numberAddCombatant]);
-                _combatants[i].ShowInfo();
             }
         }
 
-        //public void ShowInfo(Combatant combatant)
-        //{
-        //    Console.WriteLine($"{combatant.Grade} | Здоровье - {combatant.Health} . Урон - {combatant.Health}");
-        //}
+        public string NameCountry { get; private set; }
+        public int CombatantsCount { get; private set; }
+        public int CountingCombatantOneGrade(string gradeName)
+        {
+            int countCombatantOneGrade = 0;
+
+            foreach (var combatant in _combatants)
+                if (combatant.GradeName == gradeName)
+                    countCombatantOneGrade++;
+
+            return countCombatantOneGrade;
+        }
+
+        public void Fight(List<Combatant> enemys)
+        {
+            for (int i = 0; i < _combatants.Count; i++)
+            {
+                _combatants[i].Attack(enemys);
+            }
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"{NameCountry}: В живых - {_combatants.Count} бойцов " +
+                    $"| Снайперов - {CountingCombatantOneGrade("Снайпер")}, " +
+                    $"Пулеметчиков - {CountingCombatantOneGrade("Пулеметчик")}, Гранатомётчиков - {CountingCombatantOneGrade("Гранатометчик")}");
+
+        }
+
+        public void RemoveDead()
+        {
+            for (int i = 0; i < _combatants.Count; i++)
+            {
+                if (_combatants[i].Health <= 0)
+                {
+                    _combatants.RemoveAt(i);
+                }
+            }
+        }
     }
 
     abstract class Combatant
     {
         static protected Random Random = new Random();
 
+        public Combatant()
+        {
+            int maxArmor = 20;
+            Armor = Random.Next(maxArmor);
+        }
+
         public int Count { get; protected set; }
         public int Health { get; protected set; } = 100;
         public int Damage { get; protected set; } = 20;
         public int Armor { get; protected set; }
         public bool IsLive { get; protected set; } = true;
-        public string Grade { get; protected set; }
+        public string GradeName { get; protected set; }
 
-
-        public Combatant()
+        public virtual void Attack(List<Combatant> enemys)
         {
-            int maxArmor = 20;
-            Armor = Random.Next(maxArmor);
+            int enemyNumber = Random.Next(enemys.Count);
 
-            int minCountCombatant = 5;
-            int maxCountCombatant = 25;
-            Count = Random.Next(minCountCombatant, maxCountCombatant);
-        }
-
-        public virtual void Attack(Combatant[] combatants) { }
-
-        public virtual void Attack(Combatant combatant)
-        {
-            combatant.TakeDamage(Damage);
+            enemys[enemyNumber].TakeDamage(Damage);
         }
 
         public virtual void TakeDamage(int damage)
         {
-            Health -= damage;
+            if (Health > 0)
+                Health -= damage;
+            else
+                IsLive = false;
         }
 
         public void ShowInfo()
         {
-            Console.WriteLine($"{Grade} | Здоровье - {Health} . Урон - {Health}");
+            Console.WriteLine($"{GradeName} | Здоровье - {Health} . Урон - {Damage} . Броня - {Armor}");
         }
     }
 
@@ -128,13 +173,8 @@ namespace OOP.War
     {
         public Sniper()
         {
-            Grade = "Снайпер";
+            GradeName = "Снайпер";
             Damage = 120;
-        }
-
-        public override void Attack(Combatant combatant)
-        {
-            combatant.TakeDamage(Damage);
         }
     }
 
@@ -142,31 +182,27 @@ namespace OOP.War
     {
         public MachineGunner() : base()
         {
-            Grade = "Пулеметчик";
-            double attackSpeed = 1.5;
-            Damage *= (int)attackSpeed;
-        }
-
-        public override void Attack(Combatant combatant)
-        {
-            //double attackSpeed = 1.5;
-            //Damage *= (int)attackSpeed;
-            combatant.TakeDamage(Damage);
+            GradeName = "Пулеметчик";
+            int attackSpeed = 20;
+            Damage += attackSpeed;
         }
     }
 
-
-    // принимает массив бойцов нахолящиеся рядом и сносит им урон
     class GrenadeLauncher : Combatant
     {
         public GrenadeLauncher() : base()
         {
-            Grade = "Гранатометчик";
+            GradeName = "Гранатометчик";
+            Damage = 100;
         }
 
-        public override void Attack(Combatant[] combatants)
+        public override void Attack(List<Combatant> enemys)
         {
+            int enemyNumber = Random.Next(enemys.Count);
+            int countEnemyTrapped = 3;
 
+            for (int i = 0; i < countEnemyTrapped; i++)
+                enemys[enemyNumber++].TakeDamage(Damage);
         }
     }
 }
