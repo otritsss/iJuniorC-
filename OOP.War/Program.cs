@@ -51,25 +51,37 @@ namespace OOP.War
 
         public void CreatePlatoon()
         {
-            Combatant sniper = new Sniper();
-
-            _platoon.CreateCombatants(sniper);
+            _platoon.CreateCombatants();
         }
     }
 
     class Platoon
     {
-        static private Random _random;
-
+        static private Random _random = new Random();
         private List<Combatant> _combatants = new List<Combatant> { new Sniper(), new MachineGunner(), new GrenadeLauncher() };
+        private int _combatantsCount;
 
-        public void CreateCombatants(Combatant combatans)
+        public void CreateCombatants()
         {
-            for (int i = 0; i < combatans.Count; i++)
+            int minCountCombatants = 50;
+            int maxCountCombatants = 101;
+
+            _combatantsCount = _random.Next(minCountCombatants, maxCountCombatants);
+
+            for (int i = 0; i < _combatantsCount; i++)
             {
-                _combatants.Add(combatans);
+                Combatant[] tempCombatants = { new Sniper(), new MachineGunner(), new GrenadeLauncher() };
+                int numberAddCombatant = _random.Next(tempCombatants.Length);
+
+                _combatants.Add(tempCombatants[numberAddCombatant]);
+                _combatants[i].ShowInfo();
             }
         }
+
+        //public void ShowInfo(Combatant combatant)
+        //{
+        //    Console.WriteLine($"{combatant.Grade} | Здоровье - {combatant.Health} . Урон - {combatant.Health}");
+        //}
     }
 
     abstract class Combatant
@@ -81,6 +93,7 @@ namespace OOP.War
         public int Damage { get; protected set; } = 20;
         public int Armor { get; protected set; }
         public bool IsLive { get; protected set; } = true;
+        public string Grade { get; protected set; }
 
 
         public Combatant()
@@ -91,7 +104,6 @@ namespace OOP.War
             int minCountCombatant = 5;
             int maxCountCombatant = 25;
             Count = Random.Next(minCountCombatant, maxCountCombatant);
-
         }
 
         public virtual void Attack(Combatant[] combatants) { }
@@ -105,18 +117,23 @@ namespace OOP.War
         {
             Health -= damage;
         }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"{Grade} | Здоровье - {Health} . Урон - {Health}");
+        }
     }
 
     class Sniper : Combatant
     {
-        public Sniper() : base()
+        public Sniper()
         {
-
+            Grade = "Снайпер";
+            Damage = 120;
         }
 
         public override void Attack(Combatant combatant)
         {
-            Damage = 120;
             combatant.TakeDamage(Damage);
         }
     }
@@ -125,13 +142,15 @@ namespace OOP.War
     {
         public MachineGunner() : base()
         {
-
+            Grade = "Пулеметчик";
+            double attackSpeed = 1.5;
+            Damage *= (int)attackSpeed;
         }
 
         public override void Attack(Combatant combatant)
         {
-            double attackSpeed = 1.5;
-            Damage *= (int)attackSpeed;
+            //double attackSpeed = 1.5;
+            //Damage *= (int)attackSpeed;
             combatant.TakeDamage(Damage);
         }
     }
@@ -142,7 +161,7 @@ namespace OOP.War
     {
         public GrenadeLauncher() : base()
         {
-
+            Grade = "Гранатометчик";
         }
 
         public override void Attack(Combatant[] combatants)
