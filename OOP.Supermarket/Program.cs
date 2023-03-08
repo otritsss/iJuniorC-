@@ -25,14 +25,6 @@ namespace OOP.Supermarket
             FillProducts();
         }
 
-        private void FillProducts()
-        {
-            _allProductsShop = new List<Product>() { new Product("Молоко", 60), new Product("Хлеб", 25),
-                new Product("Творог", 90), new Product("Куриное филе", 150), new Product("Шоколад", 55),
-                new Product("Сыр", 100), new Product("Жвачка", 25), new Product("Колбаса", 110),
-                new Product("Салат", 39), new Product("Сок", 80) };
-        }
-
         public void Work()
         {
             int numberBuyer = 1;
@@ -70,6 +62,14 @@ namespace OOP.Supermarket
             }
         }
 
+        private void FillProducts()
+        {
+            _allProductsShop = new List<Product>() { new Product("Молоко", 60), new Product("Хлеб", 25),
+                new Product("Творог", 90), new Product("Куриное филе", 150), new Product("Шоколад", 55),
+                new Product("Сыр", 100), new Product("Жвачка", 25), new Product("Колбаса", 110),
+                new Product("Салат", 39), new Product("Сок", 80) };
+        }
+
         private void CreateBuyers()
         {
             int buyerInQueue = 7;
@@ -91,23 +91,7 @@ namespace OOP.Supermarket
 
         public int SumBuy { get; private set; }
         public int Money { get; private set; }
-
         public int GetPoructsCount => _products.Count;
-
-        private void FillCart(List<Product> products)
-        {
-            int maxCountMoney = 750;
-            Money = _random.Next(maxCountMoney);
-
-            int countProductsInCart = _random.Next(1, products.Count);
-
-            for (int i = 0; i < countProductsInCart; i++)
-            {
-                int indexProduct = _random.Next(products.Count);
-                _products.Add(products[indexProduct]);
-                SumBuy += products[indexProduct].Price;
-            }
-        }
 
         public void RemoveRandomProduct()
         {
@@ -127,6 +111,21 @@ namespace OOP.Supermarket
                 Console.WriteLine($"{_products[i].Title} - {_products[i].Price} руб");
 
             Console.WriteLine();
+        }
+
+        private void FillCart(List<Product> products)
+        {
+            int maxCountMoney = 750;
+            Money = _random.Next(maxCountMoney);
+
+            int countProductsInCart = _random.Next(1, products.Count);
+
+            for (int i = 0; i < countProductsInCart; i++)
+            {
+                int indexProduct = _random.Next(products.Count);
+                _products.Add(products[indexProduct]);
+                SumBuy += products[indexProduct].Price;
+            }
         }
     }
 
