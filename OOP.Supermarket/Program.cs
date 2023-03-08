@@ -37,7 +37,7 @@ namespace OOP.Supermarket
                 Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
                 buyer.ShowInfo(numberBuyer);
 
-                if (buyer.GetPoructsCount == 0)
+                if (buyer.PoructsCount == 0)
                 {
                     Console.WriteLine("У Вас не осталось товаров в корзине, потому что вы бедный чел. До свидания");
                     _allBuyers.Dequeue();
@@ -91,7 +91,7 @@ namespace OOP.Supermarket
 
         public int SumBuy { get; private set; }
         public int Money { get; private set; }
-        public int GetPoructsCount => _products.Count;
+        public int PoructsCount => _products.Count;
 
         public void RemoveRandomProduct()
         {
