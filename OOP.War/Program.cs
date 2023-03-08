@@ -50,9 +50,10 @@ namespace OOP.War
 
         public void Work()
         {
-            while (_platoonRussia.CombatantsCount > 0 || _platoonUsa.CombatantsCount > 0)
+            int dayBattle = 1;
+            while (_platoonRussia.CombatantsCount > 0 && _platoonUsa.CombatantsCount > 0)
             {
-                Console.WriteLine($"{new string(' ', 25)} 1-й день битвы");
+                Console.WriteLine($"{new string(' ', 25)} {dayBattle++}-й день битвы");
                 _platoonRussia.ShowInfo();
                 _platoonUsa.ShowInfo();
 
@@ -65,37 +66,39 @@ namespace OOP.War
                 Console.ReadLine();
                 Console.Clear();
             }
+
+            if (_platoonRussia.CombatantsCount == 0 && _platoonUsa.CombatantsCount == 0)
+            {
+                Console.WriteLine("Ничья");
+            }
+            else if (_platoonRussia.CombatantsCount == 0)
+            {
+                Console.WriteLine("Победила Америка!");
+            }
+            else if (_platoonUsa.CombatantsCount == 0)
+            {
+                Console.WriteLine("Победила Россия!");
+            }
+
+            _platoonRussia.ShowInfo();
+            _platoonUsa.ShowInfo();
         }
     }
 
     class Platoon
     {
-        const string GrenadeLauncherName = "Гранатометчик";
-
         static private Random _random = new Random();
         private List<Combatant> _combatants = new List<Combatant>();
-
 
         public Platoon(string nameCountry)
         {
             NameCountry = nameCountry;
-
-            int minCountCombatants = 5;
-            int maxCountCombatants = 25;
-
-            CombatantsCount = _random.Next(minCountCombatants, maxCountCombatants);
-
-            for (int i = 0; i < CombatantsCount; i++)
-            {
-                Combatant[] tempCombatants = { new Sniper(), new MachineGunner(), new GrenadeLauncher() };
-                int numberAddCombatant = _random.Next(tempCombatants.Length);
-
-                _combatants.Add(tempCombatants[numberAddCombatant]);
-            }
+            CreateCombatants();
         }
 
         public string NameCountry { get; private set; }
         public int CombatantsCount { get; private set; }
+
         public int CountingCombatantOneGrade(string gradeName)
         {
             int countCombatantOneGrade = 0;
@@ -107,32 +110,19 @@ namespace OOP.War
             return countCombatantOneGrade;
         }
 
-        public List<Combatant> ReturnRandomFighters(Combatant combatant)
+        public Combatant GetRandomFighters()
         {
-            List<Combatant> returnFighters = new List<Combatant>();
-            int enemyNumber = _random.Next(_combatants.Count);
-
-            if (combatant.GradeName != GrenadeLauncherName)
-            {
-                returnFighters.Add(_combatants[enemyNumber]);
-                return returnFighters;
-            }
-            else
-            {
-                for (int i = 0; i < combatant.CountEnemyTrapped; i++)
-                {
-                    returnFighters.Add(_combatants[enemyNumber++]);
-                }
-
-                return returnFighters;
-            }
+            int randomEnemyNumber = _random.Next(_combatants.Count);
+            return _combatants[randomEnemyNumber];
         }
 
         public void Fight(Platoon enemy)
         {
             for (int i = 0; i < _combatants.Count; i++)
             {
-                _combatants[i].Attack(enemy.ReturnRandomFighters(_combatants[i]));
+                Combatant enemyRandomFighter = enemy.GetRandomFighters();
+                _combatants[i].Attack(enemyRandomFighter);
+                Console.WriteLine($"{_combatants[i].GradeName} напал на {enemyRandomFighter.GradeName} | Здоровье врага {enemy.NameCountry} - {enemyRandomFighter.Health}");
             }
         }
 
@@ -148,6 +138,23 @@ namespace OOP.War
             for (int i = 0; i < _combatants.Count; i++)
                 if (_combatants[i].Health <= 0)
                     _combatants.RemoveAt(i);
+
+            CombatantsCount = _combatants.Count;
+        }
+
+        private void CreateCombatants()
+        {
+            int minCountCombatants = 5;
+            int maxCountCombatants = 25;
+            CombatantsCount = _random.Next(minCountCombatants, maxCountCombatants);
+
+            for (int i = 0; i < CombatantsCount; i++)
+            {
+                Combatant[] tempCombatants = { new Sniper(), new MachineGunner(), new Swordsman() };
+                int numberAddCombatant = _random.Next(tempCombatants.Length);
+
+                _combatants.Add(tempCombatants[numberAddCombatant]);
+            }
         }
     }
 
@@ -168,10 +175,9 @@ namespace OOP.War
         public int Armor { get; protected set; }
         public string GradeName { get; protected set; }
 
-        public virtual void Attack(List<Combatant> enemys)
+        public virtual void Attack(Combatant enemy)
         {
-            for (int i = 0; i < enemys.Count; i++)
-                enemys[i].TakeDamage(Damage);
+            enemy.TakeDamage(Damage);
         }
 
         public virtual void TakeDamage(int damage)
@@ -204,21 +210,13 @@ namespace OOP.War
         }
     }
 
-    class GrenadeLauncher : Combatant
+    class Swordsman : Combatant
     {
-        public GrenadeLauncher() : base()
+        public Swordsman() : base()
         {
-            GradeName = "Гранатометчик";
+            GradeName = "Мечник";
             Damage = 100;
             CountEnemyTrapped = 3;
-        }
-
-        public override void Attack(List<Combatant> enemys)
-        {
-            int enemyNumber = Random.Next(enemys.Count);
-
-            for (int i = 0; i < CountEnemyTrapped; i++)
-                enemys[enemyNumber++].TakeDamage(Damage);
         }
     }
 }
