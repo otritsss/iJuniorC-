@@ -37,6 +37,17 @@ namespace OOP.Supermarket
                 Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
                 buyer.ShowInfo(numberBuyer);
 
+                BuyProduct(buyer, ref numberBuyer);
+
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+
+        private void BuyProduct(Buyer buyer, ref int numberBuyer)
+        {
+            while (buyer.SumBuy > buyer.Money)
+            {
                 if (buyer.PoructsCount == 0)
                 {
                     Console.WriteLine("У Вас не осталось товаров в корзине, потому что вы бедный чел. До свидания");
@@ -48,18 +59,16 @@ namespace OOP.Supermarket
                     Console.WriteLine("Вам не хватает денег, поэтому мы уберем некоторые товары из корзины");
                     buyer.RemoveRandomProduct();
                 }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Вам хватает денег. До свидания");
-                    _allBuyers.Dequeue();
-                    numberBuyer++;
-                }
 
-                Console.ForegroundColor = ConsoleColor.White;
                 Console.ReadKey();
-                Console.Clear();
             }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Вам хватает денег. До свидания");
+            _allBuyers.Dequeue();
+            numberBuyer++;
+
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         private void FillProducts()
@@ -101,6 +110,8 @@ namespace OOP.Supermarket
             Console.WriteLine($"Убрали {_products[indexRemoveProduct].Title}");
             SumBuy -= _products[indexRemoveProduct].Price;
             _products.RemoveAt(indexRemoveProduct);
+
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void ShowInfo(int number)
