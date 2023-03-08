@@ -5,33 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-/// <summary>
-/// 1. Каким способом мне сделать создание радномного кол-ва каждого класса в отряде (не могут же всех быть столько же)
-///     1) Для рандомного создания каждого создать свой метод.
-///     2) В одном методе
-///     
-/// Что придумал:
-///     В каждом классе с помощью рандома задавать количество бойцов того или иного класса во взводе.
-///     
-///     14.02.2023
-///     
-///     27.02.2023: 
-///     1. Вроде бы сделал создание бойцов, но нужно отрегулировать рандом, потому что у каждого бойца одного класса одинаковые значения
-///     
-/// 
-/// Вопросы:
-///     1. Создание бойцов правильно сделано? Или нужно думать его создание в конструкторе
-///     2. Где сделать 'IsLive = false'?
-///     
-///     1) Сделать в конструкторе Platoon - YES
-///     2) IsLive можно убрать. Сделать метод 'Удаление мертвых' и вызывать его в конце каждой итерации
-///     3) Удалить класс 'Country' - YES
-///     4) Сделать метод вывода характеристики в методе Platoon - YES
-///     5) Нужно ли мне свойство CountComb.. Могу сделать проверку выживших в классе Platoon
-///     5) Нужно как-то передать список врагов (Возможно через метод). Ментор написал про IReadOnlyCollection
-/// 
-/// </summary>
-
 namespace OOP.War
 {
     class Program
@@ -51,6 +24,7 @@ namespace OOP.War
         public void Work()
         {
             int dayBattle = 1;
+
             while (_platoonRussia.CombatantsCount > 0 && _platoonUsa.CombatantsCount > 0)
             {
                 Console.WriteLine($"{new string(' ', 25)} {dayBattle++}-й день битвы");
@@ -122,7 +96,6 @@ namespace OOP.War
             {
                 Combatant enemyRandomFighter = enemy.GetRandomFighters();
                 _combatants[i].Attack(enemyRandomFighter);
-                Console.WriteLine($"{_combatants[i].GradeName} напал на {enemyRandomFighter.GradeName} | Здоровье врага {enemy.NameCountry} - {enemyRandomFighter.Health}");
             }
         }
 
@@ -130,7 +103,7 @@ namespace OOP.War
         {
             Console.WriteLine($"{NameCountry}: В живых - {_combatants.Count} бойцов " +
                     $"| Снайперов - {CountingCombatantOneGrade("Снайпер")}, " +
-                    $"Пулеметчиков - {CountingCombatantOneGrade("Пулеметчик")}, Гранатомётчиков - {CountingCombatantOneGrade("Гранатометчик")}");
+                    $"Пулеметчиков - {CountingCombatantOneGrade("Пулеметчик")}, Мечников - {CountingCombatantOneGrade("Мечник")}");
         }
 
         public void RemoveDead()
@@ -166,10 +139,9 @@ namespace OOP.War
         {
             int maxArmor = 20;
             Armor = Random.Next(maxArmor);
+            Health += Armor;
         }
 
-        public int CountEnemyTrapped { get; protected set; }
-        public int Count { get; protected set; }
         public int Health { get; protected set; } = 100;
         public int Damage { get; protected set; } = 20;
         public int Armor { get; protected set; }
@@ -216,7 +188,6 @@ namespace OOP.War
         {
             GradeName = "Мечник";
             Damage = 100;
-            CountEnemyTrapped = 3;
         }
     }
 }
