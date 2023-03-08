@@ -11,7 +11,7 @@ namespace OOP.Supermarket
         static void Main(string[] args)
         {
             Shop shop = new Shop();
-            shop.WorkShop();
+            shop.Work();
         }
     }
 
@@ -22,26 +22,30 @@ namespace OOP.Supermarket
 
         public Shop()
         {
+            FillProducts();
+        }
+
+        private void FillProducts()
+        {
             _allProductsShop = new List<Product>() { new Product("Молоко", 60), new Product("Хлеб", 25),
                 new Product("Творог", 90), new Product("Куриное филе", 150), new Product("Шоколад", 55),
                 new Product("Сыр", 100), new Product("Жвачка", 25), new Product("Колбаса", 110),
                 new Product("Салат", 39), new Product("Сок", 80) };
         }
 
-        public void WorkShop()
+        public void Work()
         {
             int numberBuyer = 1;
             CreateBuyers();
 
             while (_allBuyers.Count > 0)
             {
-                Console.ForegroundColor = ConsoleColor.White;
                 Buyer buyer = _allBuyers.Peek();
 
                 Console.WriteLine($"В очереди стоит {_allBuyers.Count} клиентов");
                 buyer.ShowInfo(numberBuyer);
 
-                if (buyer.GetPoructsCount() == 0)
+                if (buyer.GetPoructsCount == 0)
                 {
                     Console.WriteLine("У Вас не осталось товаров в корзине, потому что вы бедный чел. До свидания");
                     _allBuyers.Dequeue();
@@ -50,7 +54,7 @@ namespace OOP.Supermarket
                 else if (buyer.SumBuy > buyer.Money)
                 {
                     Console.WriteLine("Вам не хватает денег, поэтому мы уберем некоторые товары из корзины");
-                    buyer.RemoveProduct();
+                    buyer.RemoveRandomProduct();
                 }
                 else
                 {
@@ -60,6 +64,7 @@ namespace OOP.Supermarket
                     numberBuyer++;
                 }
 
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -81,6 +86,16 @@ namespace OOP.Supermarket
 
         public Buyer(List<Product> products)
         {
+            FillCart(products);
+        }
+
+        public int SumBuy { get; private set; }
+        public int Money { get; private set; }
+
+        public int GetPoructsCount => _products.Count;
+
+        private void FillCart(List<Product> products)
+        {
             int maxCountMoney = 750;
             Money = _random.Next(maxCountMoney);
 
@@ -94,12 +109,7 @@ namespace OOP.Supermarket
             }
         }
 
-        public int SumBuy { get; private set; }
-        public int Money { get; private set; }
-
-        public int GetPoructsCount() => _products.Count;
-
-        public void RemoveProduct()
+        public void RemoveRandomProduct()
         {
             Console.ForegroundColor = ConsoleColor.Red;
 
