@@ -11,17 +11,23 @@ namespace OOP.War
     {
         static void Main(string[] args)
         {
-            Battle battle = new Battle();
-            battle.Work();
+            Arena battle = new Arena();
+            battle.Open();
         }
     }
 
-    class Battle
+    class Arena
     {
         private Platoon _platoonRussia = new Platoon("Россия");
         private Platoon _platoonUsa = new Platoon("Америка");
 
-        public void Work()
+        public void Open()
+        {
+            StartFight();
+            PrintWinner();
+        }
+
+        private void StartFight()
         {
             int dayBattle = 1;
 
@@ -40,7 +46,10 @@ namespace OOP.War
                 Console.ReadLine();
                 Console.Clear();
             }
+        }
 
+        private void PrintWinner()
+        {
             if (_platoonRussia.CombatantsCount == 0 && _platoonUsa.CombatantsCount == 0)
             {
                 Console.WriteLine("Ничья");
@@ -49,19 +58,16 @@ namespace OOP.War
             {
                 Console.WriteLine("Победила Америка!");
             }
-            else if (_platoonUsa.CombatantsCount == 0)
+            else
             {
                 Console.WriteLine("Победила Россия!");
             }
-
-            _platoonRussia.ShowInfo();
-            _platoonUsa.ShowInfo();
         }
     }
 
     class Platoon
     {
-        static private Random _random = new Random();
+        private static Random _random = new Random();
         private List<Combatant> _combatants = new List<Combatant>();
 
         public Platoon(string nameCountry)
@@ -131,14 +137,14 @@ namespace OOP.War
         }
     }
 
-    abstract class Combatant
+    class Combatant
     {
         static protected Random Random = new Random();
 
         public Combatant()
         {
             int maxArmor = 20;
-            Armor = Random.Next(maxArmor);
+            Armor = Random.Next(maxArmor + 1);
             Health += Armor;
         }
 
@@ -147,12 +153,12 @@ namespace OOP.War
         public int Armor { get; protected set; }
         public string GradeName { get; protected set; }
 
-        public virtual void Attack(Combatant enemy)
+        public void Attack(Combatant enemy)
         {
             enemy.TakeDamage(Damage);
         }
 
-        public virtual void TakeDamage(int damage)
+        public void TakeDamage(int damage)
         {
             Health -= damage;
         }
@@ -191,3 +197,4 @@ namespace OOP.War
         }
     }
 }
+
