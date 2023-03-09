@@ -1,0 +1,8 @@
+D:\Microsoft Visual Studio\repos\OOP. Aquarium\OOP. Aquarium\bin\Debug\OOP.Aquarium.exe.config
+D:\Microsoft Visual Studio\repos\OOP. Aquarium\OOP. Aquarium\bin\Debug\OOP.Aquarium.exe
+D:\Microsoft Visual Studio\repos\OOP. Aquarium\OOP. Aquarium\bin\Debug\OOP.Aquarium.pdb
+D:\Microsoft Visual Studio\repos\OOP. Aquarium\OOP. Aquarium\obj\Debug\OOP. Aquarium.csproj.AssemblyReference.cache
+D:\Microsoft Visual Studio\repos\OOP. Aquarium\OOP. Aquarium\obj\Debug\OOP. Aquarium.csproj.SuggestedBindingRedirects.cache
+D:\Microsoft Visual Studio\repos\OOP. Aquarium\OOP. Aquarium\obj\Debug\OOP. Aquarium.csproj.CoreCompileInputs.cache
+D:\Microsoft Visual Studio\repos\OOP. Aquarium\OOP. Aquarium\obj\Debug\OOP.Aquarium.exe
+D:\Microsoft Visual Studio\repos\OOP. Aquarium\OOP. Aquarium\obj\Debug\OOP.Aquarium.pdb
