@@ -137,7 +137,7 @@ namespace OOP.War
         }
     }
 
-    class Combatant
+    abstract class Combatant
     {
         static protected Random Random = new Random();
 
