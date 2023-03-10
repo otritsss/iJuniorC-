@@ -19,21 +19,17 @@ namespace OOP.Aquarium
 
     class Aquarium
     {
-        private int maxCountFish = 10;
         private List<Fish> _allFishes = new List<Fish>();
+        private int _maxCountFish = 10;
 
         public bool IsLife
         {
             get
             {
                 if (_allFishes.Count > 0)
-                {
                     return true;
-                }
                 else
-                {
                     return false;
-                }
             }
             private set { }
         }
@@ -41,17 +37,33 @@ namespace OOP.Aquarium
         public void CreateDefaultFish()
         {
             FishCreator creator = new FishCreator();
-            _allFishes = creator.Default();
+            _allFishes = creator.DefaultCreate();
+        }
+
+        public void AddYearFishes()
+        {
+            foreach (var fish in _allFishes)
+                fish.AddYear();
         }
 
         public void AddFish(Fish addFish)
         {
-            _allFishes.Add(addFish);
+            if (_allFishes.Count < _maxCountFish)
+                _allFishes.Add(addFish);
+            else
+                Console.WriteLine("Аквариум переполнен");
         }
 
         public void RemoveFish(int indexRemoveFish)
         {
             _allFishes.RemoveAt(indexRemoveFish);
+        }
+
+        public void RemoveDiedFishes()
+        {
+            for (int i = 0; i < _allFishes.Count; i++)
+                if (_allFishes[i].Age >= 10)
+                    RemoveFish(i);
         }
 
         public void ShowInfo()
@@ -96,7 +108,15 @@ namespace OOP.Aquarium
                     case RemoveFishCommad:
                         RemoveFish();
                         break;
+                    default:
+                        Console.WriteLine("Вы ввели некорректную команду");
+                        break;
                 }
+
+                _aquarium.AddYearFishes();
+                _aquarium.RemoveDiedFishes();
+                Console.ReadKey();
+                Console.Clear();
             }
 
             Console.WriteLine("Все рыбки погибли. Вы плохой администратор!");
@@ -109,16 +129,21 @@ namespace OOP.Aquarium
             Console.WriteLine("Введите цвет рыбы: ");
             string inputColor = Console.ReadLine();
             Console.WriteLine("Введите возраст рыбы: ");
-            int inputAge = Convert.ToInt32(Console.ReadLine());
 
-            _aquarium.AddFish(creator.Create(inputColor, inputAge));
+            if (int.TryParse(Console.ReadLine(), out int inputAge))
+                _aquarium.AddFish(creator.CreateNew(inputColor, inputAge));
+            else
+                Console.WriteLine("Вы ввели некорректное значение");
         }
 
         private void RemoveFish()
         {
             Console.WriteLine("Введите номер рыбки, которую хотите удалить: ");
-            int inputRemoveNumber = Convert.ToInt32(Console.ReadLine());
-            _aquarium.RemoveFish(inputRemoveNumber);
+
+            if (int.TryParse(Console.ReadLine(), out int inputRemoveNumber))
+                _aquarium.RemoveFish(inputRemoveNumber - 1);
+            else
+                Console.WriteLine("Вы ввели некорректнеое значение");
         }
     }
 
@@ -148,14 +173,14 @@ namespace OOP.Aquarium
 
     class FishCreator
     {
-        public Fish Create(string inputColor, int inputAge)
+        public Fish CreateNew(string inputColor, int inputAge)
         {
             Fish fish = new Fish(inputColor, inputAge);
 
             return fish;
         }
 
-        public List<Fish> Default()
+        public List<Fish> DefaultCreate()
         {
             List<Fish> fishes = new List<Fish>()
             {
