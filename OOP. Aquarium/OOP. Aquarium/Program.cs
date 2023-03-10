@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -92,8 +92,8 @@ namespace OOP.Aquarium
 
             while (_aquarium.IsLife)
             {
-                Console.WriteLine($"Введите номер команды:\n1 - Посмотреть показатели рыбок в аквариума" +
-                    $"\n2 - Добавить рыбку в аквариум\n3 - Достать рыбку из аквариума");
+                Console.WriteLine($"Введите номер команды:\n{ShowInfoCommand} - Посмотреть показатели рыбок в аквариума" +
+                    $"\n{AddFishCommad} - Добавить рыбку в аквариум\n{RemoveFishCommad} - Достать рыбку из аквариума");
 
                 string inputCommand = Console.ReadLine();
 
@@ -102,12 +102,15 @@ namespace OOP.Aquarium
                     case ShowInfoCommand:
                         _aquarium.ShowInfo();
                         break;
+                    
                     case AddFishCommad:
                         AddFish();
                         break;
+                    
                     case RemoveFishCommad:
                         RemoveFish();
                         break;
+                    
                     default:
                         Console.WriteLine("Вы ввели некорректную команду");
                         break;
@@ -176,7 +179,6 @@ namespace OOP.Aquarium
         public Fish CreateNew(string inputColor, int inputAge)
         {
             Fish fish = new Fish(inputColor, inputAge);
-
             return fish;
         }
 
