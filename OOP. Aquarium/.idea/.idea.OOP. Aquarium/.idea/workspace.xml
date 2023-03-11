@@ -4,31 +4,24 @@
     <projectFile>OOP. Aquarium/OOP. Aquarium.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15b08bdd-34f9-4833-954e-b2ab0d1edf6e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/OOP. Aquarium/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OOP. Aquarium/Program.cs" afterDir="false" />
-    </list>
+    <list default="true" id="7317012b-ba3a-4b83-94b5-6195d87c2f17" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/gbljh/Documents/GitHub/iJunior/OOP. Aquarium/OOP. Aquarium/Program.cs" root0="SKIP_HIGHLIGHTING" />
-  </component>
-  <component name="ProjectId" id="2MoIKFoJqgSZzU1d3FOTkWUo45q" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2MoJkgLJx8IjBK9fFlZZh0aPb9E" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34994584" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager">
     <configuration name="OOP. Aquarium" type="DotNetProject" factoryName=".NET Project">
@@ -53,29 +46,23 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="15b08bdd-34f9-4833-954e-b2ab0d1edf6e" name="Changes" comment="" />
-      <created>1678427446112</created>
+      <changelist id="7317012b-ba3a-4b83-94b5-6195d87c2f17" name="Changes" comment="" />
+      <created>1678428145943</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1678427446112</updated>
-      <workItem from="1678427454709" duration="506000" />
-      <workItem from="1678428019359" duration="12000" />
+      <updated>1678428145943</updated>
+      <workItem from="1678428149305" duration="402000" />
+      <workItem from="1678428601376" duration="80000" />
+      <workItem from="1678437194174" duration="484000" />
+      <workItem from="1678438356758" duration="3639000" />
+      <workItem from="1678455003186" duration="1189000" />
+      <workItem from="1678456454698" duration="599000" />
     </task>
     <servers />
   </component>
-  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand>
-      <path>
-        <item name="OOP. Aquarium" type="b2602c69:ProjectViewProjectNode" />
-        <item name="iJunior" type="462c0819:PsiDirectoryNode" />
-      </path>
-    </expand>
-    <select />
   </component>
 </project>
