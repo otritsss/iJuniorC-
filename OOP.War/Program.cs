@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -116,7 +116,7 @@ namespace OOP.War
         {
             for (int i = 0; i < _combatants.Count; i++)
                 if (_combatants[i].Health <= 0)
-                    _combatants.RemoveAt(i);
+                    _combatants.RemoveAt(i--);
 
             CombatantsCount = _combatants.Count;
         }
@@ -197,4 +197,3 @@ namespace OOP.War
         }
     }
 }
-
