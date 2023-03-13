@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -38,7 +38,7 @@ namespace OOP.Aquarium
         public void CreateDefaultFish()
         {
             FishCreator creator = new FishCreator();
-            _allFishes = creator.DefaultCreateFishes();
+            _allFishes = creator.CreateDefaultFishes();
         }
 
         public void AddYearFishes()
@@ -116,7 +116,7 @@ namespace OOP.Aquarium
                         Console.WriteLine("Вы ввели некорректную команду");
                         break;
                 }
-
+                
                 _aquarium.AddYearFishes();
                 _aquarium.RemoveDiedFishes();
                 Console.ReadKey();
