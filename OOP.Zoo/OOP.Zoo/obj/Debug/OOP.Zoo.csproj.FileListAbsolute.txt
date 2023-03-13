@@ -1,0 +1,8 @@
+D:\Microsoft Visual Studio\repos\OOP.Zoo\OOP.Zoo\bin\Debug\OOP.Zoo.exe.config
+D:\Microsoft Visual Studio\repos\OOP.Zoo\OOP.Zoo\bin\Debug\OOP.Zoo.exe
+D:\Microsoft Visual Studio\repos\OOP.Zoo\OOP.Zoo\bin\Debug\OOP.Zoo.pdb
+D:\Microsoft Visual Studio\repos\OOP.Zoo\OOP.Zoo\obj\Debug\OOP.Zoo.csproj.AssemblyReference.cache
+D:\Microsoft Visual Studio\repos\OOP.Zoo\OOP.Zoo\obj\Debug\OOP.Zoo.csproj.SuggestedBindingRedirects.cache
+D:\Microsoft Visual Studio\repos\OOP.Zoo\OOP.Zoo\obj\Debug\OOP.Zoo.csproj.CoreCompileInputs.cache
+D:\Microsoft Visual Studio\repos\OOP.Zoo\OOP.Zoo\obj\Debug\OOP.Zoo.exe
+D:\Microsoft Visual Studio\repos\OOP.Zoo\OOP.Zoo\obj\Debug\OOP.Zoo.pdb
