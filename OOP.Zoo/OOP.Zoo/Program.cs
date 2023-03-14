@@ -27,44 +27,81 @@ namespace OOP.Zoo
 
     class Aviary
     {
+        private static Random _random = new Random();
         private List<Animal> _animals = new List<Animal>();
+
+        public Aviary()
+        {
+            int maxCountAnimals = 10;
+            CountAnimals = _random.Next(maxCountAnimals);
+        }
+
+        public int CountAnimals { get; private set; }
+
+        public void AddAnimals(Animal animal)
+        {
+            _animals.Add(animal);
+        }
 
         public void ShowInfo()
         {
+            for (int i = 0; i < _animals.Count; i++)
+            {
+                Console.WriteLine("");
+            }
         }
     }
 
-    abstract class Animal
-    {
-        public enum Gender
-        {
-            Male,
-            Female
-        }
-
-        public abstract void MakeSound();
-    }
 
     class AviaryCreator
     {
         private static Random _random = new Random();
 
-        public void CreateAviary(Animal animal, List<Animal> animals)
+        public Aviary CreateAviary(Animal animal, List<Animal> animals)
         {
             Aviary aviary = new Aviary();
 
-            int maxCountAnimals = 10;
-            int countAnimals = _random.Next(maxCountAnimals);
+            for (int i = 0; i < aviary.CountAnimals; i++)
+                aviary.AddAnimals(animals[i]);
 
-            for (int i = 0; i < countAnimals; i++)
-            {
-                
-            }
+            return aviary;
+        }
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female
+    }
+
+    abstract class Animal
+    {
+        private static Random _random = new Random();
+
+        public Animal()
+        {
+            int genderCount = 2;
+            Gender = (Gender) _random.Next(genderCount);
+        }
+
+        public string Name { get; protected set; }
+        public Gender Gender { get; protected set; }
+
+        public abstract void MakeSound();
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"Пол - {Gender}");
         }
     }
 
     class Cat : Animal
     {
+        public Cat() : base()
+        {
+            Name = "Cats";
+        }
+
         public override void MakeSound()
         {
             Console.WriteLine("Мяу");
@@ -73,6 +110,11 @@ namespace OOP.Zoo
 
     class Dog : Animal
     {
+        public Dog() : base()
+        {
+            Name = "Dogs";
+        }
+
         public override void MakeSound()
         {
             Console.WriteLine("Гав");
@@ -81,6 +123,11 @@ namespace OOP.Zoo
 
     class Cow : Animal
     {
+        public Cow() : base()
+        {
+            Name = "Cows";
+        }
+
         public override void MakeSound()
         {
             Console.WriteLine("Му");
@@ -89,6 +136,11 @@ namespace OOP.Zoo
 
     class Pig : Animal
     {
+        public Pig() : base()
+        {
+            Name = "Pigs";
+        }
+
         public override void MakeSound()
         {
             Console.WriteLine("Хрю");
