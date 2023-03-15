@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -79,17 +79,6 @@ namespace OOP.War
         public string NameCountry { get; private set; }
         public int CombatantsCount { get; private set; }
 
-        public int CountingCombatantOneGrade(string gradeName)
-        {
-            int countCombatantOneGrade = 0;
-
-            foreach (var combatant in _combatants)
-                if (combatant.GradeName == gradeName)
-                    countCombatantOneGrade++;
-
-            return countCombatantOneGrade;
-        }
-
         public Combatant GetRandomFighters()
         {
             int randomEnemyNumber = _random.Next(_combatants.Count);
@@ -107,9 +96,7 @@ namespace OOP.War
 
         public void ShowInfo()
         {
-            Console.WriteLine($"{NameCountry}: В живых - {_combatants.Count} бойцов " +
-                    $"| Снайперов - {CountingCombatantOneGrade("Снайпер")}, " +
-                    $"Пулеметчиков - {CountingCombatantOneGrade("Пулеметчик")}, Мечников - {CountingCombatantOneGrade("Мечник")}");
+            Console.WriteLine($"{NameCountry}: В живых - {_combatants.Count} бойцов");
         }
 
         public void RemoveDead()
@@ -129,7 +116,7 @@ namespace OOP.War
 
             for (int i = 0; i < CombatantsCount; i++)
             {
-                Combatant[] tempCombatants = { new Sniper(), new MachineGunner(), new Swordsman() };
+                Combatant[] tempCombatants = {new Sniper(), new MachineGunner(), new Swordsman()};
                 int numberAddCombatant = _random.Next(tempCombatants.Length);
 
                 _combatants.Add(tempCombatants[numberAddCombatant]);
@@ -139,7 +126,7 @@ namespace OOP.War
 
     abstract class Combatant
     {
-        static protected Random Random = new Random();
+        protected static Random Random = new Random();
 
         public Combatant()
         {
