@@ -77,7 +77,7 @@ namespace OOP.War
         }
 
         public string NameCountry { get; private set; }
-        public int CombatantsCount { get; private set; }
+        public int CombatantsCount => _combatants.Count;
 
         public Combatant GetRandomFighters()
         {
@@ -104,17 +104,15 @@ namespace OOP.War
             for (int i = 0; i < _combatants.Count; i++)
                 if (_combatants[i].Health <= 0)
                     _combatants.RemoveAt(i--);
-
-            CombatantsCount = _combatants.Count;
         }
 
         private void CreateCombatants()
         {
             int minCountCombatants = 5;
             int maxCountCombatants = 25;
-            CombatantsCount = _random.Next(minCountCombatants, maxCountCombatants);
+            int combatantsCount = _random.Next(minCountCombatants, maxCountCombatants);
 
-            for (int i = 0; i < CombatantsCount; i++)
+            for (int i = 0; i < combatantsCount; i++)
             {
                 Combatant[] tempCombatants = {new Sniper(), new MachineGunner(), new Swordsman()};
                 int numberAddCombatant = _random.Next(tempCombatants.Length);
