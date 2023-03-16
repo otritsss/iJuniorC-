@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -109,8 +109,6 @@ namespace OOP.Zoo
 
     class AnimalCreator
     {
-        public const string catsName = "Cats";
-
         public Animal Create(Animal animal)
         {
             switch (animal)
@@ -146,13 +144,13 @@ namespace OOP.Zoo
         public string Name { get; protected set; }
         public Gender Gender { get; protected set; }
 
-        public abstract void MakeSound();
-
         public void ShowInfo()
         {
             Console.Write($"{Name}. Пол - {Gender} | ");
             MakeSound();
         }
+
+        protected abstract void MakeSound();
     }
 
     class Cat : Animal
@@ -162,7 +160,7 @@ namespace OOP.Zoo
             Name = "Cat";
         }
 
-        public override void MakeSound()
+        protected override void MakeSound()
         {
             Console.Write("Издает звук - Мяу\n");
         }
@@ -175,7 +173,7 @@ namespace OOP.Zoo
             Name = "Dogs";
         }
 
-        public override void MakeSound()
+        protected override void MakeSound()
         {
             Console.Write("Издает звук - Гав\n");
         }
@@ -188,7 +186,7 @@ namespace OOP.Zoo
             Name = "Cows";
         }
 
-        public override void MakeSound()
+        protected override void MakeSound()
         {
             Console.Write("Издает звук - Му\n");
         }
@@ -201,7 +199,7 @@ namespace OOP.Zoo
             Name = "Pigs";
         }
 
-        public override void MakeSound()
+        protected override void MakeSound()
         {
             Console.Write("Издает звук - Хрю\n");
         }
