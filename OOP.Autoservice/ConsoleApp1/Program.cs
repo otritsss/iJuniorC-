@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace OOP.Auroservice
 {
@@ -10,17 +11,50 @@ namespace OOP.Auroservice
     {
         static void Main(string[] args)
         {
-            DeatailsCreator creator = new DeatailsCreator();
-            creator.CreateList();
+            Autoservise autoservise = new Autoservise();
+            autoservise.Work();
         }
     }
 
     class Autoservise
     {
+        private WarehouseDetails _warehouseDetails = new WarehouseDetails();
+
+        public void Work()
+        {
+            _warehouseDetails.ShowInfoCount();
+        }
     }
 
     class WarehouseDetails
     {
+        private DetailsCreator _detailsCreator = new DetailsCreator();
+
+        private List<List<Detail>> _allDeatails = new List<List<Detail>>()
+        {
+            new List<Detail>(),
+            new List<Detail>(),
+            new List<Detail>(),
+            new List<Detail>(),
+            new List<Detail>(),
+            new List<Detail>()
+        };
+
+        public WarehouseDetails()
+        {
+            for (int i = 0; i < _allDeatails.Count; i++)
+            {
+                _allDeatails[i] = _detailsCreator.CreateList(i);
+            }
+        }
+
+        public void ShowInfoCount()
+        {
+            for (int i = 0; i < _allDeatails.Count; i++)
+            {
+                Console.WriteLine($"{i} - Количество деталей = {_allDeatails[i].Count}");
+            }
+        }
     }
 
     class Detail
@@ -35,7 +69,7 @@ namespace OOP.Auroservice
         public int Price { get; private set; }
     }
 
-    class DeatailsCreator
+    class DetailsCreator
     {
         private static Random _random = new Random();
 
@@ -49,7 +83,7 @@ namespace OOP.Auroservice
             new Detail("Колесо", 1500)
         };
 
-        public List<Detail> CreateList()
+        public List<Detail> CreateList(int indexDetail)
         {
             int minCountDetail = 4;
             int maxCountDetail = 21;
@@ -57,15 +91,14 @@ namespace OOP.Auroservice
             List<Detail> list = new List<Detail>();
 
             for (int i = 0; i < countDetails; i++)
-                list.Add(Create());
+                list.Add(Create(indexDetail));
 
             return list;
         }
 
-        private Detail Create()
+        private Detail Create(int indexDetail)
         {
-            Detail detail = _defaultDetails[_random.Next(_defaultDetails.Count)];
-            return detail;
+            return new Detail(_defaultDetails[indexDetail].Title, _defaultDetails[indexDetail].Price);
         }
     }
 
