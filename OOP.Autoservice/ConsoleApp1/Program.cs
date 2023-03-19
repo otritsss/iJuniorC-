@@ -5,6 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 
+/// <summary>
+///
+/// 1. 
+/// 
+/// </summary>
+
 namespace OOP.Auroservice
 {
     class Program
@@ -23,6 +29,8 @@ namespace OOP.Auroservice
         public void Work()
         {
             _warehouseDetails.ShowInfoCount();
+
+            Console.ReadKey();
         }
     }
 
@@ -37,7 +45,7 @@ namespace OOP.Auroservice
             new List<Detail>(),
             new List<Detail>(),
             new List<Detail>(),
-            new List<Detail>()
+            new List<Detail>(),
         };
 
         public WarehouseDetails()
@@ -59,14 +67,18 @@ namespace OOP.Auroservice
 
     class Detail
     {
+        private static Random _random = new Random();
         public Detail(string title, int price)
         {
             Title = title;
             Price = price;
+            
+            
         }
 
         public string Title { get; private set; }
         public int Price { get; private set; }
+        public bool isBroke { get; private set; }
     }
 
     class DetailsCreator
@@ -96,13 +108,19 @@ namespace OOP.Auroservice
             return list;
         }
 
-        private Detail Create(int indexDetail)
-        {
-            return new Detail(_defaultDetails[indexDetail].Title, _defaultDetails[indexDetail].Price);
-        }
+        private Detail Create(int indexDetail) =>
+            new Detail(_defaultDetails[indexDetail].Title, _defaultDetails[indexDetail].Price);
     }
 
-    class Human
+    class Car
     {
+        private List<Detail> _details = new List<Detail>()
+        {
+            new Detail("Коробка", 55000),
+        };
+
+        private static Random _random = new Random();
+
+        public int Money { get; private set; }
     }
 }
