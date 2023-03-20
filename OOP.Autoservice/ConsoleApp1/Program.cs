@@ -7,7 +7,23 @@ using Microsoft.VisualBasic;
 
 /// <summary>
 ///
-/// 1. 
+/// 1. Сделать команды:
+///     1.1 Обслужить очередной автомобиль.
+///         1.1.1 [ИндексАвто] Автомобиль - поломки - ..список..
+///         1.1.2. Поломка обойдется в такую-то стоимость - [сумма]
+///         1.1.3 Починить автомобиль? Да | Нет
+///             1.1.3.1 Если починить не удалось, то накладывается штраф, а далее пункт - {2}
+///             1.1.3.2 Если починить удалось, то делается перехрод в меню (или продумать переход ко вкладке покупки запчастей)
+///     1.2 Заполнить склад запчастями.
+///         1.2.1 Метод BuyDetails, в котором список дефолтных деталей, выбираешь индекс детали и ее кол-во, если денег недостаточно, то не можешь купить деталь.
+///     1.3 Выход
+///
+/// 2. Сделать банкротсво автосервиса:
+///     2.1 Если баланс магазина меньше -10000, то признается банкротом и игра завершается
+///
+/// 3. Сделать обслуживание автомобилей:
+///     1.1 Заеха
+/// 
 /// 
 /// </summary>
 
@@ -19,7 +35,16 @@ namespace OOP.Auroservice
         {
             Autoservise autoservise = new Autoservise();
             autoservise.Work();
+
+            Console.ReadKey();
         }
+    }
+
+    static class UserUtils
+    {
+        private static Random _random = new Random();
+
+        public static int GenerateRandomNumber(int minValue, int maxValue) => _random.Next(minValue, maxValue);
     }
 
     class Autoservise
@@ -28,63 +53,57 @@ namespace OOP.Auroservice
 
         public void Work()
         {
-            _warehouseDetails.ShowInfoCount();
-
+            ServiceCar();
+            ;
             Console.ReadKey();
+        }
+
+        public void ServiceCar()
+        {
+            Car car = new Car(_warehouseDetails.DetailsCreator.GetDefaultDetails());
         }
     }
 
     class WarehouseDetails
     {
-        private DetailsCreator _detailsCreator = new DetailsCreator();
-
-        private List<List<Detail>> _allDeatails = new List<List<Detail>>()
-        {
-            new List<Detail>(),
-            new List<Detail>(),
-            new List<Detail>(),
-            new List<Detail>(),
-            new List<Detail>(),
-            new List<Detail>(),
-        };
+        public DetailsCreator DetailsCreator = new DetailsCreator();
+        private Dictionary<Detail, int> _details = new Dictionary<Detail, int>();
 
         public WarehouseDetails()
         {
-            for (int i = 0; i < _allDeatails.Count; i++)
-            {
-                _allDeatails[i] = _detailsCreator.CreateList(i);
-            }
+            Fill();
         }
 
-        public void ShowInfoCount()
+        public void Fill()
         {
-            for (int i = 0; i < _allDeatails.Count; i++)
-            {
-                Console.WriteLine($"{i} - Количество деталей = {_allDeatails[i].Count}");
-            }
+            int maxDetailsCount = 10;
+
+            for (int i = 0; i < DetailsCreator.GetDefaultDetails().Count; i++)
+                _details.Add(DetailsCreator.GetDefaultDetail(i), UserUtils.GenerateRandomNumber(1, maxDetailsCount));
         }
     }
 
     class Detail
     {
-        private static Random _random = new Random();
         public Detail(string title, int price)
         {
             Title = title;
             Price = price;
-            
-            
+            IsBroke = false;
         }
 
         public string Title { get; private set; }
         public int Price { get; private set; }
-        public bool isBroke { get; private set; }
+        public bool IsBroke { get; private set; }
+
+        public void MadeBroken()
+        {
+            IsBroke = true;
+        }
     }
 
     class DetailsCreator
     {
-        private static Random _random = new Random();
-
         private List<Detail> _defaultDetails = new List<Detail>()
         {
             new Detail("Коробка", 55000),
@@ -95,32 +114,49 @@ namespace OOP.Auroservice
             new Detail("Колесо", 1500)
         };
 
-        public List<Detail> CreateList(int indexDetail)
+        public Detail GetDefaultDetail(int indexDetail)
         {
-            int minCountDetail = 4;
-            int maxCountDetail = 21;
-            int countDetails = _random.Next(minCountDetail, maxCountDetail);
-            List<Detail> list = new List<Detail>();
-
-            for (int i = 0; i < countDetails; i++)
-                list.Add(Create(indexDetail));
-
-            return list;
+            return _defaultDetails[indexDetail];
         }
 
-        private Detail Create(int indexDetail) =>
-            new Detail(_defaultDetails[indexDetail].Title, _defaultDetails[indexDetail].Price);
+        public List<Detail> GetDefaultDetails()
+        {
+            List<Detail> returnDetails = new List<Detail>();
+
+            foreach (var detail in _defaultDetails)
+                returnDetails.Add(detail);
+
+            return returnDetails;
+        }
     }
 
     class Car
     {
-        private List<Detail> _details = new List<Detail>()
-        {
-            new Detail("Коробка", 55000),
-        };
+        private List<Detail> _details;
 
-        private static Random _random = new Random();
+        public Car(List<Detail> details)
+        {
+            _details = new List<Detail>(details);
+            BrokeDetails();
+        }
 
         public int Money { get; private set; }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine("----------------------");
+
+            for (int i = 0; i < _details.Count; i++)
+                Console.WriteLine($"{_details[i].IsBroke}");
+        }
+
+        private void BrokeDetails()
+        {
+            for (int i = 0; i < _details.Count; i++)
+            {
+                int indexDetail = UserUtils.GenerateRandomNumber(0, _details.Count);
+                _details[indexDetail].MadeBroken();
+            }
+        }
     }
 }
