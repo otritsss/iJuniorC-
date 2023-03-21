@@ -26,9 +26,9 @@ using Microsoft.VisualBasic;
 /// 1. По поводу передачи
 /// Ответ:
 /// 1.
-///     1.1 Сделал в классе Detail метод Repair
-///     1.2 Сделал передачу копии листа через метод
-///     1.3 Автосервис методом ВыявлениеСлмоанныхДеталей выясняет какие детали сломаны и вызывает метод Detail.Repair
+///     1.1 Сделал в классе Detail метод Repair                                                                                                                      --  YES
+///     1.2 Сделал передачу копии листа через метод                                                                                                                  --  YES
+///     1.3 Автосервис методом ВыявлениеСлмоанныхДеталей выясняет какие детали сломаны и вызывает метод Detail.Repair                                                --  YES
 /// 
 /// </summary>
 
@@ -56,10 +56,12 @@ namespace OOP.Auroservice
     {
         private const string ServiceCarCommand = "1";
         private const string BuyDetails = "2";
-        private const string Exit = "3";
+        private const string ShowInfoWarehouseDetails = "3";
+        private const string Exit = "4";
 
         private WarehouseDetails _warehouseDetails = new WarehouseDetails();
         private int _balanceMoney;
+        private int _indexRepairCar = 1;
 
         public void Work()
         {
@@ -67,6 +69,10 @@ namespace OOP.Auroservice
 
             while (isWork)
             {
+                Console.WriteLine(
+                    $"Баланс автосервиса: {_balanceMoney}" +
+                    $"\n{ServiceCarCommand} - Обслужить автомобиль\n{BuyDetails} - Закупиться деталями\n{ShowInfoWarehouseDetails} - Посмотреть количество деталей на складе\n{Exit} - Выйти");
+
                 switch (Console.ReadLine())
                 {
                     case ServiceCarCommand:
@@ -75,6 +81,10 @@ namespace OOP.Auroservice
 
                     case BuyDetails:
 
+                        break;
+
+                    case ShowInfoWarehouseDetails:
+                        _warehouseDetails.ShowInfo();
                         break;
 
                     case Exit:
@@ -86,33 +96,46 @@ namespace OOP.Auroservice
                         break;
                 }
 
-                ServiceCar();
-
                 Console.ReadKey();
+                Console.Clear();
             }
         }
 
-        public void ServiceCar()
+        private void ServiceCar()
         {
-            Car car = new Car(_warehouseDetails.DetailsCreator.GetCopyDefaultDetails());
+            Console.WriteLine($"\n{_indexRepairCar++} Автомобиль за сессию");
 
-            car.ShowInfo();
-            DetectBrokeDetails(car);
+            Car car = new Car(_warehouseDetails.DetailsCreator.GetCopyDefaultDetails());
+            int priceRepair = 0;
+
+            DetectBrokeDetails(car, ref priceRepair);
+
+            _balanceMoney += priceRepair;
         }
 
-        private void DetectBrokeDetails(Car car)
+        private void DetectBrokeDetails(Car car, ref int priceRepair)
         {
             List<Detail> detailsCar = car.GetCopyDetails();
 
             foreach (var detail in detailsCar)
                 if (detail.IsBroke == true)
-                    RepairCarDetails(detail);
+                    RepairCarDetails(detail, ref priceRepair);
+
+            Console.WriteLine($"Стоимость починки - {priceRepair}");
         }
 
-        private void RepairCarDetails(Detail detail)
+        private void RepairCarDetails(Detail detail, ref int priceRepair)
         {
+            ShowBrokeDetailCar(detail);
+
             detail.Repair();
-            _balanceMoney += detail.Price;
+            _warehouseDetails.RemoveDetail(detail);
+            priceRepair += detail.Price;
+        }
+
+        private void ShowBrokeDetailCar(Detail detail)
+        {
+            Console.WriteLine($"{detail.Title} - сломана");
         }
     }
 
@@ -120,6 +143,7 @@ namespace OOP.Auroservice
     {
         public DetailsCreator DetailsCreator = new DetailsCreator();
         private Dictionary<Detail, int> _details = new Dictionary<Detail, int>();
+        private int _countDetails;
 
         public WarehouseDetails()
         {
@@ -132,6 +156,29 @@ namespace OOP.Auroservice
 
             for (int i = 0; i < DetailsCreator.GetCopyDefaultDetails().Count; i++)
                 _details.Add(DetailsCreator.GetDefaultDetail(i), UserUtils.GenerateRandomNumber(1, maxDetailsCount));
+        }
+
+        public void RemoveDetail(Detail detailInput)
+        {
+            int countNumber = 1;
+
+            foreach (var detail in _details.Keys)
+            {
+                if (detail == detailInput)
+                {
+                    _details[detail]--;
+                }
+            }
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine("Наличие на складе");
+
+            foreach (var detail in _details)
+            {
+                Console.WriteLine($"{detail.Key.Title} Количество - {detail.Value}");
+            }
         }
     }
 
@@ -189,14 +236,6 @@ namespace OOP.Auroservice
         {
             _details = new List<Detail>(details);
             BrokeDetails();
-        }
-
-        public int Money { get; private set; }
-
-        public void ShowInfo()
-        {
-            for (int i = 0; i < _details.Count; i++)
-                Console.WriteLine($"{_details[i].IsBroke}");
         }
 
         public List<Detail> GetCopyDetails() =>
