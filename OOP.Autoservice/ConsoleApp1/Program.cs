@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,23 +8,27 @@ using Microsoft.VisualBasic;
 
 /// <summary>
 ///
-/// 1. Сделать команды:
-///     1.1 Обслужить очередной автомобиль.
-///         1.1.1 [ИндексАвто] Автомобиль - поломки - ..список..
-///         1.1.2. Поломка обойдется в такую-то стоимость - [сумма]
-///         1.1.3 Починить автомобиль? Да | Нет
-///             1.1.3.1 Если починить не удалось, то накладывается штраф, а далее пункт - {2}
-///             1.1.3.2 Если починить удалось, то делается перехрод в меню (или продумать переход ко вкладке покупки запчастей)
-///     1.2 Заполнить склад запчастями.
-///         1.2.1 Метод BuyDetails, в котором список дефолтных деталей, выбираешь индекс детали и ее кол-во, если денег недостаточно, то не можешь купить деталь.
-///     1.3 Выход
+/// 1. Сделать команды:                                                                                                                                             --
+///     1.1 Обслужить очередной автомобиль.                                                                                                                         --
+///         1.1.1 [ИндексАвто] Автомобиль - поломки - ..список..                                                                                                    --
+///         1.1.2. Поломка обойдется в такую-то стоимость - [сумма]                                                                                                 --
+///         1.1.3 Починить автомобиль? Да | Нет                                                                                                                     --
+///             1.1.3.1 Если починить не удалось, то накладывается штраф, а далее пункт - {2}                                                                       --
+///             1.1.3.2 Если починить удалось, то делается перехрод в меню (или продумать переход ко вкладке покупки запчастей)                                     --
+///     1.2 Заполнить склад запчастями.                                                                                                                             --
+///         1.2.1 Метод BuyDetails, в котором список дефолтных деталей, выбираешь индекс детали и ее кол-во, если денег недостаточно, то не можешь купить деталь.   --
+///     1.3 Выход                                                                                                                                                   --  YES
 ///
-/// 2. Сделать банкротсво автосервиса:
-///     2.1 Если баланс магазина меньше -10000, то признается банкротом и игра завершается
+/// 2. Сделать банкротсво автосервиса:                                                                                                                              --
+///     2.1 Если баланс магазина меньше -10000, то признается банкротом и игра завершается                                                                          --
 ///
-/// 3. Сделать обслуживание автомобилей:
-///     1.1 Заеха
-/// 
+/// Вопрос:
+/// 1. По поводу передачи
+/// Ответ:
+/// 1.
+///     1.1 Сделал в классе Detail метод Repair
+///     1.2 Сделал передачу копии листа через метод
+///     1.3 Автосервис методом ВыявлениеСлмоанныхДеталей выясняет какие детали сломаны и вызывает метод Detail.Repair
 /// 
 /// </summary>
 
@@ -49,18 +54,65 @@ namespace OOP.Auroservice
 
     class Autoservise
     {
+        private const string ServiceCarCommand = "1";
+        private const string BuyDetails = "2";
+        private const string Exit = "3";
+
         private WarehouseDetails _warehouseDetails = new WarehouseDetails();
+        private int _balanceMoney;
 
         public void Work()
         {
-            ServiceCar();
-            ;
-            Console.ReadKey();
+            bool isWork = true;
+
+            while (isWork)
+            {
+                switch (Console.ReadLine())
+                {
+                    case ServiceCarCommand:
+                        ServiceCar();
+                        break;
+
+                    case BuyDetails:
+
+                        break;
+
+                    case Exit:
+                        isWork = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Вы ввели некорретное значнеие");
+                        break;
+                }
+
+                ServiceCar();
+
+                Console.ReadKey();
+            }
         }
 
         public void ServiceCar()
         {
-            Car car = new Car(_warehouseDetails.DetailsCreator.GetDefaultDetails());
+            Car car = new Car(_warehouseDetails.DetailsCreator.GetCopyDefaultDetails());
+
+            car.ShowInfo();
+            DetectBrokeDetails(car);
+        }
+
+        private void DetectBrokeDetails(Car car)
+        {
+            List<Detail> detailsCar = car.GetCopyDetails();
+
+            foreach (var detail in detailsCar)
+                if (detail.IsBroke == true)
+                    RepairCarDetails(detail);
+        }
+
+        private void RepairCarDetails(Detail detail)
+        {
+            detail.Repair();
+            _balanceMoney += detail.Price;
         }
     }
 
@@ -78,7 +130,7 @@ namespace OOP.Auroservice
         {
             int maxDetailsCount = 10;
 
-            for (int i = 0; i < DetailsCreator.GetDefaultDetails().Count; i++)
+            for (int i = 0; i < DetailsCreator.GetCopyDefaultDetails().Count; i++)
                 _details.Add(DetailsCreator.GetDefaultDetail(i), UserUtils.GenerateRandomNumber(1, maxDetailsCount));
         }
     }
@@ -100,6 +152,14 @@ namespace OOP.Auroservice
         {
             IsBroke = true;
         }
+
+        public void Repair()
+        {
+            if (IsBroke == false)
+                Console.WriteLine("Деталь не сломана");
+            else
+                IsBroke = false;
+        }
     }
 
     class DetailsCreator
@@ -114,20 +174,11 @@ namespace OOP.Auroservice
             new Detail("Колесо", 1500)
         };
 
-        public Detail GetDefaultDetail(int indexDetail)
-        {
-            return _defaultDetails[indexDetail];
-        }
+        public Detail GetDefaultDetail(int indexDetail) =>
+            _defaultDetails[indexDetail];
 
-        public List<Detail> GetDefaultDetails()
-        {
-            List<Detail> returnDetails = new List<Detail>();
-
-            foreach (var detail in _defaultDetails)
-                returnDetails.Add(detail);
-
-            return returnDetails;
-        }
+        public List<Detail> GetCopyDefaultDetails() =>
+            new List<Detail>(_defaultDetails);
     }
 
     class Car
@@ -144,11 +195,12 @@ namespace OOP.Auroservice
 
         public void ShowInfo()
         {
-            Console.WriteLine("----------------------");
-
             for (int i = 0; i < _details.Count; i++)
                 Console.WriteLine($"{_details[i].IsBroke}");
         }
+
+        public List<Detail> GetCopyDetails() =>
+            new List<Detail>(_details);
 
         private void BrokeDetails()
         {
