@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +23,7 @@ namespace OOP.Zoo
         private const string PigsAviaryCommand = "4";
         private const string ExitCommand = "5";
 
-        private List<Aviary> _allAviarys = new List<Aviary>();
+        private List<Aviary> _aviarys = new List<Aviary>();
 
         public void Work()
         {
@@ -31,18 +31,19 @@ namespace OOP.Zoo
 
             while (isWorkZoo)
             {
-                CreateAviary();
+                CreateAviarys();
 
                 Console.WriteLine(
                     $"Выберите к какому вольеру подойти:\n{CatsAviaryCommand} - Кошки\n{DogsAviaryCommand} - Собаки\n" +
                     $"{CowsAviaryCommand} - Коровы\n{PigsAviaryCommand} - Свиньи\n{ExitCommand} - Выход");
 
                 string inputCommand = Console.ReadLine();
+                int numberAviary = GetConvertNumber(inputCommand);
 
                 if (inputCommand == ExitCommand)
                     isWorkZoo = false;
-                else if (int.TryParse(inputCommand, out int numberAviary) && numberAviary <= _allAviarys.Count)
-                    _allAviarys[numberAviary - 1].ShowInfo();
+                else if (numberAviary <= _aviarys.Count)
+                    _aviarys[numberAviary - 1].ShowInfo();
                 else
                     Console.WriteLine("Вы ввели некорректное значение..");
 
@@ -51,13 +52,23 @@ namespace OOP.Zoo
             }
         }
 
-        private void CreateAviary()
+        private int GetConvertNumber(string inputCommand)
+        {
+            if (int.TryParse(inputCommand, out int numberAviary))
+                return numberAviary;
+            else
+                Console.WriteLine("Такого вольера нет");
+
+            return 0;
+        }
+
+        private void CreateAviarys()
         {
             AviaryCreator aviaryCreator = new AviaryCreator();
             Animal[] tempAnimals = {new Cat(), new Dog(), new Cow(), new Pig()};
 
             for (int i = 0; i < tempAnimals.Length; i++)
-                _allAviarys.Add(aviaryCreator.Create(tempAnimals[i]));
+                _aviarys.Add(aviaryCreator.Create(tempAnimals[i]));
         }
     }
 
@@ -65,7 +76,7 @@ namespace OOP.Zoo
     {
         private List<Animal> _animals = new List<Animal>();
 
-        public void AddAnimals(Animal animal)
+        public void AddAnimal(Animal animal)
         {
             _animals.Add(animal);
         }
@@ -95,7 +106,7 @@ namespace OOP.Zoo
             Aviary aviary = new Aviary();
 
             for (int i = 0; i < countAnimals; i++)
-                aviary.AddAnimals(animalCreator.Create(animal));
+                aviary.AddAnimal(animalCreator.Create(animal));
 
             return aviary;
         }
