@@ -10,8 +10,8 @@ using Microsoft.VisualBasic;
 ///
 /// 1. Сделать команды:                                                                                                                                             --
 ///     1.1 Обслужить очередной автомобиль.                                                                                                                         --
-///         1.1.1 [ИндексАвто] Автомобиль - поломки - ..список..                                                                                                    --
-///         1.1.2. Поломка обойдется в такую-то стоимость - [сумма]                                                                                                 --
+///         1.1.1 [ИндексАвто] Автомобиль - поломки - ..список..                                                                                                    --  YES
+///         1.1.2. Поломка обойдется в такую-то стоимость - [сумма]                                                                                                 --  YES
 ///         1.1.3 Починить автомобиль? Да | Нет                                                                                                                     --
 ///             1.1.3.1 Если починить не удалось, то накладывается штраф, а далее пункт - {2}                                                                       --
 ///             1.1.3.2 Если починить удалось, то делается перехрод в меню (или продумать переход ко вкладке покупки запчастей)                                     --
@@ -54,6 +54,7 @@ namespace OOP.Auroservice
 
     class Autoservise
     {
+        private const int PriceRepair = 7000;
         private const string ServiceCarCommand = "1";
         private const string BuyDetails = "2";
         private const string ShowInfoWarehouseDetails = "3";
@@ -80,7 +81,7 @@ namespace OOP.Auroservice
                         break;
 
                     case BuyDetails:
-
+                        FillDetails();
                         break;
 
                     case ShowInfoWarehouseDetails:
@@ -101,10 +102,25 @@ namespace OOP.Auroservice
             }
         }
 
+        private void FillDetails()
+        {
+            Console.Write("Точно введите название детали: ");
+            string inputDetailTtile = Console.ReadLine();
+            Console.Write("Введите количество деталей, которое хотите добавить: ");
+            string inputCountDetails = Console.ReadLine();
+
+            if (int.TryParse(inputCountDetails, out int countDetails))
+            {
+                _warehouseDetails.AddDetail(inputDetailTtile, countDetails);
+            }
+            else
+            {
+            }
+        }
+
         private void ServiceCar()
         {
             Console.WriteLine($"\n{_indexRepairCar++} Автомобиль за сессию");
-
             Car car = new Car(_warehouseDetails.DetailsCreator.GetCopyDefaultDetails());
             int priceRepair = 0;
 
@@ -119,12 +135,12 @@ namespace OOP.Auroservice
 
             foreach (var detail in detailsCar)
                 if (detail.IsBroke == true)
-                    RepairCarDetails(detail, ref priceRepair);
+                    RepairCarDetail(detail, ref priceRepair);
 
-            Console.WriteLine($"Стоимость починки - {priceRepair}");
+            Console.WriteLine($"Стоимость починки - {priceRepair + PriceRepair}");
         }
 
-        private void RepairCarDetails(Detail detail, ref int priceRepair)
+        private void RepairCarDetail(Detail detail, ref int priceRepair)
         {
             ShowBrokeDetailCar(detail);
 
@@ -158,17 +174,23 @@ namespace OOP.Auroservice
                 _details.Add(DetailsCreator.GetDefaultDetail(i), UserUtils.GenerateRandomNumber(1, maxDetailsCount));
         }
 
-        public void RemoveDetail(Detail detailInput)
+        public void AddDetail(string detailInputTitle, int countDetails)
         {
-            int countNumber = 1;
-
             foreach (var detail in _details.Keys)
             {
-                if (detail == detailInput)
-                {
-                    _details[detail]--;
-                }
+                if (detail.Title == detailInputTitle)
+                    _details[detail] += countDetails;
+                else
+                    Console.WriteLine("Вы ввели название некорректно");
             }
+        }
+
+
+        public void RemoveDetail(Detail detailInput)
+        {
+            foreach (var detail in _details.Keys)
+                if (detail == detailInput)
+                    _details[detail]--;
         }
 
         public void ShowInfo()
@@ -176,9 +198,7 @@ namespace OOP.Auroservice
             Console.WriteLine("Наличие на складе");
 
             foreach (var detail in _details)
-            {
                 Console.WriteLine($"{detail.Key.Title} Количество - {detail.Value}");
-            }
         }
     }
 
