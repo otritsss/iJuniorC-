@@ -18,43 +18,43 @@ namespace OOP.War
 
     class Arena
     {
-        private Platoon _platoonRussia = new Platoon("Россия");
-        private Platoon _platoonUsa = new Platoon("Америка");
+        private Platoon _platoonOne = new Platoon("Россия");
+        private Platoon _platoonTwo = new Platoon("Америка");
 
         public void Open()
         {
-            StartFight();
-            PrintWinner();
+            Start();
+            PrintResult();
         }
 
-        private void StartFight()
+        private void Start()
         {
             int dayBattle = 1;
 
-            while (_platoonRussia.CombatantsCount > 0 && _platoonUsa.CombatantsCount > 0)
+            while (_platoonOne.CombatantsCount > 0 && _platoonTwo.CombatantsCount > 0)
             {
                 Console.WriteLine($"{new string(' ', 25)} {dayBattle++}-й день битвы");
-                _platoonRussia.ShowInfo();
-                _platoonUsa.ShowInfo();
+                _platoonOne.ShowInfo();
+                _platoonTwo.ShowInfo();
 
-                _platoonRussia.Fight(_platoonUsa);
-                _platoonUsa.Fight(_platoonRussia);
+                _platoonOne.Fight(_platoonTwo);
+                _platoonTwo.Fight(_platoonOne);
 
-                _platoonRussia.RemoveDead();
-                _platoonUsa.RemoveDead();
+                _platoonOne.RemoveDead();
+                _platoonTwo.RemoveDead();
 
                 Console.ReadLine();
                 Console.Clear();
             }
         }
 
-        private void PrintWinner()
+        private void PrintResult()
         {
-            if (_platoonRussia.CombatantsCount == 0 && _platoonUsa.CombatantsCount == 0)
+            if (_platoonOne.CombatantsCount == 0 && _platoonTwo.CombatantsCount == 0)
             {
                 Console.WriteLine("Ничья");
             }
-            else if (_platoonRussia.CombatantsCount == 0)
+            else if (_platoonOne.CombatantsCount == 0)
             {
                 Console.WriteLine("Победила Америка!");
             }
