@@ -54,7 +54,8 @@ namespace OOP.Auroservice
 
     class Autoservise
     {
-        private const int PriceRepair = 7000;
+        private const int RepairService = 7000;
+        private const int Forfeit = 3000;
         private const string ServiceCarCommand = "1";
         private const string BuyDetails = "2";
         private const string ShowInfoWarehouseDetails = "3";
@@ -67,8 +68,9 @@ namespace OOP.Auroservice
         public void Work()
         {
             bool isWork = true;
+            int minBalance = -100000;
 
-            while (isWork)
+            while (isWork || _balanceMoney > minBalance)
             {
                 Console.WriteLine(
                     $"Баланс автосервиса: {_balanceMoney}" +
@@ -100,6 +102,11 @@ namespace OOP.Auroservice
                 Console.ReadKey();
                 Console.Clear();
             }
+
+            if (_balanceMoney > minBalance)
+                Console.WriteLine("Вы признаны банкротом!");
+            else
+                Console.WriteLine("Всего доброго!");
         }
 
         private void FillDetails()
@@ -109,49 +116,69 @@ namespace OOP.Auroservice
             Console.Write("Введите количество деталей, которое хотите добавить: ");
             string inputCountDetails = Console.ReadLine();
 
-            if (int.TryParse(inputCountDetails, out int countDetails))
+            if (int.TryParse(inputCountDetails, out int countDetails) == false)
             {
-                _warehouseDetails.AddDetail(inputDetailTtile, countDetails);
+                Console.WriteLine("Введите корректное значение");
             }
             else
             {
+                _warehouseDetails.AddDetail(inputDetailTtile, countDetails);
             }
         }
 
         private void ServiceCar()
         {
             Console.WriteLine($"\n{_indexRepairCar++} Автомобиль за сессию");
+
             Car car = new Car(_warehouseDetails.DetailsCreator.GetCopyDefaultDetails());
+            List<Detail> brokeDetails = new List<Detail>();
             int priceRepair = 0;
 
-            DetectBrokeDetails(car, ref priceRepair);
+            DetectBrokeDetails(car, brokeDetails);
+            ShowBrokeDetailCar(brokeDetails);
 
+            if (_warehouseDetails.TryAvailabilityDetails(brokeDetails))
+            {
+                RepairCarDetail(brokeDetails);
+                RepairEstimate(brokeDetails, ref priceRepair);
+            }
+
+            Console.WriteLine($"Стоимость ремонта = {priceRepair}");
             _balanceMoney += priceRepair;
         }
 
-        private void DetectBrokeDetails(Car car, ref int priceRepair)
+        private List<Detail> DetectBrokeDetails(Car car, List<Detail> brokeDetails)
         {
             List<Detail> detailsCar = car.GetCopyDetails();
 
             foreach (var detail in detailsCar)
                 if (detail.IsBroke == true)
-                    RepairCarDetail(detail, ref priceRepair);
+                    brokeDetails.Add(detail);
 
-            Console.WriteLine($"Стоимость починки - {priceRepair + PriceRepair}");
+            return brokeDetails;
         }
 
-        private void RepairCarDetail(Detail detail, ref int priceRepair)
+        private int RepairEstimate(List<Detail> brokeDeatails, ref int priceRepair)
         {
-            ShowBrokeDetailCar(detail);
+            foreach (var detail in brokeDeatails)
+                priceRepair += detail.Price;
 
-            detail.Repair();
-            _warehouseDetails.RemoveDetail(detail);
-            priceRepair += detail.Price;
+            return priceRepair;
         }
 
-        private void ShowBrokeDetailCar(Detail detail)
+        private void RepairCarDetail(List<Detail> brokeDetails)
         {
-            Console.WriteLine($"{detail.Title} - сломана");
+            foreach (var detail in brokeDetails)
+            {
+                detail.Repair();
+                _warehouseDetails.RemoveDetail(detail);
+            }
+        }
+
+        private void ShowBrokeDetailCar(List<Detail> brokeDeatails)
+        {
+            foreach (var detail in brokeDeatails)
+                Console.WriteLine($"{detail.Title} - сломана");
         }
     }
 
@@ -166,12 +193,17 @@ namespace OOP.Auroservice
             Fill();
         }
 
-        public void Fill()
+        public bool TryAvailabilityDetails(List<Detail> brokeDetails)
         {
-            int maxDetailsCount = 10;
+            foreach (var detail in brokeDetails)
+            {
+                if (_details[detail] > 0)
+                    return true;
+                else
+                    return false;
+            }
 
-            for (int i = 0; i < DetailsCreator.GetCopyDefaultDetails().Count; i++)
-                _details.Add(DetailsCreator.GetDefaultDetail(i), UserUtils.GenerateRandomNumber(1, maxDetailsCount));
+            return false;
         }
 
         public void AddDetail(string detailInputTitle, int countDetails)
@@ -188,9 +220,19 @@ namespace OOP.Auroservice
 
         public void RemoveDetail(Detail detailInput)
         {
-            foreach (var detail in _details.Keys)
-                if (detail == detailInput)
-                    _details[detail]--;
+            if (_details.ContainsKey(detailInput) && _details[detailInput] > 0)
+                _details[detailInput]--;
+            else
+                Console.WriteLine($"{detailInput.Title} Недостаточно на складе");
+
+
+            // foreach (var detail in _details.Keys)
+            // {
+            //     if (detail == detailInput && _details[detail] > 0)
+            //         _details[detail]--;
+            //     else
+            //         Console.WriteLine($"{detail.Title} Недостаточно на складе");
+            // }
         }
 
         public void ShowInfo()
@@ -199,6 +241,28 @@ namespace OOP.Auroservice
 
             foreach (var detail in _details)
                 Console.WriteLine($"{detail.Key.Title} Количество - {detail.Value}");
+        }
+
+        public void Fill(ref int balanceAutosrvice)
+        {
+            int countAddDetail = 3;
+
+            foreach (var detail in _details.Keys)
+            {
+                if (_details[detail] == 0)
+                {
+                    _details[detail] += countAddDetail;
+                    balanceAutosrvice -= detail.Price;
+                }
+            }
+        }
+
+        private void Fill()
+        {
+            int maxDetailsCount = 10;
+
+            for (int i = 0; i < DetailsCreator.GetCopyDefaultDetails().Count; i++)
+                _details.Add(DetailsCreator.GetDefaultDetail(i), UserUtils.GenerateRandomNumber(1, maxDetailsCount));
         }
     }
 
