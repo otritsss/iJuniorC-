@@ -23,11 +23,11 @@ namespace OOP.War
 
         public void Open()
         {
-            Start();
+            Fight();
             PrintResult();
         }
 
-        private void Start()
+        private void Fight()
         {
             int dayBattle = 1;
 
