@@ -1,37 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
-
-/// <summar.y>
-///
-/// 1. Сделать команды:                                                                                                                                             --
-///     1.1 Обслужить очередной автомобиль.                                                                                                                         --
-///         1.1.1 [ИндексАвто] Автомобиль - поломки - ..список..                                                                                                    --  YES
-///         1.1.2. Поломка обойдется в такую-то стоимость - [сумма]                                                                                                 --  YES
-///         1.1.3 Починить автомобиль? Да | Нет                                                                                                                     --
-///             1.1.3.1 Если починить не удалось, то накладывается штраф, а далее пункт - {2}                                                                       --
-///             1.1.3.2 Если починить удалось, то делается перехрод в меню (или продумать переход ко вкладке покупки запчастей)                                     --
-///     1.2 Заполнить склад запчастями.                                                                                                                             --
-///         1.2.1 Метод BuyDetails, в котором список дефолтных деталей, выбираешь индекс детали и ее кол-во, если денег недостаточно, то не можешь купить деталь.   --
-///     1.3 Выход                                                                                                                                                   --  YES
-///
-/// 2. Сделать банкротсво автосервиса:                                                                                                                              --
-///     2.1 Если баланс магазина меньше -10000, то признается банкротом и игра завершается                                                                          --
-///
-/// Вопрос:
-/// 1. По поводу передачи
-/// Ответ:
-/// 1.
-///     1.1 Сделал в классе Detail метод Repair                                                                                                                      --  YES
-///     1.2 Сделал передачу копии листа через метод                                                                                                                  --  YES
-///     1.3 Автосервис методом ВыявлениеСлмоанныхДеталей выясняет какие детали сломаны и вызывает метод Detail.Repair                                                --  YES
-/// 
-/// </summ.ary>
 
 namespace OOP.Auroservice
 {
@@ -126,13 +94,13 @@ namespace OOP.Auroservice
             string inputCountComponents = Console.ReadLine();
 
             if (int.TryParse(inputCountComponents, out int countComponents) == false &&
-                _warehouseComponents.FindTitleComponentAvailability(inputComponentTtile))
+                _warehouseComponents.TryFindTitleComponentAvailability(inputComponentTtile))
                 Console.WriteLine("Введите корректное значение/название");
             else if (_balanceMoney <= _warehouseComponents.GetPriceFillComponents(inputComponentTtile, countComponents))
                 Console.WriteLine("На Ващем счету недостаточно средств");
             else
                 _balanceMoney -=
-                    _warehouseComponents.FillBuyComponents(inputComponentTtile, countComponents, _balanceMoney);
+                    _warehouseComponents.FillBuyComponents(inputComponentTtile, countComponents);
         }
 
         private void ServiceCar()
@@ -146,7 +114,7 @@ namespace OOP.Auroservice
             DetectBrokeComponents(car, brokeComponents);
             ShowBrokeComponentCar(brokeComponents);
 
-            if (_warehouseComponents.FindComponentsAvailability(brokeComponents))
+            if (_warehouseComponents.TryFindComponentsAvailability(brokeComponents))
             {
                 RepairCarComponent(brokeComponents);
                 priceRepair = CountRepairEstimate(brokeComponents, priceRepair);
@@ -207,7 +175,7 @@ namespace OOP.Auroservice
             FillDefaultComponents();
         }
 
-        public bool FindComponentsAvailability(List<Component> brokeComponents)
+        public bool TryFindComponentsAvailability(List<Component> brokeComponents)
         {
             foreach (var component in brokeComponents)
                 if (_components[component] <= 0)
@@ -216,7 +184,7 @@ namespace OOP.Auroservice
             return true;
         }
 
-        public bool FindTitleComponentAvailability(string componentInputTitle)
+        public bool TryFindTitleComponentAvailability(string componentInputTitle)
         {
             foreach (var component in _components.Keys)
                 if (component.Title == componentInputTitle)
@@ -236,13 +204,13 @@ namespace OOP.Auroservice
             return priceFillComponents;
         }
 
-        public int FillBuyComponents(string componentInputTitle, int countComponents, int balance)
+        public int FillBuyComponents(string componentInputTitle, int countComponents)
         {
             int priceFillComponents = 0;
 
             foreach (var component in _components.Keys)
             {
-                if (component.Title == componentInputTitle && balance >= component.Price * countComponents)
+                if (component.Title == componentInputTitle)
                 {
                     _components[component] += countComponents;
                     priceFillComponents += component.Price;
@@ -268,7 +236,7 @@ namespace OOP.Auroservice
 
         private void FillDefaultComponents()
         {
-            int maxComponentsCount = 1;
+            int maxComponentsCount = 10;
 
             for (int i = 0; i < ComponentsCreator.GetCopyDefaultComponents().Count; i++)
                 _components.Add(ComponentsCreator.GetDefaultComponent(i),
@@ -328,7 +296,8 @@ namespace OOP.Auroservice
 
         public Car(List<Component> components)
         {
-            _components = new List<Component>(components);
+            //ComponentsCreator componentsCreator = new ComponentsCreator();
+            _components = components;
             BrokeComponents();
         }
 
