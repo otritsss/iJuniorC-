@@ -9,8 +9,6 @@ namespace OOP.Auroservice
         {
             Autoservise autoservise = new Autoservise();
             autoservise.Work();
-
-            Console.ReadKey();
         }
     }
 
@@ -43,7 +41,7 @@ namespace OOP.Auroservice
         public void Work()
         {
             bool isWork = true;
-            int minBalance = -100000;
+            int minBalance = -10000;
 
             while (isWork && _balanceMoney > minBalance)
             {
@@ -107,7 +105,9 @@ namespace OOP.Auroservice
         {
             Console.WriteLine($"\n{_indexRepairCar++} Автомобиль за сессию");
 
-            Car car = new Car(_warehouseComponents.ComponentsCreator.GetCopyDefaultComponents());
+            var componentsCar = _warehouseComponents.ComponentsCreator.GetCopyDefaultComponents();
+
+            Car car = new Car(componentsCar);
             List<Component> brokeComponents = new List<Component>();
             int priceRepair = 0;
 
@@ -128,6 +128,9 @@ namespace OOP.Auroservice
                     $"Недостаточно деталей на складе\nВы выплатили штраф - {Forfeit}");
                 _balanceMoney -= Forfeit;
             }
+
+            foreach (var component in componentsCar)
+                component.Repair();
         }
 
         private List<Component> DetectBrokeComponents(Car car, List<Component> brokeComponents)
@@ -182,12 +185,8 @@ namespace OOP.Auroservice
         public bool TryFindComponentsAvailability(List<Component> brokeComponents)
         {
             foreach (var component in brokeComponents)
-            {
-                component.Repair();
-
                 if (_components[component] <= 0)
                     return false;
-            }
 
             return true;
         }
@@ -245,7 +244,7 @@ namespace OOP.Auroservice
 
         private void FillDefaultComponents()
         {
-            int maxComponentsCount = 5;
+            int maxComponentsCount = 0;
 
             for (int i = 0; i < ComponentsCreator.GetCopyDefaultComponents().Count; i++)
                 _components.Add(ComponentsCreator.GetDefaultComponent(i),
@@ -311,8 +310,11 @@ namespace OOP.Auroservice
 
         private void BrokeComponent()
         {
-            int indexComponent = UserUtils.GenerateRandomNumber(0, _components.Count);
-            _components[indexComponent].MadeBroken();
+            for (int i = 0; i < _components.Count; i++)
+            {
+                int indexComponent = UserUtils.GenerateRandomNumber(0, _components.Count);
+                _components[indexComponent].MadeBroken();
+            }
         }
     }
 }
