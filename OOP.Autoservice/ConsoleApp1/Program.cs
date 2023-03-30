@@ -45,7 +45,7 @@ namespace OOP.Auroservice
             bool isWork = true;
             int minBalance = -100000;
 
-            while (isWork || _balanceMoney > minBalance)
+            while (isWork && _balanceMoney > minBalance)
             {
                 Console.WriteLine(
                     $"Баланс автосервиса: {_balanceMoney}" +
@@ -78,7 +78,7 @@ namespace OOP.Auroservice
                 Console.Clear();
             }
 
-            if (_balanceMoney > minBalance)
+            if (_balanceMoney <= minBalance)
                 Console.WriteLine("Вы признаны банкротом!");
             else
                 Console.WriteLine("Всего доброго!");
@@ -111,7 +111,7 @@ namespace OOP.Auroservice
             List<Component> brokeComponents = new List<Component>();
             int priceRepair = 0;
 
-            DetectBrokeComponents(car, brokeComponents);
+            brokeComponents = DetectBrokeComponents(car, brokeComponents);
             ShowBrokeComponentCar(brokeComponents);
 
             if (_warehouseComponents.TryFindComponentsAvailability(brokeComponents))
@@ -124,14 +124,18 @@ namespace OOP.Auroservice
             }
             else
             {
-                UserUtils.PrintTextDeffierentColors(ConsoleColor.Red, "Недостаточно деталей на складе");
+                UserUtils.PrintTextDeffierentColors(ConsoleColor.Red,
+                    $"Недостаточно деталей на складе\nВы выплатили штраф - {Forfeit}");
                 _balanceMoney -= Forfeit;
             }
         }
 
         private List<Component> DetectBrokeComponents(Car car, List<Component> brokeComponents)
         {
+            List<Component> tempComponents = new List<Component>();
             List<Component> componentsCar = car.GetCopyComponent();
+
+            brokeComponents = tempComponents;
 
             foreach (var component in componentsCar)
                 if (component.IsBroke == true)
@@ -178,8 +182,12 @@ namespace OOP.Auroservice
         public bool TryFindComponentsAvailability(List<Component> brokeComponents)
         {
             foreach (var component in brokeComponents)
+            {
+                component.Repair();
+
                 if (_components[component] <= 0)
                     return false;
+            }
 
             return true;
         }
@@ -223,6 +231,7 @@ namespace OOP.Auroservice
         public void RemoveComponent(Component componentInput)
         {
             _components[componentInput]--;
+            componentInput.Repair();
         }
 
         public void ShowInfo()
@@ -231,16 +240,16 @@ namespace OOP.Auroservice
 
             foreach (var component in _components)
                 Console.WriteLine(
-                    $"{component.Key.Title} Количество - {component.Value} | Цена - {component.Key.Price}");
+                    $"{component.Key.Title} Количество - {component.Value} | Цена - {component.Key.Price} | {component.Key.IsBroke}");
         }
 
         private void FillDefaultComponents()
         {
-            int maxComponentsCount = 10;
+            int maxComponentsCount = 5;
 
             for (int i = 0; i < ComponentsCreator.GetCopyDefaultComponents().Count; i++)
                 _components.Add(ComponentsCreator.GetDefaultComponent(i),
-                    UserUtils.GenerateRandomNumber(1, maxComponentsCount));
+                    UserUtils.GenerateRandomNumber(0, maxComponentsCount));
         }
     }
 
@@ -264,10 +273,7 @@ namespace OOP.Auroservice
 
         public void Repair()
         {
-            if (IsBroke == false)
-                Console.WriteLine("Деталь не сломана");
-            else
-                IsBroke = false;
+            IsBroke = false;
         }
     }
 
@@ -296,21 +302,17 @@ namespace OOP.Auroservice
 
         public Car(List<Component> components)
         {
-            //ComponentsCreator componentsCreator = new ComponentsCreator();
             _components = components;
-            BrokeComponents();
+            BrokeComponent();
         }
 
         public List<Component> GetCopyComponent() =>
             new List<Component>(_components);
 
-        private void BrokeComponents()
+        private void BrokeComponent()
         {
-            for (int i = 0; i < _components.Count; i++)
-            {
-                int indexComponent = UserUtils.GenerateRandomNumber(0, _components.Count);
-                _components[indexComponent].MadeBroken();
-            }
+            int indexComponent = UserUtils.GenerateRandomNumber(0, _components.Count);
+            _components[indexComponent].MadeBroken();
         }
     }
 }
