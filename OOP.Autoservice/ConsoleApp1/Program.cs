@@ -27,14 +27,14 @@ namespace OOP.Auroservice
 
     class Autoservise
     {
-        private const int RepairService = 7000;
-        private const int Forfeit = 3000;
         private const string ServiceCarCommand = "1";
         private const string BuyComponents = "2";
         private const string ShowInfoWarehouseComponents = "3";
         private const string Exit = "4";
 
         private WarehouseComponents _warehouseComponents = new WarehouseComponents();
+        private readonly int _repairService = 7000;
+        private readonly int _forfeit = 3000;
         private int _balanceMoney;
         private int _indexRepairCar = 1;
 
@@ -97,16 +97,15 @@ namespace OOP.Auroservice
             else if (_balanceMoney <= _warehouseComponents.GetPriceFillComponents(inputComponentTtile, countComponents))
                 Console.WriteLine("На Ващем счету недостаточно средств");
             else
-                _balanceMoney -=
-                    _warehouseComponents.FillBuyComponents(inputComponentTtile, countComponents);
+                _balanceMoney -= _warehouseComponents.FillBuyComponents(inputComponentTtile, countComponents);
         }
 
         private void ServiceCar()
         {
             Console.WriteLine($"\n{_indexRepairCar++} Автомобиль за сессию");
 
-            var componentsCar = _warehouseComponents.ComponentsCreator.GetCopyDefaultComponents();
-
+            ComponentsCreator componentsCreator = new ComponentsCreator();
+            var componentsCar = _warehouseComponents.GetComponentsCreator().GetCopyDefaultComponents();
             Car car = new Car(componentsCar);
             List<Component> brokeComponents = new List<Component>();
             int priceRepair = 0;
@@ -119,14 +118,14 @@ namespace OOP.Auroservice
                 RepairCarComponent(brokeComponents);
                 priceRepair = CountRepairEstimate(brokeComponents, priceRepair);
 
-                Console.WriteLine($"Стоимость ремонта = {priceRepair += RepairService}");
+                Console.WriteLine($"Стоимость ремонта = {priceRepair += _repairService}");
                 _balanceMoney += priceRepair;
             }
             else
             {
                 UserUtils.PrintTextDeffierentColors(ConsoleColor.Red,
-                    $"Недостаточно деталей на складе\nВы выплатили штраф - {Forfeit}");
-                _balanceMoney -= Forfeit;
+                    $"Недостаточно деталей на складе\nВы выплатили штраф - {_forfeit}");
+                _balanceMoney -= _forfeit;
             }
 
             foreach (var component in componentsCar)
@@ -141,7 +140,7 @@ namespace OOP.Auroservice
             brokeComponents = tempComponents;
 
             foreach (var component in componentsCar)
-                if (component.IsBroke == true)
+                if (component.IsBroken == true)
                     brokeComponents.Add(component);
 
             return brokeComponents;
@@ -173,8 +172,9 @@ namespace OOP.Auroservice
 
     class WarehouseComponents
     {
-        public ComponentsCreator ComponentsCreator = new ComponentsCreator();
+        private ComponentsCreator _componentsCreator = new ComponentsCreator();
         private Dictionary<Component, int> _components = new Dictionary<Component, int>();
+        private List<Stack> _components2 = new List<Stack>();
         private int _countComponents;
 
         public WarehouseComponents()
@@ -182,13 +182,23 @@ namespace OOP.Auroservice
             FillDefaultComponents();
         }
 
+        public ComponentsCreator GetComponentsCreator() =>
+            _componentsCreator;
+
         public bool TryFindComponentsAvailability(List<Component> brokeComponents)
         {
+            /*
             foreach (var component in brokeComponents)
-                if (_components[component] <= 0)
+                if (_components2[component].GetCount() <= 0)
                     return false;
 
             return true;
+            */
+
+            for (int i = 0; i < brokeComponents; i++)
+            {
+                if (_components2[i].)
+            }
         }
 
         public bool TryFindTitleComponentAvailability(string componentInputTitle)
@@ -239,16 +249,22 @@ namespace OOP.Auroservice
 
             foreach (var component in _components)
                 Console.WriteLine(
-                    $"{component.Key.Title} Количество - {component.Value} | Цена - {component.Key.Price} | {component.Key.IsBroke}");
+                    $"{component.Key.Title} Количество - {component.Value} | Цена - {component.Key.Price} | {component.Key.IsBroken}");
         }
 
         private void FillDefaultComponents()
         {
             int maxComponentsCount = 0;
 
-            for (int i = 0; i < ComponentsCreator.GetCopyDefaultComponents().Count; i++)
-                _components.Add(ComponentsCreator.GetDefaultComponent(i),
+            /*
+            for (int i = 0; i < _componentsCreator.GetCopyDefaultComponents().Count; i++)
+                _components.Add(_componentsCreator.GetDefaultComponent(i),
                     UserUtils.GenerateRandomNumber(0, maxComponentsCount));
+                    */
+
+            for (int i = 0; i < _componentsCreator.GetCopyDefaultComponents().Count; i++)
+                _components2.Add(new Stack(_componentsCreator.GetDefaultComponent(i),
+                    UserUtils.GenerateRandomNumber(0, maxComponentsCount)));
         }
     }
 
@@ -258,21 +274,21 @@ namespace OOP.Auroservice
         {
             Title = title;
             Price = price;
-            IsBroke = false;
+            IsBroken = false;
         }
 
         public string Title { get; private set; }
         public int Price { get; private set; }
-        public bool IsBroke { get; private set; }
+        public bool IsBroken { get; private set; }
 
         public void MadeBroken()
         {
-            IsBroke = true;
+            IsBroken = true;
         }
 
         public void Repair()
         {
-            IsBroke = false;
+            IsBroken = false;
         }
     }
 
@@ -316,5 +332,21 @@ namespace OOP.Auroservice
                 _components[indexComponent].MadeBroken();
             }
         }
+    }
+
+    class Stack
+    {
+        private Component _component;
+        private int _countComponents;
+
+        public Stack(Component component, int count)
+        {
+            _component = component;
+            _countComponents = count;
+        }
+
+        public int RemoveComponent() => _countComponents--;
+
+        public int GetCount() => _countComponents;
     }
 }
