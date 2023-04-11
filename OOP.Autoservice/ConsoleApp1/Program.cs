@@ -187,24 +187,23 @@ namespace OOP.Auroservice
 
         public bool TryFindComponentsAvailability(List<Component> brokeComponents)
         {
-            /*
-            foreach (var component in brokeComponents)
-                if (_components2[component].GetCount() <= 0)
-                    return false;
+            foreach (var brokeComponent in brokeComponents)
+            {
+                foreach (var component in _components2)
+                {
+                    if (component.GetComponent() == brokeComponent)
+                        if (component.GetCount() <= 0)
+                            return false;
+                }
+            }
 
             return true;
-            */
-
-            for (int i = 0; i < brokeComponents; i++)
-            {
-                if (_components2[i].)
-            }
         }
 
         public bool TryFindTitleComponentAvailability(string componentInputTitle)
         {
-            foreach (var component in _components.Keys)
-                if (component.Title == componentInputTitle)
+            foreach (var component in _components2)
+                if (component.GetComponent().Title == componentInputTitle)
                     return true;
 
             return false;
@@ -214,9 +213,9 @@ namespace OOP.Auroservice
         {
             int priceFillComponents = 0;
 
-            foreach (var component in _components.Keys)
-                if (component.Title == componentInputTitle)
-                    priceFillComponents += component.Price;
+            foreach (var component in _components2)
+                if (component.GetComponent().Title == componentInputTitle)
+                    priceFillComponents += component.GetComponent().Price;
 
             return priceFillComponents;
         }
@@ -225,12 +224,12 @@ namespace OOP.Auroservice
         {
             int priceFillComponents = 0;
 
-            foreach (var component in _components.Keys)
+            foreach (var component in _components2)
             {
-                if (component.Title == componentInputTitle)
+                if (component.GetComponent().Title == componentInputTitle)
                 {
-                    _components[component] += countComponents;
-                    priceFillComponents += component.Price;
+                    component.AddCount(countComponents);
+                    priceFillComponents += component.GetComponent().Price;
                 }
             }
 
@@ -239,28 +238,22 @@ namespace OOP.Auroservice
 
         public void RemoveComponent(Component componentInput)
         {
-            _components[componentInput]--;
-            componentInput.Repair();
+            foreach (var component in _components2)
+                if (component.GetComponent() == componentInput)
+                    component.ReduceCount();
         }
 
         public void ShowInfo()
         {
             Console.WriteLine("Наличие на складе");
 
-            foreach (var component in _components)
-                Console.WriteLine(
-                    $"{component.Key.Title} Количество - {component.Value} | Цена - {component.Key.Price} | {component.Key.IsBroken}");
+            foreach (var component in _components2)
+                component.ShowInfo();
         }
 
         private void FillDefaultComponents()
         {
-            int maxComponentsCount = 0;
-
-            /*
-            for (int i = 0; i < _componentsCreator.GetCopyDefaultComponents().Count; i++)
-                _components.Add(_componentsCreator.GetDefaultComponent(i),
-                    UserUtils.GenerateRandomNumber(0, maxComponentsCount));
-                    */
+            int maxComponentsCount = 5;
 
             for (int i = 0; i < _componentsCreator.GetCopyDefaultComponents().Count; i++)
                 _components2.Add(new Stack(_componentsCreator.GetDefaultComponent(i),
@@ -345,8 +338,18 @@ namespace OOP.Auroservice
             _countComponents = count;
         }
 
-        public int RemoveComponent() => _countComponents--;
+        public int ReduceCount() => _countComponents--;
+
+        public int AddCount(int count) => _countComponents += count;
 
         public int GetCount() => _countComponents;
+
+        public Component GetComponent() => _component;
+
+        public void ShowInfo()
+        {
+            Console.WriteLine(
+                $"Название - {_component.Title} | Цена - {_component.Price} | Количество - {_countComponents}");
+        }
     }
 }
