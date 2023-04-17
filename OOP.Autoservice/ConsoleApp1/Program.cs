@@ -173,8 +173,7 @@ namespace OOP.Auroservice
     class WarehouseComponents
     {
         private ComponentsCreator _componentsCreator = new ComponentsCreator();
-        private Dictionary<Component, int> _components = new Dictionary<Component, int>();
-        private List<Stack> _components2 = new List<Stack>();
+        private List<Stack> _componentStacks = new List<Stack>();
         private int _countComponents;
 
         public WarehouseComponents()
@@ -189,9 +188,9 @@ namespace OOP.Auroservice
         {
             foreach (var brokeComponent in brokeComponents)
             {
-                foreach (var component in _components2)
+                foreach (var component in _componentStacks)
                 {
-                    if (component.GetComponent() == brokeComponent)
+                    if (component.Get() == brokeComponent)
                         if (component.GetCount() <= 0)
                             return false;
                 }
@@ -202,8 +201,8 @@ namespace OOP.Auroservice
 
         public bool TryFindTitleComponentAvailability(string componentInputTitle)
         {
-            foreach (var component in _components2)
-                if (component.GetComponent().Title == componentInputTitle)
+            foreach (var component in _componentStacks)
+                if (component.Get().Title == componentInputTitle)
                     return true;
 
             return false;
@@ -213,9 +212,9 @@ namespace OOP.Auroservice
         {
             int priceFillComponents = 0;
 
-            foreach (var component in _components2)
-                if (component.GetComponent().Title == componentInputTitle)
-                    priceFillComponents += component.GetComponent().Price;
+            foreach (var component in _componentStacks)
+                if (component.Get().Title == componentInputTitle)
+                    priceFillComponents += component.Get().Price;
 
             return priceFillComponents;
         }
@@ -224,12 +223,12 @@ namespace OOP.Auroservice
         {
             int priceFillComponents = 0;
 
-            foreach (var component in _components2)
+            foreach (var component in _componentStacks)
             {
-                if (component.GetComponent().Title == componentInputTitle)
+                if (component.Get().Title == componentInputTitle)
                 {
                     component.AddCount(countComponents);
-                    priceFillComponents += component.GetComponent().Price;
+                    priceFillComponents += component.Get().Price;
                 }
             }
 
@@ -238,8 +237,8 @@ namespace OOP.Auroservice
 
         public void RemoveComponent(Component componentInput)
         {
-            foreach (var component in _components2)
-                if (component.GetComponent() == componentInput)
+            foreach (var component in _componentStacks)
+                if (component.Get() == componentInput)
                     component.ReduceCount();
         }
 
@@ -247,7 +246,7 @@ namespace OOP.Auroservice
         {
             Console.WriteLine("Наличие на складе");
 
-            foreach (var component in _components2)
+            foreach (var component in _componentStacks)
                 component.ShowInfo();
         }
 
@@ -256,7 +255,7 @@ namespace OOP.Auroservice
             int maxComponentsCount = 5;
 
             for (int i = 0; i < _componentsCreator.GetCopyDefaultComponents().Count; i++)
-                _components2.Add(new Stack(_componentsCreator.GetDefaultComponent(i),
+                _componentStacks.Add(new Stack(_componentsCreator.GetDefaultComponent(i),
                     UserUtils.GenerateRandomNumber(0, maxComponentsCount)));
         }
     }
@@ -287,15 +286,20 @@ namespace OOP.Auroservice
 
     class ComponentsCreator
     {
-        private List<Component> _defaultComponents = new List<Component>()
+        private List<Component> _defaultComponents;
+
+        public ComponentsCreator()
         {
-            new Component("Коробка", 55000),
-            new Component("Подвеска", 40000),
-            new Component("Двигатель", 100000),
-            new Component("Кондиционер", 2500),
-            new Component("Ремень генератора", 500),
-            new Component("Колесо", 1500)
-        };
+            _defaultComponents = new List<Component>()
+            {
+                new Component("Коробка", 55000),
+                new Component("Подвеска", 40000),
+                new Component("Двигатель", 100000),
+                new Component("Кондиционер", 2500),
+                new Component("Ремень генератора", 500),
+                new Component("Колесо", 1500)
+            };
+        }
 
         public Component GetDefaultComponent(int indexComponent) =>
             _defaultComponents[indexComponent];
@@ -311,13 +315,13 @@ namespace OOP.Auroservice
         public Car(List<Component> components)
         {
             _components = components;
-            BrokeComponent();
+            BreakAComponent();
         }
 
         public List<Component> GetCopyComponent() =>
             new List<Component>(_components);
 
-        private void BrokeComponent()
+        private void BreakAComponent()
         {
             for (int i = 0; i < _components.Count; i++)
             {
@@ -344,7 +348,7 @@ namespace OOP.Auroservice
 
         public int GetCount() => _countComponents;
 
-        public Component GetComponent() => _component;
+        public Component Get() => _component;
 
         public void ShowInfo()
         {
