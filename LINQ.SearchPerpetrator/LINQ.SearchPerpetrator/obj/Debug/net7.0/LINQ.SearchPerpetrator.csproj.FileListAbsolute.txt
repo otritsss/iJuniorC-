@@ -1,0 +1,15 @@
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\bin\Debug\net7.0\LINQ.SearchPerpetrator.exe
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\bin\Debug\net7.0\LINQ.SearchPerpetrator.deps.json
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\bin\Debug\net7.0\LINQ.SearchPerpetrator.runtimeconfig.json
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\bin\Debug\net7.0\LINQ.SearchPerpetrator.dll
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\bin\Debug\net7.0\LINQ.SearchPerpetrator.pdb
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\LINQ.SearchPerpetrator.csproj.AssemblyReference.cache
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\LINQ.SearchPerpetrator.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\LINQ.SearchPerpetrator.AssemblyInfoInputs.cache
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\LINQ.SearchPerpetrator.AssemblyInfo.cs
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\LINQ.SearchPerpetrator.csproj.CoreCompileInputs.cache
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\LINQ.SearchPerpetrator.dll
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\refint\LINQ.SearchPerpetrator.dll
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\LINQ.SearchPerpetrator.pdb
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\LINQ.SearchPerpetrator.genruntimeconfig.cache
+D:\Microsoft Visual Studio\repos\LINQ.SearchPerpetrator\LINQ.SearchPerpetrator\obj\Debug\net7.0\ref\LINQ.SearchPerpetrator.dll

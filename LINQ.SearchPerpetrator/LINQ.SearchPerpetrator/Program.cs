@@ -8,6 +8,8 @@ namespace OOP.Auroservice
     {
         static void Main()
         {
+            Database database = new Database();
+            database.Open();
         }
     }
 
@@ -17,6 +19,71 @@ namespace OOP.Auroservice
 
         public void Open()
         {
+            bool isWork = true;
+            FillCriminals();
+
+            while (isWork)
+            {
+                int inputHeight;
+                int inputWeight = 0;
+                string inputNationality = null;
+
+                Console.Write("Введите рост: ");
+
+                if (int.TryParse(Console.ReadLine(), out inputHeight))
+                {
+                    Console.Write("Введите вес: ");
+
+                    if (int.TryParse(Console.ReadLine(), out inputWeight))
+                    {
+                        Console.Write("Введите национальность: ");
+                        inputNationality = Console.ReadLine();
+                    }
+                }
+
+                if (SearchCrimonals(inputHeight, inputWeight, inputNationality).Count != 0)
+                    ShowInfoSearchCriminals(SearchCrimonals(inputHeight, inputWeight, inputNationality));
+                else
+                    Console.WriteLine("Не удалось найти преступников с такими параметрами");
+
+
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+
+        private List<Criminal> SearchCrimonals(int inputHeight, int inputWeight, string inputNationality)
+        {
+            List<Criminal> filtredCriminals;
+
+            filtredCriminals = _criminals.Where(criminal => criminal.Height == inputHeight)
+                .Where(criminal => criminal.Weight == inputWeight)
+                .Where(criminal => criminal.Nationality == inputNationality)
+                .Where(criminal => criminal.BeingInCustody == BeingInCustody.NotInCustody).Select(criminal => criminal)
+                .ToList();
+
+            return filtredCriminals;
+        }
+
+        private void ShowInfoSearchCriminals(List<Criminal> filtredCriminals)
+        {
+            foreach (var crimnal in filtredCriminals)
+                crimnal.ShowInfo();
+        }
+
+        private Criminal AddCriminal()
+        {
+            CriminalCreator creator = new CriminalCreator();
+            Criminal criminal = creator.Create();
+            return criminal;
+        }
+
+        private void FillCriminals()
+        {
+            int countCriminals = 100000;
+
+            for (int i = 0; i < countCriminals; i++)
+                _criminals.Add(AddCriminal());
         }
     }
 
@@ -40,7 +107,7 @@ namespace OOP.Auroservice
         public void ShowInfo()
         {
             Console.WriteLine(
-                $"Имя - {Name}, Национальность - {Nationality}, Рост - {Height}, Вес - {Weight}, Заключен под стражу? -{BeingInCustody}");
+                $"Имя - {Name}, Национальность - {Nationality}, Рост - {Height}, Вес - {Weight}, Заключен под стражу? - {BeingInCustody}");
         }
     }
 
@@ -104,11 +171,11 @@ namespace OOP.Auroservice
             string name = lastName + " " + firstName + " " + fathertName;
 
             string nationality = _defaultNationalitys[UserUtils.GenerateRandomNumber(0, _defaultNationalitys.Count)];
-            int minHeight = 150;
-            int maxHeight = 200;
+            int minHeight = 160;
+            int maxHeight = 181;
             int height = UserUtils.GenerateRandomNumber(minHeight, maxHeight);
-            int minWeight = 50;
-            int maxWeight = 110;
+            int minWeight = 60;
+            int maxWeight = 91;
             int weight = UserUtils.GenerateRandomNumber(minWeight, maxWeight);
             int genderCount = 2;
             BeingInCustody beingInCustody = (BeingInCustody) UserUtils.GenerateRandomNumber(0, genderCount);
@@ -127,6 +194,7 @@ namespace OOP.Auroservice
     class UserUtils
     {
         private static Random _random = new Random();
+
         public static int GenerateRandomNumber(int minValue, int maxValue) => _random.Next(minValue, maxValue);
     }
 }
