@@ -25,8 +25,11 @@ namespace LINQ.Amnesty
             Console.WriteLine("Нажмите на любую клавищу, чтобы удалить ненужных перступников");
             Console.ReadKey();
 
+            Console.Clear();
             RemoveCriminals();
             ShowInfo();
+
+            Console.ReadKey();
         }
 
         private void RemoveCriminals()
@@ -43,7 +46,7 @@ namespace LINQ.Amnesty
 
         private void FillCriminals()
         {
-            int countCriminals = 1000;
+            int countCriminals = 100;
 
             for (int i = 0; i < countCriminals; i++)
                 _criminals.Add(AddCriminal());
@@ -60,6 +63,7 @@ namespace LINQ.Amnesty
 
     class Criminal
     {
+        public string Name { get; private set; }
         public string Name { get; private set; }
         public string CrimeName { get; private set; }
 
@@ -140,10 +144,10 @@ namespace LINQ.Amnesty
         }
     }
 
-    static class UserUtils
+    class UserUtils
     {
         private static Random _random = new Random();
 
-        public static int GenerateRandomNumber(int minValue, int maxValue) => _random.Next(maxValue, maxValue);
+        public static int GenerateRandomNumber(int minValue, int maxValue) => _random.Next(minValue, maxValue);
     }
 }
