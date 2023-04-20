@@ -1,0 +1,15 @@
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\bin\Debug\net7.0\LINQ.Amnesty.exe
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\bin\Debug\net7.0\LINQ.Amnesty.deps.json
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\bin\Debug\net7.0\LINQ.Amnesty.runtimeconfig.json
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\bin\Debug\net7.0\LINQ.Amnesty.dll
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\bin\Debug\net7.0\LINQ.Amnesty.pdb
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\LINQ.Amnesty.csproj.AssemblyReference.cache
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\LINQ.Amnesty.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\LINQ.Amnesty.AssemblyInfoInputs.cache
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\LINQ.Amnesty.AssemblyInfo.cs
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\LINQ.Amnesty.csproj.CoreCompileInputs.cache
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\LINQ.Amnesty.dll
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\refint\LINQ.Amnesty.dll
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\LINQ.Amnesty.pdb
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\LINQ.Amnesty.genruntimeconfig.cache
+D:\Microsoft Visual Studio\repos\LINQ.Amnesty\LINQ.Amnesty\obj\Debug\net7.0\ref\LINQ.Amnesty.dll
