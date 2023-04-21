@@ -39,6 +39,14 @@ namespace OOP.Auroservice
                         Console.Write("Введите национальность: ");
                         inputNationality = Console.ReadLine();
                     }
+                    else
+                    {
+                        Console.WriteLine("Вы ввели некорректное значение");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Вы ввели некорректное значение");
                 }
 
                 if (SearchCrimonals(inputHeight, inputWeight, inputNationality).Count != 0)
@@ -59,7 +67,7 @@ namespace OOP.Auroservice
             filtredCriminals = _criminals.Where(criminal => criminal.Height == inputHeight)
                 .Where(criminal => criminal.Weight == inputWeight)
                 .Where(criminal => criminal.Nationality == inputNationality)
-                .Where(criminal => criminal.BeingInCustody == BeingInCustody.NotInCustody).Select(criminal => criminal)
+                .Where(criminal => criminal.IsBeingInCustody == true)
                 .ToList();
 
             return filtredCriminals;
@@ -89,25 +97,25 @@ namespace OOP.Auroservice
 
     class Criminal
     {
-        public string Name;
-        public string Nationality;
-        public int Height;
-        public int Weight;
-        public BeingInCustody BeingInCustody;
+        public string Name { get; private set; }
+        public string Nationality { get; private set; }
+        public int Height { get; private set; }
+        public int Weight { get; private set; }
+        public bool IsBeingInCustody;
 
-        public Criminal(string name, string nationality, int height, int weight, BeingInCustody beingInCustody)
+        public Criminal(string name, string nationality, int height, int weight, bool beingInCustody)
         {
             Name = name;
             Nationality = nationality;
             Height = height;
             Weight = weight;
-            BeingInCustody = beingInCustody;
+            IsBeingInCustody = beingInCustody;
         }
 
         public void ShowInfo()
         {
             Console.WriteLine(
-                $"Имя - {Name}, Национальность - {Nationality}, Рост - {Height}, Вес - {Weight}, Заключен под стражу? - {BeingInCustody}");
+                $"Имя - {Name}, Национальность - {Nationality}, Рост - {Height}, Вес - {Weight}, Заключен под стражу? - {IsBeingInCustody}");
         }
     }
 
@@ -177,18 +185,15 @@ namespace OOP.Auroservice
             int minWeight = 60;
             int maxWeight = 91;
             int weight = UserUtils.GenerateRandomNumber(minWeight, maxWeight);
-            int genderCount = 2;
-            BeingInCustody beingInCustody = (BeingInCustody) UserUtils.GenerateRandomNumber(0, genderCount);
+            int optionsCount = 2;
+            bool isBeingInCustody =
+                true
+                    ? UserUtils.GenerateRandomNumber(0, optionsCount) == 1
+                    : UserUtils.GenerateRandomNumber(0, optionsCount) == 0;
 
-            Criminal criminal = new Criminal(name, nationality, height, weight, beingInCustody);
+            Criminal criminal = new Criminal(name, nationality, height, weight, isBeingInCustody);
             return criminal;
         }
-    }
-
-    public enum BeingInCustody
-    {
-        InCustody,
-        NotInCustody,
     }
 
     class UserUtils
