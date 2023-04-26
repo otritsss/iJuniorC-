@@ -26,15 +26,19 @@ namespace LINQ.Amnesty
             Console.ReadKey();
 
             Console.Clear();
-            RemoveCriminals();
+            _criminals = AmnestyCriminals();
             ShowInfo();
 
             Console.ReadKey();
         }
 
-        private void RemoveCriminals()
+        private List<Criminal> AmnestyCriminals()
         {
-            _criminals.RemoveAll(criminal => criminal.CrimeName == "Антиправительственное");
+            string amnestyCriminalName = "Антиправительственное";
+
+            var filtredCriminals = _criminals.Where(criminal => criminal.CrimeName != amnestyCriminalName).ToList();
+
+            return filtredCriminals;
         }
 
         private Criminal AddCriminal()
@@ -63,15 +67,14 @@ namespace LINQ.Amnesty
 
     class Criminal
     {
-        public string Name { get; private set; }
-        public string Name { get; private set; }
-        public string CrimeName { get; private set; }
-
         public Criminal(string name, string crimeName)
         {
             Name = name;
             CrimeName = crimeName;
         }
+
+        public string Name { get; private set; }
+        public string CrimeName { get; private set; }
 
         public void ShowInfo()
         {
