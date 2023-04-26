@@ -97,12 +97,6 @@ namespace OOP.Auroservice
 
     class Criminal
     {
-        public string Name { get; private set; }
-        public string Nationality { get; private set; }
-        public int Height { get; private set; }
-        public int Weight { get; private set; }
-        public bool IsBeingInCustody;
-
         public Criminal(string name, string nationality, int height, int weight, bool beingInCustody)
         {
             Name = name;
@@ -111,6 +105,12 @@ namespace OOP.Auroservice
             Weight = weight;
             IsBeingInCustody = beingInCustody;
         }
+
+        public string Name { get; private set; }
+        public string Nationality { get; private set; }
+        public int Height { get; private set; }
+        public int Weight { get; private set; }
+        public bool IsBeingInCustody { get; private set; }
 
         public void ShowInfo()
         {
