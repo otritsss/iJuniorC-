@@ -49,10 +49,10 @@ namespace OOP.Auroservice
                     Console.WriteLine("Вы ввели некорректное значение");
                 }
 
-                List<Criminal> searchCrimonals = SearchCrimonals(inputHeight, inputWeight, inputNationality);
+                List<Criminal> foundCrimonals = SearchCrimonals(inputHeight, inputWeight, inputNationality);
 
-                if (searchCrimonals.Count != 0)
-                    ShowInfoSearchCriminals(searchCrimonals);
+                if (foundCrimonals.Count != 0)
+                    ShowInfoSearchCriminals(foundCrimonals);
                 else
                     Console.WriteLine("Не удалось найти преступников с такими параметрами");
 
