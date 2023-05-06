@@ -3,9 +3,9 @@
 /workspace.xml
 # Rider ignored files
 /contentModel.xml
-/.idea.LINQ.Hospital.iml
-/modules.xml
 /projectSettingsUpdater.xml
+/modules.xml
+/.idea.LINQ.Hospital.iml
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml

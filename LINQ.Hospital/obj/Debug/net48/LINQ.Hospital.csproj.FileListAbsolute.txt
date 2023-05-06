@@ -1,0 +1,6 @@
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net48\LINQ.Hospital.csproj.AssemblyReference.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net48\LINQ.Hospital.csproj.SuggestedBindingRedirects.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net48\LINQ.Hospital.GeneratedMSBuildEditorConfig.editorconfig
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net48\LINQ.Hospital.AssemblyInfoInputs.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net48\LINQ.Hospital.AssemblyInfo.cs
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net48\LINQ.Hospital.csproj.CoreCompileInputs.cache

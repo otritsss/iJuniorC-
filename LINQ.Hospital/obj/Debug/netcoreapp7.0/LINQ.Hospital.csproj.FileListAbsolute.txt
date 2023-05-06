@@ -1,0 +1,5 @@
+D:\mvs\repos\LINQ.Hospital\obj\Debug\netcoreapp7.0\LINQ.Hospital.csproj.AssemblyReference.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\netcoreapp7.0\LINQ.Hospital.GeneratedMSBuildEditorConfig.editorconfig
+D:\mvs\repos\LINQ.Hospital\obj\Debug\netcoreapp7.0\LINQ.Hospital.AssemblyInfoInputs.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\netcoreapp7.0\LINQ.Hospital.AssemblyInfo.cs
+D:\mvs\repos\LINQ.Hospital\obj\Debug\netcoreapp7.0\LINQ.Hospital.csproj.CoreCompileInputs.cache

@@ -1,0 +1,15 @@
+D:\mvs\repos\LINQ.Hospital\bin\Debug\net7.0\LINQ.Hospital.exe
+D:\mvs\repos\LINQ.Hospital\bin\Debug\net7.0\LINQ.Hospital.deps.json
+D:\mvs\repos\LINQ.Hospital\bin\Debug\net7.0\LINQ.Hospital.runtimeconfig.json
+D:\mvs\repos\LINQ.Hospital\bin\Debug\net7.0\LINQ.Hospital.dll
+D:\mvs\repos\LINQ.Hospital\bin\Debug\net7.0\LINQ.Hospital.pdb
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\LINQ.Hospital.csproj.AssemblyReference.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\LINQ.Hospital.GeneratedMSBuildEditorConfig.editorconfig
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\LINQ.Hospital.AssemblyInfoInputs.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\LINQ.Hospital.AssemblyInfo.cs
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\LINQ.Hospital.csproj.CoreCompileInputs.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\LINQ.Hospital.dll
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\refint\LINQ.Hospital.dll
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\LINQ.Hospital.pdb
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\LINQ.Hospital.genruntimeconfig.cache
+D:\mvs\repos\LINQ.Hospital\obj\Debug\net7.0\ref\LINQ.Hospital.dll
