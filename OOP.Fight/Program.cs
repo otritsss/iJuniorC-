@@ -126,7 +126,6 @@
                 int danceOfFire = 5;
                 fighter.TakeDamage(Damage + danceOfFire);
                 ShowInfoAbility("Танец огня");
-
             }
             else
             {
