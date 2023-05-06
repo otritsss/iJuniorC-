@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Channels;
 
 namespace LINQ.Hospital
 {
@@ -33,7 +32,7 @@ namespace LINQ.Hospital
             {
                 Console.WriteLine(
                     $"{SortByName} - Отсортировать по ФИО\n{SortByAge} - Отсортировать по возрасту\n" +
-                    $"{ShowByCertainDisease} - Вывести людей с определенным заболеванием");
+                    $"{ShowByCertainDisease} - Вывести людей с определенным заболеваниемы\n{ExitCommand} - Выход");
 
                 string userInputCommand = Console.ReadLine();
 
@@ -48,9 +47,11 @@ namespace LINQ.Hospital
                         break;
 
                     case ShowByCertainDisease:
+                        ShowPatientsByCertainDisease();
                         break;
 
                     case ExitCommand:
+                        isWork = false;
                         break;
 
                     default:
@@ -66,20 +67,27 @@ namespace LINQ.Hospital
         private void SortPatientsByName()
         {
             _patients = _patients.OrderBy(patient => patient.Name).ToList();
-            ShowPatients();
+            ShowPatients(_patients);
         }
 
         private void SortPatientsByAge()
         {
             _patients = _patients.OrderBy(patient => patient.Age).ToList();
-            ShowPatients();
+            ShowPatients(_patients);
         }
 
         private void ShowPatientsByCertainDisease()
         {
+            List<Patient> filtredPatients = new List<Patient>();
+
             Console.Write("Введите название болезни: ");
             string inputDisese = Console.ReadLine();
-            _patients = _patients.Where(patient => patient)
+            filtredPatients = _patients.Where(patient => patient.DiseaseName == inputDisese).ToList();
+
+            if (filtredPatients.Count == 0)
+                Console.WriteLine("Людей с такой болезнью нет в больнице");
+            else
+                ShowPatients(filtredPatients);
         }
 
         private void FillPatients()
@@ -91,9 +99,9 @@ namespace LINQ.Hospital
                 _patients.Add(patientCreator.Create());
         }
 
-        private void ShowPatients()
+        private void ShowPatients(List<Patient> patients)
         {
-            foreach (var patient in _patients)
+            foreach (var patient in patients)
                 patient.ShowInfo();
         }
     }
