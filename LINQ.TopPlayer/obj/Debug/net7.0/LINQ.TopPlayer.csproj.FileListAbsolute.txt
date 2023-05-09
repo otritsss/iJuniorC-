@@ -1,0 +1,15 @@
+D:\mvs\repos\LINQ.TopPlayer\bin\Debug\net7.0\LINQ.TopPlayer.exe
+D:\mvs\repos\LINQ.TopPlayer\bin\Debug\net7.0\LINQ.TopPlayer.deps.json
+D:\mvs\repos\LINQ.TopPlayer\bin\Debug\net7.0\LINQ.TopPlayer.runtimeconfig.json
+D:\mvs\repos\LINQ.TopPlayer\bin\Debug\net7.0\LINQ.TopPlayer.dll
+D:\mvs\repos\LINQ.TopPlayer\bin\Debug\net7.0\LINQ.TopPlayer.pdb
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\LINQ.TopPlayer.csproj.AssemblyReference.cache
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\LINQ.TopPlayer.GeneratedMSBuildEditorConfig.editorconfig
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\LINQ.TopPlayer.AssemblyInfoInputs.cache
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\LINQ.TopPlayer.AssemblyInfo.cs
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\LINQ.TopPlayer.csproj.CoreCompileInputs.cache
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\LINQ.TopPlayer.dll
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\refint\LINQ.TopPlayer.dll
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\LINQ.TopPlayer.pdb
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\LINQ.TopPlayer.genruntimeconfig.cache
+D:\mvs\repos\LINQ.TopPlayer\obj\Debug\net7.0\ref\LINQ.TopPlayer.dll
