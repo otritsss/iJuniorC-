@@ -15,6 +15,9 @@ namespace LINQ.Hospital
 
     class Server
     {
+        private const string ShowTopByLevelCommand = "1";
+        private const string ShowTopByForceCommand = "2";
+
         private List<Player> _players = new List<Player>();
 
         public void Work()
@@ -24,12 +27,44 @@ namespace LINQ.Hospital
             while (isWork)
             {
                 FillPlayers();
-                ShowInfo();
+
+                Console.WriteLine(
+                    $"{ShowTopByLevelCommand} - показать ТОП-3 игроков по уровню\n{ShowTopByForceCommand} - показать ТОП-3 игроков по силе");
+
+                string userInputCommand = Console.ReadLine();
+
+                switch (userInputCommand)
+                {
+                    case ShowTopByLevelCommand:
+                        ShowTopThreePlayers(SorByLevel());
+                        break;
+
+                    case ShowTopByForceCommand:
+                        ShowTopThreePlayers(SorByForce());
+                        break;
+
+                    default:
+                        Console.WriteLine("Вы ввели некорретное значение");
+                        break;
+                }
 
                 Console.ReadKey();
                 Console.Clear();
             }
         }
+
+        private List<Player> SorByLevel()
+        {
+            var topThreePlayers = _players.OrderBy(player => player.Level).ToList();
+            return topThreePlayers;
+        }
+
+        private List<Player> SorByForce()
+        {
+            var topThreePlayers = _players.OrderBy(player => player.Force).ToList();
+            return topThreePlayers;
+        }
+
 
         private void FillPlayers()
         {
@@ -58,25 +93,30 @@ namespace LINQ.Hospital
             getPlayer.FixRepeatName(maxRepeatCount);
         }
 
-        private void ShowInfo()
+        private void ShowTopThreePlayers(List<Player> players)
         {
-            foreach (var player in _players)
+            // int topThree = 3;
+            // for (int i = 0; i < topThree; i++)
+            //     players[i].ShowInfo();
+
+            foreach (var player in players)
                 player.ShowInfo();
         }
     }
 
     class Player
     {
-        public string Name { get; private set; }
-        public int Level { get; private set; }
-        public int Force { get; private set; }
-
         public Player(string name, int level, int force)
         {
             Name = name;
             Level = level;
             Force = force;
         }
+
+        public string Name { get; private set; }
+        public int Level { get; private set; }
+        public int Force { get; private set; }
+
 
         public void FixRepeatName(int maxRepeatCount)
         {
@@ -98,16 +138,15 @@ namespace LINQ.Hospital
             _defaultNames = new List<string>()
             {
                 new string("pro100 женек"),
-                // new string("pro100 женек"),
-                // new string("ПуЛя_В_гЛаЗ_и_Ты_УнИТаЗ"),
-                // new string("Mr.ПеLьМЕshKa"),
-                // new string("СУ_-ха_-РИ_-к"),
-                // new string("казявкин"),
-                // new string("Кексуальная козявка"),
-                // new string("Па3итИФф"),
-                // new string("Tor4oK"),
-                // new string("Сильвестр в столовой"),
-                // new string("Ляськи_Масяськи"),
+                new string("ПуЛя_В_гЛаЗ_и_Ты_УнИТаЗ"),
+                new string("Mr.ПеLьМЕshKa"),
+                new string("СУ_-ха_-РИ_-к"),
+                new string("казявкин"),
+                new string("Кексуальная козявка"),
+                new string("Па3итИФф"),
+                new string("Tor4oK"),
+                new string("Сильвестр в столовой"),
+                new string("Ляськи_Масяськи"),
             };
         }
 
