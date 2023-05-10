@@ -39,11 +39,11 @@ namespace LINQ.Hospital
                 switch (userInputCommand)
                 {
                     case SortByName:
-                        SortPatientsByName();
+                        ShowPatients(SortPatientsByName());
                         break;
 
                     case SortByAge:
-                        SortPatientsByAge();
+                        ShowPatients(SortPatientsByAge());
                         break;
 
                     case ShowByCertainDisease:
@@ -64,25 +64,23 @@ namespace LINQ.Hospital
             }
         }
 
-        private void SortPatientsByName()
+        private List<Patient> SortPatientsByName()
         {
-            _patients = _patients.OrderBy(patient => patient.Name).ToList();
-            ShowPatients(_patients);
+            var filtredPatients = _patients.OrderBy(patient => patient.Name).ToList();
+            return filtredPatients;
         }
 
-        private void SortPatientsByAge()
+        private List<Patient> SortPatientsByAge()
         {
-            _patients = _patients.OrderBy(patient => patient.Age).ToList();
-            ShowPatients(_patients);
+            var filtredPatients = _patients.OrderBy(patient => patient.Age).ToList();
+            return filtredPatients;
         }
 
         private void ShowPatientsByCertainDisease()
         {
-            List<Patient> filtredPatients = new List<Patient>();
-
             Console.Write("Введите название болезни: ");
             string inputDisese = Console.ReadLine();
-            filtredPatients = _patients.Where(patient => patient.DiseaseName == inputDisese).ToList();
+            var filtredPatients = _patients.Where(patient => patient.DiseaseName == inputDisese).ToList();
 
             if (filtredPatients.Count == 0)
                 Console.WriteLine("Людей с такой болезнью нет в больнице");
