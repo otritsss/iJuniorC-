@@ -24,13 +24,12 @@ namespace LINQ.Hospital
         {
             bool isWork = true;
 
+            FillPlayers();
+
             while (isWork)
             {
-                FillPlayers();
-
                 Console.WriteLine(
                     $"{ShowTopByLevelCommand} - показать ТОП-3 игроков по уровню\n{ShowTopByForceCommand} - показать ТОП-3 игроков по силе");
-
                 string userInputCommand = Console.ReadLine();
 
                 switch (userInputCommand)
@@ -55,17 +54,16 @@ namespace LINQ.Hospital
 
         private List<Player> SorByLevel()
         {
-            var topThreePlayers = _players.OrderBy(player => player.Level).ToList();
+            var topThreePlayers = _players.OrderByDescending(player => player.Level).ToList();
             return topThreePlayers;
         }
 
         private List<Player> SorByForce()
         {
-            var topThreePlayers = _players.OrderBy(player => player.Force).ToList();
+            var topThreePlayers = _players.OrderByDescending(player => player.Force).ToList();
             return topThreePlayers;
         }
-
-
+        
         private void FillPlayers()
         {
             PlayerCreator playerCreator = new PlayerCreator();
@@ -95,12 +93,10 @@ namespace LINQ.Hospital
 
         private void ShowTopThreePlayers(List<Player> players)
         {
-            // int topThree = 3;
-            // for (int i = 0; i < topThree; i++)
-            //     players[i].ShowInfo();
+            int topThree = 3;
 
-            foreach (var player in players)
-                player.ShowInfo();
+            for (int i = 0; i < topThree; i++)
+                players[i].ShowInfo();
         }
     }
 
