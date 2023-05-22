@@ -19,6 +19,7 @@ namespace LINQ.Hospital
         private const string ShowTopByForceCommand = "2";
 
         private List<Player> _players = new List<Player>();
+        private int _topThree = 3;
 
         public void Work()
         {
@@ -29,7 +30,7 @@ namespace LINQ.Hospital
             while (isWork)
             {
                 Console.WriteLine(
-                    $"{ShowTopByLevelCommand} - показать ТОП-3 игроков по уровню\n{ShowTopByForceCommand} - показать ТОП-3 игроков по силе");
+                    $"{ShowTopByLevelCommand} - показать ТОП-{_topThree} игроков по уровню\n{ShowTopByForceCommand} - показать ТОП-3 игроков по силе");
                 string userInputCommand = Console.ReadLine();
 
                 switch (userInputCommand)
@@ -54,13 +55,13 @@ namespace LINQ.Hospital
 
         private List<Player> GetTopPlayersByLevel()
         {
-            var topThreePlayers = _players.OrderByDescending(player => player.Level).Take(3).ToList();
+            var topThreePlayers = _players.OrderByDescending(player => player.Level).Take(_topThree).ToList();
             return topThreePlayers;
         }
 
         private List<Player> GetTopPlayersByForce()
         {
-            var topThreePlayers = _players.OrderByDescending(player => player.Force).Take(3).ToList();
+            var topThreePlayers = _players.OrderByDescending(player => player.Force).Take(_topThree).ToList();
             return topThreePlayers;
         }
 
