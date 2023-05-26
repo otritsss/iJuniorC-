@@ -1,0 +1,15 @@
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\bin\Debug\net7.0\LINQ.SpoiledStew.exe
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\bin\Debug\net7.0\LINQ.SpoiledStew.deps.json
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\bin\Debug\net7.0\LINQ.SpoiledStew.runtimeconfig.json
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\bin\Debug\net7.0\LINQ.SpoiledStew.dll
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\bin\Debug\net7.0\LINQ.SpoiledStew.pdb
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\LINQ.SpoiledStew.csproj.AssemblyReference.cache
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\LINQ.SpoiledStew.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\LINQ.SpoiledStew.AssemblyInfoInputs.cache
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\LINQ.SpoiledStew.AssemblyInfo.cs
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\LINQ.SpoiledStew.csproj.CoreCompileInputs.cache
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\LINQ.SpoiledStew.dll
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\refint\LINQ.SpoiledStew.dll
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\LINQ.SpoiledStew.pdb
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\LINQ.SpoiledStew.genruntimeconfig.cache
+D:\Microsoft Visual Studio\repos\LINQ.SpoiledStew\obj\Debug\net7.0\ref\LINQ.SpoiledStew.dll
