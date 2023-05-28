@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GqZQD5rSSiE3l9WNtAAG7ARt+wfVd46LRZJ86hBMZTwA3ambk8UbNvKVfmlk07qQwSjyxBdbXw9LZFkFbxyH0g==",
+  "dgSpecHash": "6hAPoxa6upYXbyVtPJqC95QcF3JM/32DSRVhMaxmMbJsgVQvCtHXA8GceY6BAFAhNJY3PPN6DF9kjVwWkAxs0Q==",
   "success": true,
-  "projectFilePath": "D:\\Microsoft Visual Studio\\repos\\SoldiersReport\\SoldiersReport.csproj",
+  "projectFilePath": "D:\\Microsoft Visual Studio\\repos\\LINQ.SoldiersReport\\SoldiersReport.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

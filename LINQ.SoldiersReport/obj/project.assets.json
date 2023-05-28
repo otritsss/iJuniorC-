@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Microsoft Visual Studio\\repos\\SoldiersReport\\SoldiersReport.csproj",
+      "projectUniqueName": "D:\\Microsoft Visual Studio\\repos\\LINQ.SoldiersReport\\SoldiersReport.csproj",
       "projectName": "SoldiersReport",
-      "projectPath": "D:\\Microsoft Visual Studio\\repos\\SoldiersReport\\SoldiersReport.csproj",
+      "projectPath": "D:\\Microsoft Visual Studio\\repos\\LINQ.SoldiersReport\\SoldiersReport.csproj",
       "packagesPath": "C:\\Users\\gbljh\\.nuget\\packages\\",
-      "outputPath": "D:\\Microsoft Visual Studio\\repos\\SoldiersReport\\obj\\",
+      "outputPath": "D:\\Microsoft Visual Studio\\repos\\LINQ.SoldiersReport\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Microsoft Visual Studio\\Shared\\NuGetPackages"

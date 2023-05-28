@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SoldiersReport
-build_property.ProjectDir = D:\Microsoft Visual Studio\repos\SoldiersReport\
+build_property.ProjectDir = D:\Microsoft Visual Studio\repos\LINQ.SoldiersReport\

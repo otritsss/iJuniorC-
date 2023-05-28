@@ -25,6 +25,9 @@ namespace LINQ.SoldiersReport
             {
                 Fill();
                 ShowMainParameters();
+
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
@@ -41,7 +44,7 @@ namespace LINQ.SoldiersReport
         {
             var newSoldiers = _soldiers.Select(soldier => new
             {
-                MainParameters = soldier.Name + " " + soldier.Rank
+                MainParameters = soldier.Name + " - " + soldier.Rank
             });
 
             foreach (var soldier in newSoldiers)
@@ -51,13 +54,13 @@ namespace LINQ.SoldiersReport
 
     class SoldierCreator
     {
-        private List<string> _defaultName;
-        private List<string> _defaultRank;
-        private List<string> _defaultArmament;
+        private List<string> _defaultNames;
+        private List<string> _defaultRanks;
+        private List<string> _defaultArmaments;
 
         public SoldierCreator()
         {
-            _defaultArmament = new List<string>()
+            _defaultNames = new List<string>()
             {
                 new string("Максим"),
                 new string("Никита"),
@@ -67,7 +70,7 @@ namespace LINQ.SoldiersReport
                 new string("Оскар"),
             };
 
-            _defaultRank = new List<string>()
+            _defaultRanks = new List<string>()
             {
                 new string("Рядовой"),
                 new string("Младший лейтенант"),
@@ -76,7 +79,7 @@ namespace LINQ.SoldiersReport
                 new string("Ефрейтор"),
             };
 
-            _defaultArmament = new List<string>()
+            _defaultArmaments = new List<string>()
             {
                 new string("АК-47"),
                 new string("Глок-18"),
@@ -90,9 +93,9 @@ namespace LINQ.SoldiersReport
         {
             int maxTermOfMilitarySerive = 60;
 
-            return new Soldier(_defaultName[UserUtils.GetRandomNumber(0, _defaultName.Count)],
-                _defaultRank[UserUtils.GetRandomNumber(0, _defaultRank.Count)],
-                _defaultArmament[UserUtils.GetRandomNumber(0, _defaultArmament.Count)],
+            return new Soldier(_defaultNames[UserUtils.GetRandomNumber(0, _defaultNames.Count)],
+                _defaultRanks[UserUtils.GetRandomNumber(0, _defaultRanks.Count)],
+                _defaultArmaments[UserUtils.GetRandomNumber(0, _defaultArmaments.Count)],
                 UserUtils.GetRandomNumber(0, maxTermOfMilitarySerive));
         }
     }
@@ -102,7 +105,7 @@ namespace LINQ.SoldiersReport
         public Soldier(string name, string rank, string armament, int termOfMilitarySerive)
         {
             Name = name;
-            Rank = Rank;
+            Rank = rank;
             Armament = armament;
             TermOfMilitarySerive = termOfMilitarySerive;
         }
@@ -117,6 +120,9 @@ namespace LINQ.SoldiersReport
     {
         private static Random _random = new Random();
 
-        public static int GetRandomNumber(int minValue, int maxValue) => _random.Next(minValue, maxValue);
+        public static int GetRandomNumber(int minValue, int maxValue)
+        {
+            return _random.Next(minValue, maxValue);
+        }
     }
 }
