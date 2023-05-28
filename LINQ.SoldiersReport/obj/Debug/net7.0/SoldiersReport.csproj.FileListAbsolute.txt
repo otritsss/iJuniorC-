@@ -1,0 +1,15 @@
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\SoldiersReport.csproj.AssemblyReference.cache
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\SoldiersReport.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\SoldiersReport.AssemblyInfoInputs.cache
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\SoldiersReport.AssemblyInfo.cs
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\SoldiersReport.csproj.CoreCompileInputs.cache
+D:\Microsoft Visual Studio\repos\SoldiersReport\bin\Debug\net7.0\SoldiersReport.exe
+D:\Microsoft Visual Studio\repos\SoldiersReport\bin\Debug\net7.0\SoldiersReport.deps.json
+D:\Microsoft Visual Studio\repos\SoldiersReport\bin\Debug\net7.0\SoldiersReport.runtimeconfig.json
+D:\Microsoft Visual Studio\repos\SoldiersReport\bin\Debug\net7.0\SoldiersReport.dll
+D:\Microsoft Visual Studio\repos\SoldiersReport\bin\Debug\net7.0\SoldiersReport.pdb
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\SoldiersReport.dll
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\refint\SoldiersReport.dll
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\SoldiersReport.pdb
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\SoldiersReport.genruntimeconfig.cache
+D:\Microsoft Visual Studio\repos\SoldiersReport\obj\Debug\net7.0\ref\SoldiersReport.dll
