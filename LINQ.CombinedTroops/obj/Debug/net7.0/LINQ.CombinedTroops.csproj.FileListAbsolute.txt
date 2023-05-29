@@ -1,0 +1,15 @@
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\bin\Debug\net7.0\LINQ.CombinedTroops.exe
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\bin\Debug\net7.0\LINQ.CombinedTroops.deps.json
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\bin\Debug\net7.0\LINQ.CombinedTroops.runtimeconfig.json
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\bin\Debug\net7.0\LINQ.CombinedTroops.dll
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\bin\Debug\net7.0\LINQ.CombinedTroops.pdb
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\LINQ.CombinedTroops.csproj.AssemblyReference.cache
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\LINQ.CombinedTroops.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\LINQ.CombinedTroops.AssemblyInfoInputs.cache
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\LINQ.CombinedTroops.AssemblyInfo.cs
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\LINQ.CombinedTroops.csproj.CoreCompileInputs.cache
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\LINQ.CombinedTroops.dll
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\refint\LINQ.CombinedTroops.dll
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\LINQ.CombinedTroops.pdb
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\LINQ.CombinedTroops.genruntimeconfig.cache
+D:\Microsoft Visual Studio\repos\LINQ.CombinedTroops\obj\Debug\net7.0\ref\LINQ.CombinedTroops.dll

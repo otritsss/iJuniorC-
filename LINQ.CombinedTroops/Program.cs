@@ -8,11 +8,60 @@ namespace LINQ.CombinedTroops
     {
         static void Main()
         {
+            Army army = new Army();
+            army.Work();
         }
     }
 
     class Army
     {
+        private List<Soldier> _squadOne = new List<Soldier>();
+        private List<Soldier> _squadTwo = new List<Soldier>();
+
+        public void Work()
+        {
+            bool isWork = true;
+
+            _squadOne = FillSquad(_squadOne);
+            _squadTwo = FillSquad(_squadTwo);
+
+            while (isWork)
+            {
+                ShowInfo();
+
+                Console.ReadKey();
+                Console.Clear();
+
+                TransferSoldiers();
+            }
+        }
+
+        private void TransferSoldiers()
+        {
+            char neededSymbol = 'Б';
+
+            var soldiers = _squadOne.Where(soldier => soldier.Surname.StartsWith(neededSymbol)).ToList();
+
+            _squadTwo = _squadTwo.Union(soldiers).ToList();
+            _squadOne = _squadOne.Except(soldiers).ToList();
+        }
+
+        private void ShowInfo()
+
+        {
+            foreach (var soldier in _squadOne)
+                soldier.ShowInfo();
+
+            int positionX = 30;
+            int positionY = 0;
+
+            foreach (var soldier in _squadTwo)
+            {
+                Console.SetCursorPosition(positionX, positionY++);
+                soldier.ShowInfo();
+            }
+        }
+
         private List<Soldier> FillSquad(List<Soldier> squad)
         {
             SoldierCreator soldierCreator = new SoldierCreator();
@@ -29,12 +78,17 @@ namespace LINQ.CombinedTroops
 
     class Soldier
     {
-        public Soldier(string name)
+        public Soldier(string surname)
         {
-            Name = name;
+            Surname = surname;
         }
 
-        public string Name { get; private set; }
+        public string Surname { get; private set; }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine(Surname);
+        }
     }
 
     class SoldierCreator
